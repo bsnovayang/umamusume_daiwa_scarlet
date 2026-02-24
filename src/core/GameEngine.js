@@ -200,6 +200,7 @@ class GameEngine {
     closeAllOverlays() {
         this.closeHistory();
         this.closeMenu();
+        this.closeCharacters();
     }
 
     // 顯示提示
@@ -255,6 +256,14 @@ class GameEngine {
 
         document.getElementById('auto-btn').addEventListener('click', () => {
             this.toggleAutoMode();
+        });
+
+        document.getElementById('chars-btn').addEventListener('click', () => {
+            this.showCharacters();
+        });
+
+        document.getElementById('close-chars-btn').addEventListener('click', () => {
+            this.closeCharacters();
         });
     }
 
@@ -475,6 +484,48 @@ class GameEngine {
     backToTitle() {
         this.closeMenu();
         this.showScreen('title-screen');
+    }
+
+    // 人物介紹
+    showCharacters() {
+        const container = document.getElementById('chars-content');
+        container.innerHTML = '';
+
+        const charEmojis = {
+            daiwa_scarlet: '🏇',
+            vodka: '🍸',
+            special_week: '⭐',
+            gold_ship: '🚢',
+            mejiro_mcqueen: '🌺',
+            trainer: '👤'
+        };
+
+        for (const id in CHARACTERS) {
+            if (id === 'narrator') continue;
+            const char = CHARACTERS[id];
+
+            const card = document.createElement('div');
+            card.className = 'char-card';
+            card.style.borderLeftColor = char.color;
+
+            const emoji = charEmojis[id] || '❓';
+
+            card.innerHTML = `
+                <div class="char-avatar" style="background-color: ${char.color}">${emoji}</div>
+                <div class="char-info">
+                    <div class="char-name" style="color: ${char.color}">${char.name}</div>
+                    <div class="char-desc">${char.description}</div>
+                </div>
+            `;
+
+            container.appendChild(card);
+        }
+
+        document.getElementById('chars-screen').classList.add('active');
+    }
+
+    closeCharacters() {
+        document.getElementById('chars-screen').classList.remove('active');
     }
 
     // 存檔
