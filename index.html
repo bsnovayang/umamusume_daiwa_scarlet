@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>賽馬娘戀愛模擬器 - 大和赤驥</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- 標題畫面 -->
+        <div id="title-screen" class="screen active">
+            <h1>賽馬娘戀愛模擬器</h1>
+            <h2>~ 大和赤驥篇 ~</h2>
+            <p class="subtitle">純文字 AVG 完整版 v1.0</p>
+            <p class="version-info">全5章主線 | 5種結局 | 完整劇情</p>
+            <button id="start-btn" class="btn-primary">開始遊戲</button>
+            <div class="title-footer">
+                <p>預計遊戲時間：60-90分鐘</p>
+                <p>5種結局等你收集</p>
+                <p class="hotkeys-hint">
+                    快捷鍵：Ctrl 加速 | H 歷史記錄 | A 自動播放
+                </p>
+            </div>
+        </div>
+
+        <!-- 遊戲畫面 -->
+        <div id="game-screen" class="screen">
+            <!-- 狀態欄 -->
+            <div id="status-bar">
+                <div class="affection-container">
+                    <span class="label">好感度</span>
+                    <div class="affection-bar">
+                        <div id="affection-fill" class="affection-fill"></div>
+                    </div>
+                    <span id="affection-value">0</span>
+                </div>
+                <div class="toolbar">
+                    <button id="auto-btn" class="icon-btn" title="自動播放 (A)">▶</button>
+                    <button id="history-btn" class="icon-btn" title="歷史記錄 (H)">📜</button>
+                    <button id="menu-btn" class="icon-btn" title="選單">☰</button>
+                </div>
+            </div>
+
+            <!-- 場景描述 -->
+            <div id="scene-display">
+                <p id="location-text">特雷森學園 - 教室</p>
+            </div>
+
+            <!-- 對話區 -->
+            <div id="dialogue-box">
+                <div id="speaker-name"></div>
+                <div id="dialogue-text"></div>
+            </div>
+
+            <!-- 選項區 -->
+            <div id="choices-container"></div>
+
+            <!-- 下一頁提示 -->
+            <div id="next-hint">點擊繼續 ▼</div>
+
+            <!-- 快捷鍵提示 -->
+            <div class="shortcuts-hint">
+                Ctrl 加速 | 點擊對話區繼續
+            </div>
+        </div>
+
+        <!-- 選單畫面 -->
+        <div id="menu-screen" class="screen overlay">
+            <div class="menu-content">
+                <h3>選單</h3>
+                <div class="menu-shortcuts">
+                    <p>⌨️ 快捷鍵說明：</p>
+                    <ul>
+                        <li><kbd>Ctrl</kbd> - 按住加速/跳過對話</li>
+                        <li><kbd>H</kbd> - 開啟/關閉歷史記錄</li>
+                        <li><kbd>A</kbd> - 切換自動播放模式</li>
+                        <li><kbd>ESC</kbd> - 關閉視窗</li>
+                    </ul>
+                </div>
+                <button id="save-btn" class="menu-btn">儲存進度</button>
+                <button id="load-btn" class="menu-btn">讀取進度</button>
+                <button id="back-to-title-btn" class="menu-btn">回到標題</button>
+                <button id="close-menu-btn" class="menu-btn secondary">關閉</button>
+            </div>
+        </div>
+
+        <!-- 歷史記錄畫面 -->
+        <div id="history-screen" class="screen overlay">
+            <div class="history-panel">
+                <div class="history-header">
+                    <h3>📜 對話歷史記錄</h3>
+                    <button id="close-history-btn" class="icon-btn">✕</button>
+                </div>
+                <div id="history-content" class="history-content">
+                    <!-- 歷史記錄會在這裡動態生成 -->
+                </div>
+                <div class="history-footer">
+                    <p>按 H 鍵或點擊關閉按鈕返回</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 資料層 -->
+    <script src="src/data/characters.js"></script>
+    <script src="src/data/chapters/chapter1.js"></script>
+    <script src="src/data/chapters/chapter2.js"></script>
+    <script src="src/data/chapters/chapter3.js"></script>
+    <script src="src/data/chapters/chapter4.js"></script>
+    <script src="src/data/chapters/chapter5.js"></script>
+    <script src="src/data/index.js"></script>
+
+    <!-- 工具層 -->
+    <script src="src/utils/SaveManager.js"></script>
+    <script src="src/utils/HistoryManager.js"></script>
+
+    <!-- 核心層 -->
+    <script src="src/core/GameEngine.js"></script>
+
+    <!-- 入口 -->
+    <script src="src/main.js"></script>
+</body>
+
+</html>

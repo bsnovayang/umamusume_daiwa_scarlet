@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>生成占位頭像</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 { text-align: center; }
+        .btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover { background: #c0392b; }
+        .preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .avatar span {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        .download-links {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .download-links a {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px 15px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .download-links a:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏇 賽馬娘占位頭像生成器</h1>
+        <p style="text-align: center; color: #bdc3c7;">
+            點擊下方按鈕下載占位頭像到 img/ 資料夾
+        </p>
+        
+        <button class="btn" onclick="generateAllAvatars()">
+            生成所有頭像
+        </button>
+        
+        <div class="preview" id="preview"></div>
+        
+        <div class="download-links" id="downloadLinks"></div>
+    </div>
+
+    <script>
+        // 角色設定
+        const characters = [
+            { id: 'daiwa_scarlet', name: '大和赤驥', color: '#e74c3c', short: '赤驥' },
+            { id: 'vodka', name: '伏特加', color: '#9b59b6', short: '伏特加' },
+            { id: 'special_week', name: '特別週', color: '#f39c12', short: '特別週' },
+            { id: 'gold_ship', name: '黃金船', color: '#e67e22', short: '黃金船' },
+            { id: 'Silence Suzuka', name: '無聲鈴鹿', color: '#1abc9c', short: '鈴鹿' },
+            { id: 'Tokai Teio', name: '東海帝王', color: '#3498db', short: '帝王' },
+            { id: 'Oguri Cap', name: '小栗帽', color: '#95a5a6', short: '小栗' },
+            { id: 'Mejiro McQueen', name: '目白麥昆', color: '#e91e63', short: '麥昆' },
+            { id: 'Teio', name: '魯道夫象徵', color: '#8e44ad', short: '皇帝' },
+            { id: 'Miyaji', name: '里見光鑽', color: '#00bcd4', short: '光鑽' }
+        ];
+
+        function createAvatar(char, size = 100) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // 背景漸變
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, char.color);
+            gradient.addColorStop(1, shadeColor(char.color, -20));
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+
+            // 邊框
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(2, 2, size - 4, size - 4);
+
+            // 內部陰影
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, size - 20, size, 20);
+
+            // 角色名稱（取首字或暱稱）
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.4}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // 如果是兩個字，各取首字
+            let text = char.short[0];
+            if (char.short.length >= 2) {
+                text = char.short.substring(0, 2);
+            }
+            ctx.fillText(text, size / 2, size / 2);
+
+            return canvas;
+        }
+
+        // 顏色變暗/變亮
+        function shadeColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+        }
+
+        function generateAllAvatars() {
+            const preview = document.getElementById('preview');
+            const downloadLinks = document.getElementById('downloadLinks');
+            
+            preview.innerHTML = '';
+            downloadLinks.innerHTML = '<h3>下載連結：</h3>';
+            
+            characters.forEach(char => {
+                // 預覽
+                const div = document.createElement('div');
+                div.className = 'avatar';
+                div.style.background = `linear-gradient(135deg, ${char.color}, ${shadeColor(char.color, -20)})`;
+                div.innerHTML = `<strong>${char.short}</strong><span>${char.name}</span>`;
+                preview.appendChild(div);
+
+                // 下載連結
+                const canvas = createAvatar(char, 200);
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = `${char.id}.png`;
+                link.textContent = `${char.name}.png`;
+                link.style.margin = '5px';
+                link.style.padding = '8px 15px';
+                link.style.background = char.color;
+                link.style.color = 'white';
+                link.style.textDecoration = 'none';
+                link.style.borderRadius = '5px';
+                downloadLinks.appendChild(link);
+            });
+        }
+
+        // 頁面載入時生成預覽
+        generateAllAvatars();
+    </script>
+</body>
+</html>
