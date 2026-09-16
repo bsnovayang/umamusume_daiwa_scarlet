@@ -585,7 +585,10 @@ class GameEngine {
 
         // 頭像顯示邏輯 (支援表情差分與角色舞台控制)
         if (character && dialogue.speaker !== 'narrator') {
-            if (characterStage) characterStage.style.display = 'flex';
+            if (characterStage) {
+                characterStage.style.visibility = 'visible';
+                characterStage.style.opacity = '1';
+            }
             avatarWrapper.style.display = 'flex';
             avatarWrapper.style.borderColor = character.color;
             avatarWrapper.style.boxShadow = `0 10px 30px rgba(0, 0, 0, 0.6), 0 0 24px ${character.color ? character.color + '66' : 'var(--primary-glow)'}`;
@@ -611,7 +614,10 @@ class GameEngine {
             // 啟動眨眼動畫
             this.blinkManager.onCharacterChange(dialogue.speaker, expression);
         } else {
-            if (characterStage) characterStage.style.display = 'none';
+            if (characterStage) {
+                characterStage.style.visibility = 'hidden';
+                characterStage.style.opacity = '0';
+            }
             avatarWrapper.style.display = 'none';
             this.blinkManager.stopBlink();
         }

@@ -43,7 +43,7 @@
             <!-- 頂部狀態欄 -->
             <div id="status-bar">
                 <div class="affection-container">
-                    <span class="label">💖 赤驥好感度</span>
+                    <span class="label">💖 好感度</span>
                     <div class="affection-bar">
                         <div id="affection-fill" class="affection-fill"></div>
                     </div>
@@ -71,23 +71,26 @@
                 </div>
             </div>
 
-            <!-- 對話區主體 -->
-            <div id="dialogue-box">
-                <div class="dialogue-content-wrapper">
-                    <div id="speaker-name"></div>
-                    <div id="dialogue-text"></div>
+            <!-- 底部對話區與控制容器 (永遠鎖定在畫面底部) -->
+            <div class="game-bottom-area">
+                <!-- 對話區主體 -->
+                <div id="dialogue-box">
+                    <div class="dialogue-content-wrapper">
+                        <div id="speaker-name"></div>
+                        <div id="dialogue-text"></div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 選項區 -->
-            <div id="choices-container"></div>
+                <!-- 選項區 -->
+                <div id="choices-container"></div>
 
-            <!-- 下一頁提示 -->
-            <div id="next-hint">點擊對話區繼續 ▼</div>
+                <!-- 下一頁提示 -->
+                <div id="next-hint">點擊對話區繼續 ▼</div>
 
-            <!-- 底部快捷提示 -->
-            <div class="shortcuts-hint">
-                Ctrl 加速 | H 歷史 | A 自動 | V 隱藏 UI
+                <!-- 底部快捷提示 -->
+                <div class="shortcuts-hint">
+                    Ctrl 加速 | H 歷史 | A 自動 | V 隱藏 UI
+                </div>
             </div>
         </div>
 

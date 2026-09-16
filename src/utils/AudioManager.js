@@ -12,6 +12,8 @@ class AudioManager {
         this.bgmLoopTimer = null;
         this.bgmGainNode = null;
         this.sfxGainNode = null;
+        this.bgmAudio = null;
+        this.bgmSrc = 'audio/bgm/Winning_the_Final_Route.mp3';
 
         // 從 localStorage 讀取設定
         this.loadSettings();
@@ -35,6 +37,10 @@ class AudioManager {
         }
         if (this.ctx && this.ctx.state === 'suspended') {
             this.ctx.resume();
+        }
+        // 如果已有背景音樂且處於暫停中，藉由使用者互動恢復播放
+        if (this.bgmAudio && this.currentBgmType && this.bgmAudio.paused && !this.isMuted) {
+            this.bgmAudio.play().catch(() => {});
         }
     }
 
@@ -66,6 +72,9 @@ class AudioManager {
 
     setMuted(muted) {
         this.isMuted = muted;
+        if (this.bgmAudio) {
+            this.bgmAudio.volume = muted ? 0 : this.bgmVolume;
+        }
         if (this.bgmGainNode && this.ctx) {
             this.bgmGainNode.gain.setValueAtTime(muted ? 0 : this.bgmVolume, this.ctx.currentTime);
             this.sfxGainNode.gain.setValueAtTime(muted ? 0 : this.sfxVolume, this.ctx.currentTime);
@@ -75,6 +84,9 @@ class AudioManager {
 
     setBgmVolume(val) {
         this.bgmVolume = Math.max(0, Math.min(1, val));
+        if (this.bgmAudio && !this.isMuted) {
+            this.bgmAudio.volume = this.bgmVolume;
+        }
         if (this.bgmGainNode && this.ctx && !this.isMuted) {
             this.bgmGainNode.gain.setValueAtTime(this.bgmVolume, this.ctx.currentTime);
         }
@@ -205,20 +217,42 @@ class AudioManager {
         } catch (e) {}
     }
 
-    // 播放背景音樂
-    playBGM(type) {
-        if (this.currentBgmType === type) return;
-        this.stopBGM();
-        this.currentBgmType = type;
+    initBgmAudio() {
+        if (!this.bgmAudio) {
+            this.bgmAudio = new Audio(this.bgmSrc);
+            this.bgmAudio.loop = true;
+            this.bgmAudio.volume = this.isMuted ? 0 : this.bgmVolume;
+        }
+    }
 
-        if (!type || type === 'none') return;
+    // 播放背景音樂 (使用 Winning_the_Final_Route.mp3)
+    playBGM(type = 'default') {
+        if (!type || type === 'none') {
+            this.stopBGM();
+            return;
+        }
+
         this.initContext();
-        if (!this.ctx) return;
+        this.initBgmAudio();
 
-        this.startBgmLoop(type);
+        if (this.bgmAudio) {
+            this.bgmAudio.volume = this.isMuted ? 0 : this.bgmVolume;
+            if (this.bgmAudio.paused) {
+                const playPromise = this.bgmAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(e => {
+                        console.log('BGM waiting for user interaction to autoplay:', e);
+                    });
+                }
+            }
+        }
+        this.currentBgmType = type;
     }
 
     stopBGM() {
+        if (this.bgmAudio) {
+            this.bgmAudio.pause();
+        }
         if (this.bgmLoopTimer) {
             clearInterval(this.bgmLoopTimer);
             this.bgmLoopTimer = null;
