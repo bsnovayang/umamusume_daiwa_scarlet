@@ -52,14 +52,14 @@ CHAPTER_3_SCENES.ch3_rain = {
 CHAPTER_3_SCENES.ch3_rain_good = {
     location: "特雷森學園 - 雨中",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "欸！？靠、靠近...！？" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "欸！？靠、靠近...！？" },
         { speaker: "narrator", text: "你們肩並肩走著，傘下的空間很小。" },
         { speaker: "narrator", text: "赤驥的肩膀不時碰到你。" },
-        { speaker: "daiwa_scarlet", text: "（小聲）這種距離...有點不好意思..." },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "（小聲）這種距離...有點不好意思..." },
         { speaker: "narrator", text: "她的耳朵紅通通的。" },
         { speaker: "daiwa_scarlet", text: "...訓練員，你有聞到什麼味道嗎？" },
         { speaker: "trainer", text: "嗯？是淡淡的花香吧...?" },
-        { speaker: "daiwa_scarlet", text: "笨、笨蛋！那是我的洗髮精啦！你靠太近了！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "笨、笨蛋！那是我的洗髮精啦！你靠太近了！" },
         { speaker: "narrator", text: "但她並沒有拉開距離。" }
     ],
     nextScene: "ch3_birthday_setup"
@@ -151,13 +151,13 @@ CHAPTER_3_SCENES.ch3_birthday_best = {
         { speaker: "trainer", text: "赤驥，這是我特別為妳做的。雖然賣相不太好..." },
         { speaker: "daiwa_scarlet", text: "你...自己做的？" },
         { speaker: "narrator", text: "蛋糕上用巧克力醬歪歪扭扭地寫著「赤驥生日快樂」。" },
-        { speaker: "daiwa_scarlet", text: "才、才不是不好看..." },
-        { speaker: "daiwa_scarlet", text: "是我收過最好的禮物......謝謝你。" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "才、才不是不好看..." },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "是我收過最好的禮物......謝謝你。" },
         { speaker: "narrator", text: "赤驥小心翼翼地切開蛋糕，露出了格外溫柔的表情。" },
         { speaker: "vodka", text: "（偷偷對你比了一個大拇指）" },
         { speaker: "special_week", text: "好好吃！訓練員好厲害！" },
         { speaker: "gold_ship", text: "我也要！我也要吃！" },
-        { speaker: "daiwa_scarlet", text: "不準搶！這是...訓練員給我的。" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "不準搶！這是...訓練員給我的。" },
         { speaker: "narrator", text: "赤驥說完，臉紅得像她的名字一樣。" }
     ],
     nextScene: "ch3_rival"
@@ -170,9 +170,9 @@ CHAPTER_3_SCENES.ch3_birthday_good = {
         { speaker: "daiwa_scarlet", text: "髮飾...？紅色的...？" },
         { speaker: "narrator", text: "赤驥把髮飾戴上，對著窗戶的倒影左看右看。" },
         { speaker: "vodka", text: "嘿，不錯嘛。很適合妳。" },
-        { speaker: "daiwa_scarlet", text: "（小聲）...我會好好珍惜的。" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "（小聲）...我會好好珍惜的。" },
         { speaker: "special_week", text: "好漂亮！赤驥前輩更可愛了！" },
-        { speaker: "daiwa_scarlet", text: "才、才沒有可愛！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "才、才沒有可愛！" },
         { speaker: "narrator", text: "但她之後每天都戴著那個髮飾。" }
     ],
     nextScene: "ch3_rival"
@@ -330,12 +330,12 @@ CHAPTER_3_SCENES.ch3_night_encounter = {
 CHAPTER_3_SCENES.ch3_night_best = {
     location: "特雷森學園 - 夜間操場",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "美...！？" },
-        { speaker: "daiwa_scarlet", text: "你、你在說什麼啦！大深夜的...！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "美...！？" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "你、你在說什麼啦！大深夜的...！" },
         { speaker: "narrator", text: "即使在月光下，也能看到赤驥的臉瞬間紅透了。" },
         { speaker: "narrator", text: "但她沒有跑開。" },
         { speaker: "narrator", text: "反而慢慢低下頭，用幾乎聽不見的聲音說——" },
-        { speaker: "daiwa_scarlet", text: "......謝謝。" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "......謝謝。" },
         { speaker: "narrator", text: "你們並肩坐在跑道旁的草地上。" },
         { speaker: "narrator", text: "月亮很圓，星星很亮。" },
         { speaker: "narrator", text: "四周安靜得只聽到蟲鳴和彼此的呼吸聲。" },
@@ -540,9 +540,9 @@ CHAPTER_3_SCENES.ch3_secret_shy = {
         { speaker: "narrator", text: "就在這時——走廊的另一頭傳來腳步聲。" },
         { speaker: "daiwa_scarlet", text: "特別週！你跟訓練員在偷偷摸摸幹什麼！" },
         { speaker: "special_week", text: "啊！赤驥前輩！沒、沒有什麼偷偷摸摸的！" },
-        { speaker: "daiwa_scarlet", text: "那為什麼訓練員的臉那麼紅啊！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "那為什麼訓練員的臉那麼紅啊！" },
         { speaker: "trainer", text: "...沒什麼。" },
-        { speaker: "daiwa_scarlet", text: "哼！你們兩個一定在說我壞話！不理你們了！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "哼！你們兩個一定在說我壞話！不理你們了！" },
         { speaker: "narrator", text: "赤驥怒氣沖沖地轉身離開了。" },
         { speaker: "narrator", text: "但你注意到，她走路的步伐比平時更輕快了些。" }
     ],

@@ -55,9 +55,9 @@ CHAPTER_1_SCENES.choice_praise = {
     location: "特雷森學園 - 訓練場",
     dialogues: [
         { speaker: "daiwa_scarlet", text: "哼...算你有眼光！" },
-        { speaker: "daiwa_scarlet", text: "（小聲）不過...被稱讚還是會有點不好意思啦..." },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "（小聲）不過...被稱讚還是會有點不好意思啦..." },
         { speaker: "vodka", text: "哈哈！赤驥臉紅了！" },
-        { speaker: "daiwa_scarlet", text: "才、才沒有！伏特加妳閉嘴啦！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "才、才沒有！伏特加妳閉嘴啦！" },
         { speaker: "daiwa_scarlet", text: "訓練員！我以後會讓你看到更多精彩的表現的！" },
         { speaker: "narrator", text: "大和赤驥鬥志滿滿地繼續練習去了。" }
     ],
@@ -116,14 +116,14 @@ CHAPTER_1_SCENES.scene_cafeteria = {
 CHAPTER_1_SCENES.cafeteria_join = {
     location: "特雷森學園 - 食堂",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "欸！？一、一起吃飯...！？" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "欸！？一、一起吃飯...！？" },
         { speaker: "special_week", text: "好耶！人多比較熱鬧！" },
-        { speaker: "daiwa_scarlet", text: "（小聲）既然特別週這麼說..." },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "（小聲）既然特別週這麼說..." },
         { speaker: "daiwa_scarlet", text: "坐吧，訓練員。不過不要打擾我進食！" },
         { speaker: "narrator", text: "你坐在赤驥對面，開始用餐。" },
         { speaker: "special_week", text: "訓練員，你為什麼會選擇當訓練員呢？" },
         { speaker: "daiwa_scarlet", text: "...我也想知道。" },
-        { speaker: "daiwa_scarlet", text: "（一邊吃飯一邊偷偷看著你）" }
+        { speaker: "daiwa_scarlet", expression: "blush", text: "（一邊吃飯一邊偷偷看著你）" }
     ],
     choices: [
         {
@@ -213,9 +213,9 @@ CHAPTER_1_SCENES.library_gentle = {
         { speaker: "daiwa_scarlet", text: "嗯...唔..." },
         { speaker: "daiwa_scarlet", text: "...訓練員？" },
         { speaker: "narrator", text: "赤驥緩緩睜開眼睛，看到身上的外套，臉微微紅了。" },
-        { speaker: "daiwa_scarlet", text: "這、這是你的外套...？" },
-        { speaker: "daiwa_scarlet", text: "謝、謝謝...真是的，讓你看到這麼丟臉的樣子。" },
-        { speaker: "daiwa_scarlet", text: "...不過，謝謝你。" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "這、這是你的外套...？" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "謝、謝謝...真是的，讓你看到這麼丟臉的樣子。" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "...不過，謝謝你。" },
         { speaker: "narrator", text: "赤驥緊緊抓著外套，聲音變得很小。" }
     ],
     nextScene: "scene_after_school"

@@ -41,8 +41,8 @@ CHAPTER_2_SCENES.ch2_morning_run = {
 CHAPTER_2_SCENES.ch2_run_response1 = {
     location: "特雷森學園 - 操場",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "早、早安..." },
-        { speaker: "daiwa_scarlet", text: "（小聲）這樣打招呼感覺好奇怪..." },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "早、早安..." },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "（小聲）這樣打招呼感覺好奇怪..." },
         { speaker: "daiwa_scarlet", text: "不過...謝謝你來陪我。" }
     ],
     nextScene: "ch2_training"
@@ -51,10 +51,10 @@ CHAPTER_2_SCENES.ch2_run_response1 = {
 CHAPTER_2_SCENES.ch2_run_response2 = {
     location: "特雷森學園 - 操場",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "欸？陪我一起？" },
-        { speaker: "daiwa_scarlet", text: "但、但你是訓練員，跟著我跑會很累的..." },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "欸？陪我一起？" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "但、但你是訓練員，跟著我跑會很累的..." },
         { speaker: "trainer", text: "沒關係，我想了解妳的練習方式。" },
-        { speaker: "daiwa_scarlet", text: "...笨蛋。" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "...笨蛋。" },
         { speaker: "daiwa_scarlet", text: "那就別跟丟了！" }
     ],
     nextScene: "ch2_training"
