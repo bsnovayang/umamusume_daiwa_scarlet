@@ -6,8 +6,8 @@ class AudioManager {
     constructor() {
         this.ctx = null;
         this.isMuted = false;
-        this.sfxVolume = 0.6;
-        this.bgmVolume = 0.4;
+        this.sfxVolume = 0.85;
+        this.bgmVolume = 0.15;
         this.currentBgmType = null;
         this.bgmLoopTimer = null;
         this.bgmGainNode = null;
@@ -50,8 +50,15 @@ class AudioManager {
             if (saved) {
                 const data = JSON.parse(saved);
                 this.isMuted = data.isMuted ?? false;
-                this.sfxVolume = data.sfxVolume ?? 0.6;
-                this.bgmVolume = data.bgmVolume ?? 0.4;
+                // 若為前一版本之舊預設值 (0.4 / 0.6)，自動切換至新預設值 (0.15 / 0.85)
+                if (data.bgmVolume === 0.4 && data.sfxVolume === 0.6) {
+                    this.bgmVolume = 0.15;
+                    this.sfxVolume = 0.85;
+                    this.saveSettings();
+                } else {
+                    this.sfxVolume = data.sfxVolume ?? 0.85;
+                    this.bgmVolume = data.bgmVolume ?? 0.15;
+                }
             }
         } catch (e) {
             console.warn('載入音訊設定失敗:', e);
