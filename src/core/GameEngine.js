@@ -559,6 +559,7 @@ class GameEngine {
 
         // 顯示說話者與更新角色頭像/立繪
         const speakerEl = document.getElementById('speaker-name');
+        const characterStage = document.getElementById('character-stage');
         const avatarWrapper = document.getElementById('dialogue-avatar-wrapper');
         const avatarImg = document.getElementById('dialogue-avatar-img');
         const avatarEmoji = document.getElementById('dialogue-avatar-emoji');
@@ -571,19 +572,23 @@ class GameEngine {
             speakerName = character ? character.name : dialogue.speaker;
             speakerEl.textContent = speakerName;
             speakerEl.style.color = character ? character.color : '#ecf0f1';
+            speakerEl.style.borderLeftColor = character ? character.color : 'var(--primary-color)';
         } else if (dialogue.speaker === 'trainer') {
             character = GAME_DATA.characters.trainer;
             speakerName = '訓練員（你）';
             speakerEl.textContent = speakerName;
             speakerEl.style.color = character.color;
+            speakerEl.style.borderLeftColor = character.color;
         } else {
             speakerEl.textContent = '';
         }
 
-        // 頭像顯示邏輯 (支援表情差分)
+        // 頭像顯示邏輯 (支援表情差分與角色舞台控制)
         if (character && dialogue.speaker !== 'narrator') {
+            if (characterStage) characterStage.style.display = 'flex';
             avatarWrapper.style.display = 'flex';
             avatarWrapper.style.borderColor = character.color;
+            avatarWrapper.style.boxShadow = `0 10px 30px rgba(0, 0, 0, 0.6), 0 0 24px ${character.color ? character.color + '66' : 'var(--primary-glow)'}`;
 
             // 判斷是否有指定的表情差分
             let avatarSrc = character.avatar;
@@ -606,6 +611,7 @@ class GameEngine {
             // 啟動眨眼動畫
             this.blinkManager.onCharacterChange(dialogue.speaker, expression);
         } else {
+            if (characterStage) characterStage.style.display = 'none';
             avatarWrapper.style.display = 'none';
             this.blinkManager.stopBlink();
         }

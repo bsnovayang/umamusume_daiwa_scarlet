@@ -78,7 +78,7 @@ class BlinkManager {
     syncCanvasSize() {
         if (!this.canvas || !this.wrapper) return;
         const rect = this.wrapper.getBoundingClientRect();
-        const size = Math.round(rect.width || 80);
+        const size = Math.round(rect.width || this.wrapper.offsetWidth || 140);
         if (size > 0 && (this.canvas.width !== size || this.canvas.height !== size)) {
             this.canvas.width = size;
             this.canvas.height = size;
