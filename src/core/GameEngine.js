@@ -39,6 +39,7 @@ class GameEngine {
         this.audioManager = new AudioManager();
         this.effectsManager = new EffectsManager();
         this.blinkManager = new BlinkManager();
+        this.mouthManager = new MouthManager();
 
         this.loadUserSettings();
         this.init();
@@ -147,6 +148,9 @@ class GameEngine {
             } else {
                 clearInterval(this.typingInterval);
                 dialogueEl.classList.remove('typing');
+                const avatarWrapper = document.getElementById('dialogue-avatar-wrapper');
+                if (avatarWrapper) avatarWrapper.classList.remove('talking');
+                this.mouthManager.stopTalking();
                 this.isTyping = false;
             }
         }, this.fastTypingSpeed);
@@ -191,6 +195,7 @@ class GameEngine {
         document.getElementById('dialogue-text').classList.remove('typing');
         const avatarWrapper = document.getElementById('dialogue-avatar-wrapper');
         if (avatarWrapper) avatarWrapper.classList.remove('talking');
+        this.mouthManager.stopTalking();
         this.isTyping = false;
     }
 
@@ -440,6 +445,14 @@ class GameEngine {
                 this.blinkManager.setEnabled(e.target.checked);
             });
         }
+
+        const mouthCheckbox = document.getElementById('setting-mouth');
+        if (mouthCheckbox) {
+            mouthCheckbox.checked = this.mouthManager.isEnabled;
+            mouthCheckbox.addEventListener('change', (e) => {
+                this.mouthManager.setEnabled(e.target.checked);
+            });
+        }
     }
 
     // 開始新遊戲
@@ -611,8 +624,9 @@ class GameEngine {
                 avatarEmoji.style.backgroundColor = character.color;
             }
 
-            // 啟動眨眼動畫
+            // 啟動眨眼動畫與嘴部設定
             this.blinkManager.onCharacterChange(dialogue.speaker, expression);
+            this.mouthManager.onCharacterChange(dialogue.speaker, expression);
         } else {
             if (characterStage) {
                 characterStage.style.visibility = 'hidden';
@@ -620,6 +634,7 @@ class GameEngine {
             }
             avatarWrapper.style.display = 'none';
             this.blinkManager.stopBlink();
+            this.mouthManager.stopTalking();
         }
 
         // 添加到歷史記錄
@@ -636,6 +651,7 @@ class GameEngine {
         dialogueEl.textContent = '';
         dialogueEl.classList.add('typing');
         if (avatarWrapper) avatarWrapper.classList.add('talking');
+        this.mouthManager.startTalking();
         this.isTyping = true;
 
         let index = 0;
@@ -650,6 +666,7 @@ class GameEngine {
             dialogueEl.textContent = text;
             dialogueEl.classList.remove('typing');
             if (avatarWrapper) avatarWrapper.classList.remove('talking');
+            this.mouthManager.stopTalking();
             this.isTyping = false;
             if (this.isAutoMode) this.startAutoPlay();
             return;
@@ -667,6 +684,7 @@ class GameEngine {
                 clearInterval(this.typingInterval);
                 dialogueEl.classList.remove('typing');
                 if (avatarWrapper) avatarWrapper.classList.remove('talking');
+                this.mouthManager.stopTalking();
                 this.isTyping = false;
 
                 if (this.isAutoMode) {

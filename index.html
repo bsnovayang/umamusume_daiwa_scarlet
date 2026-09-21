@@ -67,6 +67,7 @@
                 <div id="dialogue-avatar-wrapper" class="dialogue-avatar-wrapper">
                     <img id="dialogue-avatar-img" class="dialogue-avatar-img" src="" alt="角色頭像">
                     <canvas id="avatar-blink-canvas" class="avatar-blink-canvas"></canvas>
+                    <canvas id="avatar-mouth-canvas" class="avatar-mouth-canvas"></canvas>
                     <div id="dialogue-avatar-emoji" class="dialogue-avatar-emoji">🏇</div>
                 </div>
             </div>
@@ -207,6 +208,11 @@
                         <label for="setting-blink">✨ 角色動態眨眼效果</label>
                         <input type="checkbox" id="setting-blink" class="setting-checkbox" checked>
                     </div>
+
+                    <div class="setting-item checkbox-item">
+                        <label for="setting-mouth">👄 角色說話嘴部動態 (測試)</label>
+                        <input type="checkbox" id="setting-mouth" class="setting-checkbox" checked>
+                    </div>
                 </div>
             </div>
         </div>
@@ -260,6 +266,7 @@
     <script src="src/utils/AudioManager.js"></script>
     <script src="src/utils/EffectsManager.js"></script>
     <script src="src/utils/BlinkManager.js"></script>
+    <script src="src/utils/MouthManager.js"></script>
 
     <!-- 核心引擎與主入口 -->
     <script src="src/core/GameEngine.js"></script>
