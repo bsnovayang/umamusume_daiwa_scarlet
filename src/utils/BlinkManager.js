@@ -12,6 +12,7 @@ class BlinkManager {
         this.currentExpression = 'normal';
         this.isEnabled = true;
         this.blinkTimer = null;
+        this.doubleBlinkTimer = null;
         this.isBlinking = false;
         this.animFrameId = null;
 
@@ -52,7 +53,27 @@ class BlinkManager {
             }
         };
 
+        this.loadSettings();
         this.init();
+    }
+
+    loadSettings() {
+        try {
+            const saved = localStorage.getItem('umamusume_blink_enabled');
+            if (saved !== null) {
+                this.isEnabled = saved === 'true';
+            }
+        } catch (e) {
+            console.warn('載入眨眼動態設定失敗:', e);
+        }
+    }
+
+    saveSettings() {
+        try {
+            localStorage.setItem('umamusume_blink_enabled', this.isEnabled ? 'true' : 'false');
+        } catch (e) {
+            console.warn('儲存眨眼動態設定失敗:', e);
+        }
     }
 
     init() {
@@ -111,7 +132,9 @@ class BlinkManager {
             this.triggerBlink(() => {
                 // 25% 機率觸發連續雙眨眼 (Double Blink)
                 if (Math.random() < 0.25) {
-                    setTimeout(() => {
+                    this.doubleBlinkTimer = setTimeout(() => {
+                        this.doubleBlinkTimer = null;
+                        if (!this.isEnabled) return;
                         this.triggerBlink(() => this.scheduleNextBlink());
                     }, 140);
                 } else {
@@ -240,6 +263,10 @@ class BlinkManager {
             clearTimeout(this.blinkTimer);
             this.blinkTimer = null;
         }
+        if (this.doubleBlinkTimer) {
+            clearTimeout(this.doubleBlinkTimer);
+            this.doubleBlinkTimer = null;
+        }
         if (this.animFrameId) {
             cancelAnimationFrame(this.animFrameId);
             this.animFrameId = null;
@@ -256,6 +283,7 @@ class BlinkManager {
 
     setEnabled(enabled) {
         this.isEnabled = enabled;
+        this.saveSettings();
         if (!enabled) {
             this.stopBlink();
         } else if (this.currentCharacter) {

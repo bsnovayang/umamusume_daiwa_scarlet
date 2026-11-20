@@ -25,25 +25,25 @@ CHAPTER_3_SCENES.ch3_rain = {
         { speaker: "narrator", text: "放學時突然下起大雨。" },
         { speaker: "narrator", text: "你站在校門口，發現赤驥也沒帶傘。" },
         { speaker: "daiwa_scarlet", text: "這雨...下得好大。" },
-        { speaker: "daiwa_scarlet", text: "訓、訓練員！你只有一把傘嗎？" }
+        { speaker: "daiwa_scarlet", expression: "blush", text: "訓、訓練員！你只有一把傘嗎？" }
     ],
     choices: [
         {
             text: "一起撐吧，靠近一點就不會淋濕了",
-            hint: "+10 好感度",
-            affectionChange: { daiwa_scarlet: 10 },
+            hint: "+8 好感度",
+            affectionChange: { daiwa_scarlet: 8 },
             nextScene: "ch3_rain_good"
         },
         {
             text: "我的傘給妳，我淋雨沒關係",
-            hint: "+6 好感度",
-            affectionChange: { daiwa_scarlet: 6 },
+            hint: "+5 好感度",
+            affectionChange: { daiwa_scarlet: 5 },
             nextScene: "ch3_rain_normal"
         },
         {
             text: "等等，我去借傘",
-            hint: "+2 好感度",
-            affectionChange: { daiwa_scarlet: 2 },
+            hint: "-2 好感度",
+            affectionChange: { daiwa_scarlet: -2 },
             nextScene: "ch3_rain_bad"
         }
     ]
@@ -62,7 +62,10 @@ CHAPTER_3_SCENES.ch3_rain_good = {
         { speaker: "daiwa_scarlet", expression: "blush", text: "笨、笨蛋！那是我的洗髮精啦！你靠太近了！" },
         { speaker: "narrator", text: "但她並沒有拉開距離。" }
     ],
-    nextScene: "ch3_birthday_setup"
+    nextScenes: [
+        { condition: { flags: { birthday_quest: true } }, scene: "ch3_birthday_setup" },
+        { scene: "ch3_birthday_missed" }
+    ]
 };
 
 CHAPTER_3_SCENES.ch3_rain_normal = {
@@ -72,20 +75,40 @@ CHAPTER_3_SCENES.ch3_rain_normal = {
         { speaker: "daiwa_scarlet", text: "...一起撐吧。" },
         { speaker: "narrator", text: "最後你們還是共撐一把傘回去了。" },
         { speaker: "narrator", text: "赤驥拉著你的袖子，走得很慢很慢。" },
-        { speaker: "daiwa_scarlet", text: "（小聲）...這樣比較近。" }
+        { speaker: "daiwa_scarlet", expression: "blush", text: "（小聲）...這樣比較近。" }
     ],
-    nextScene: "ch3_birthday_setup"
+    nextScenes: [
+        { condition: { flags: { birthday_quest: true } }, scene: "ch3_birthday_setup" },
+        { scene: "ch3_birthday_missed" }
+    ]
 };
 
 CHAPTER_3_SCENES.ch3_rain_bad = {
     location: "特雷森學園 - 校門口",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "啊...好。" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "啊...好。" },
         { speaker: "narrator", text: "你跑去借傘，但等你回來時，赤驥已經走了。" },
         { speaker: "narrator", text: "第二天，赤驥似乎有些不太對勁。" },
-        { speaker: "daiwa_scarlet", text: "...沒什麼。只是覺得你太慢了。" }
+        { speaker: "daiwa_scarlet", expression: "pout", text: "...沒什麼。只是覺得你太慢了。" }
     ],
-    nextScene: "ch3_birthday_setup"
+    nextScenes: [
+        { condition: { flags: { birthday_quest: true } }, scene: "ch3_birthday_setup" },
+        { scene: "ch3_birthday_missed" }
+    ]
+};
+
+CHAPTER_3_SCENES.ch3_birthday_missed = {
+    location: "特雷森學園 - 教室",
+    dialogues: [
+        { speaker: "narrator", text: "幾天後，你在走廊聽見特別週和伏特加正開心地聊著天。" },
+        { speaker: "special_week", text: "昨天幫赤驥前輩慶生時，她臉紅得像蘋果一樣呢！" },
+        { speaker: "narrator", text: "原來昨天是赤驥的生日——因為之前沒參與籌備，特別週她們在宿舍簡單幫她慶祝過了。" },
+        { speaker: "narrator", text: "你在訓練室遇見赤驥時，連忙補上一句遲來的祝福。" },
+        { speaker: "trainer", text: "赤驥，雖然晚了一天——生日快樂。" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "啊...嗯。謝謝你還記得，訓練員。" },
+        { speaker: "narrator", text: "她嘴角微微揚起，但眼裡似乎有一點說不出的遺憾。" }
+    ],
+    nextScene: "ch3_rival"
 };
 
 // ============================================
@@ -119,27 +142,27 @@ CHAPTER_3_SCENES.ch3_birthday = {
         { speaker: "gold_ship", text: "耶嘿！壽星登場啦～！" },
         { speaker: "narrator", text: "燈光亮起的瞬間，赤驥愣住了。" },
         { speaker: "daiwa_scarlet", text: "這、這是...！？" },
-        { speaker: "daiwa_scarlet", text: "你...你們...笨蛋...！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "你...你們...笨蛋...！" },
         { speaker: "narrator", text: "赤驥的眼眶泛紅，但嘴角藏不住笑意。" },
-        { speaker: "daiwa_scarlet", text: "我才沒有哭！只是...只是燈光太刺眼了！" }
+        { speaker: "daiwa_scarlet", expression: "pout", text: "我才沒有哭！只是...只是燈光太刺眼了！" }
     ],
     choices: [
         {
             text: "把親手做的蛋糕端到她面前",
-            hint: "+15 好感度",
-            affectionChange: { daiwa_scarlet: 15 },
+            hint: "+8 好感度",
+            affectionChange: { daiwa_scarlet: 8 },
             nextScene: "ch3_birthday_best"
         },
         {
             text: "送上精心挑選的紅色髮飾",
-            hint: "+10 好感度",
-            affectionChange: { daiwa_scarlet: 10 },
+            hint: "+6 好感度",
+            affectionChange: { daiwa_scarlet: 6 },
             nextScene: "ch3_birthday_good"
         },
         {
             text: "真心地對她說「生日快樂」",
-            hint: "+6 好感度",
-            affectionChange: { daiwa_scarlet: 6 },
+            hint: "+3 好感度",
+            affectionChange: { daiwa_scarlet: 3 },
             nextScene: "ch3_birthday_ok"
         }
     ]
@@ -149,7 +172,7 @@ CHAPTER_3_SCENES.ch3_birthday_best = {
     location: "特雷森學園 - 教室（驚喜佈置）",
     dialogues: [
         { speaker: "trainer", text: "赤驥，這是我特別為妳做的。雖然賣相不太好..." },
-        { speaker: "daiwa_scarlet", text: "你...自己做的？" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "你...自己做的？" },
         { speaker: "narrator", text: "蛋糕上用巧克力醬歪歪扭扭地寫著「赤驥生日快樂」。" },
         { speaker: "daiwa_scarlet", expression: "blush", text: "才、才不是不好看..." },
         { speaker: "daiwa_scarlet", expression: "blush", text: "是我收過最好的禮物......謝謝你。" },
@@ -182,12 +205,12 @@ CHAPTER_3_SCENES.ch3_birthday_ok = {
     location: "特雷森學園 - 教室（驚喜佈置）",
     dialogues: [
         { speaker: "trainer", text: "赤驥，生日快樂。希望今年妳的所有願望都能實現。" },
-        { speaker: "daiwa_scarlet", text: "嗯...謝謝。" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "嗯...謝謝。" },
         { speaker: "narrator", text: "赤驥雖然嘴上沒說太多，但臉上一直帶著淡淡的笑容。" },
         { speaker: "special_week", text: "赤驥前輩今天心情好好！" },
-        { speaker: "daiwa_scarlet", text: "才—才沒有！特別週你少亂說！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "才—才沒有！特別週你少亂說！" },
         { speaker: "vodka", text: "明明就笑得很開心嘛。" },
-        { speaker: "daiwa_scarlet", text: "伏特加你也閉嘴！" }
+        { speaker: "daiwa_scarlet", expression: "pout", text: "伏特加你也閉嘴！" }
     ],
     nextScene: "ch3_rival"
 };
@@ -212,20 +235,20 @@ CHAPTER_3_SCENES.ch3_rival = {
     choices: [
         {
             text: "是她自己努力的結果",
-            hint: "赤驥+5, 伏特加+5",
-            affectionChange: { daiwa_scarlet: 5, vodka: 5 },
+            hint: "赤驥+4, 伏特加+5",
+            affectionChange: { daiwa_scarlet: 4, vodka: 5 },
             nextScene: "ch3_rival_humble"
         },
         {
             text: "我想成為她的支柱",
-            hint: "+8 好感度",
-            affectionChange: { daiwa_scarlet: 8 },
+            hint: "+6 好感度",
+            affectionChange: { daiwa_scarlet: 6 },
             nextScene: "ch3_rival_serious"
         },
         {
             text: "我什麼都沒做",
-            hint: "+2 好感度",
-            affectionChange: { daiwa_scarlet: 2 },
+            hint: "+0 好感度",
+            affectionChange: { daiwa_scarlet: 0 },
             nextScene: "ch3_rival_deny"
         }
     ]
@@ -289,7 +312,22 @@ CHAPTER_3_SCENES.ch3_night_field = {
         { speaker: "narrator", text: "月光灑在操場上，一個小小的紅色身影在跑道上奔跑。" },
         { speaker: "narrator", text: "是赤驥。" }
     ],
-    nextScene: "ch3_night_encounter"
+    nextScenes: [
+        { condition: { minAffection: { daiwa_scarlet: 35 } }, scene: "ch3_night_encounter" },
+        { scene: "ch3_night_brief" }
+    ]
+};
+
+CHAPTER_3_SCENES.ch3_night_brief = {
+    location: "特雷森學園 - 夜間校門口",
+    dialogues: [
+        { speaker: "narrator", text: "等你整理好文件走到樓下時，赤驥已經結束加練，背著運動包準備回宿舍了。" },
+        { speaker: "daiwa_scarlet", text: "啊，訓練員？這麼晚才下班嗎？" },
+        { speaker: "trainer", text: "嗯，剛忙完。這麼晚了快點回去休息吧。" },
+        { speaker: "daiwa_scarlet", text: "我知道啦，訓練員也是，早點回去睡吧。晚安。" },
+        { speaker: "narrator", text: "兩人在微涼的夜色中禮貌道別，各自踏上了歸途。" }
+    ],
+    nextScene: "ch3_mcqueen"
 };
 
 CHAPTER_3_SCENES.ch3_night_encounter = {
@@ -298,7 +336,7 @@ CHAPTER_3_SCENES.ch3_night_encounter = {
         { speaker: "narrator", text: "你走出辦公室，來到操場。" },
         { speaker: "narrator", text: "月光之下，赤驥的身影在夜色中格外動人。" },
         { speaker: "narrator", text: "汗水順著她的臉頰滑落，卻洋溢著專注的光芒。" },
-        { speaker: "daiwa_scarlet", text: "...！訓練員？你怎麼還沒回去？" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "...！訓練員？你怎麼還沒回去？" },
         { speaker: "trainer", text: "我還在整理資料。倒是妳，這麼晚了還在練習？" },
         { speaker: "daiwa_scarlet", text: "我...就是睡不著而已。" },
         { speaker: "daiwa_scarlet", text: "跑步的時候，腦袋就能放空......什麼都不用想。" },
@@ -308,20 +346,20 @@ CHAPTER_3_SCENES.ch3_night_encounter = {
     choices: [
         {
             text: "「妳認真練習的樣子...很美」",
-            hint: "+10 好感度",
-            affectionChange: { daiwa_scarlet: 10 },
+            hint: "+8 好感度",
+            affectionChange: { daiwa_scarlet: 8 },
             nextScene: "ch3_night_best"
         },
         {
             text: "「要注意身體，別太勉強」",
-            hint: "+6 好感度",
-            affectionChange: { daiwa_scarlet: 6 },
+            hint: "+5 好感度",
+            affectionChange: { daiwa_scarlet: 5 },
             nextScene: "ch3_night_good"
         },
         {
             text: "「我送妳回宿舍吧」",
-            hint: "+5 好感度",
-            affectionChange: { daiwa_scarlet: 5 },
+            hint: "+3 好感度",
+            affectionChange: { daiwa_scarlet: 3 },
             nextScene: "ch3_night_ok"
         }
     ]
@@ -339,8 +377,8 @@ CHAPTER_3_SCENES.ch3_night_best = {
         { speaker: "narrator", text: "你們並肩坐在跑道旁的草地上。" },
         { speaker: "narrator", text: "月亮很圓，星星很亮。" },
         { speaker: "narrator", text: "四周安靜得只聽到蟲鳴和彼此的呼吸聲。" },
-        { speaker: "daiwa_scarlet", text: "...訓練員。" },
-        { speaker: "daiwa_scarlet", text: "你會一直看著我跑嗎？" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "...訓練員。" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "你會一直看著我跑嗎？" },
         { speaker: "trainer", text: "當然。不管多久，我都會看著妳。" },
         { speaker: "narrator", text: "赤驥沒有再說話。" },
         { speaker: "narrator", text: "但你感覺到，她悄悄地靠近了一點。" },
@@ -355,12 +393,12 @@ CHAPTER_3_SCENES.ch3_night_good = {
         { speaker: "daiwa_scarlet", text: "嗯...我知道了。" },
         { speaker: "daiwa_scarlet", text: "你總是在擔心我呢。" },
         { speaker: "trainer", text: "因為妳是我重要的...搭檔啊。" },
-        { speaker: "daiwa_scarlet", text: "搭檔...是嗎。" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "搭檔...是嗎。" },
         { speaker: "narrator", text: "赤驥的表情有一瞬間的失落，但很快恢復了笑容。" },
-        { speaker: "daiwa_scarlet", text: "謝謝你的關心。" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "謝謝你的關心。" },
         { speaker: "daiwa_scarlet", text: "我再跑最後一圈就回去，你不用等我。" },
         { speaker: "trainer", text: "那我陪妳跑完這最後一圈。" },
-        { speaker: "daiwa_scarlet", text: "...真拿你沒辦法。" }
+        { speaker: "daiwa_scarlet", expression: "blush", text: "...真拿你沒辦法。" }
     ],
     nextScene: "ch3_night_walkback"
 };
@@ -370,8 +408,8 @@ CHAPTER_3_SCENES.ch3_night_ok = {
     dialogues: [
         { speaker: "daiwa_scarlet", text: "欸？不用啦，我自己可以回去的。" },
         { speaker: "trainer", text: "這麼晚了，還是一起走比較安全。" },
-        { speaker: "daiwa_scarlet", text: "我是馬娘耶！哪需要你保護......" },
-        { speaker: "daiwa_scarlet", text: "......好吧。走吧。" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "我是馬娘耶！哪需要你保護......" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "......好吧。走吧。" },
         { speaker: "narrator", text: "赤驥收拾好毛巾，擦了擦汗。" },
         { speaker: "narrator", text: "你們一起往宿舍的方向走去。" }
     ],
@@ -391,7 +429,7 @@ CHAPTER_3_SCENES.ch3_night_walkback = {
         { speaker: "narrator", text: "走到宿舍門口，赤驥停下了腳步。" },
         { speaker: "daiwa_scarlet", text: "到了。那我進去了。" },
         { speaker: "daiwa_scarlet", text: "...今天謝謝你。" },
-        { speaker: "daiwa_scarlet", text: "晚安，訓練員。" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "晚安，訓練員。" },
         { speaker: "narrator", text: "宿舍的門關上後——" },
         { speaker: "narrator", text: "你隱約聽到裡面傳來一聲小小的歡呼。" }
     ],
@@ -418,14 +456,16 @@ CHAPTER_3_SCENES.ch3_mcqueen = {
     choices: [
         {
             text: "「榮幸之至，麥昆小姐」",
-            hint: "開啟麥昆支線",
+            hint: "開啟麥昆茶會支線",
             affectionChange: {},
+            setFlags: { mcqueen_quest: true },
             nextScene: "ch3_mcqueen_accept"
         },
         {
             text: "「謝謝妳的邀請，有機會一定去」",
-            hint: "",
+            hint: "委婉推辭 (不開啟茶會支線)",
             affectionChange: {},
+            setFlags: { mcqueen_quest: false },
             nextScene: "ch3_mcqueen_polite"
         }
     ]
@@ -436,18 +476,21 @@ CHAPTER_3_SCENES.ch3_mcqueen_accept = {
     dialogues: [
         { speaker: "mejiro_mcqueen", text: "呵呵，很有禮貌呢。難怪赤驥會喜歡你。" },
         { speaker: "narrator", text: "這時，赤驥剛好端著餐盤路過。" },
-        { speaker: "daiwa_scarlet", text: "麥昆前輩！？你怎麼在跟我的訓練員說話！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "麥昆前輩！？你怎麼在跟我的訓練員說話！" },
         { speaker: "mejiro_mcqueen", text: "你的訓練員？呵呵，好有佔有慾的說法呢。" },
-        { speaker: "daiwa_scarlet", text: "才——才不是那個意思！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "才——才不是那個意思！" },
         { speaker: "mejiro_mcqueen", text: "好了好了，我先走了。下次一起喝茶，別忘了唷。" },
         { speaker: "narrator", text: "麥昆優雅地離開了。" },
-        { speaker: "daiwa_scarlet", text: "...訓練員。麥昆前輩跟你說了什麼？" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "...訓練員。麥昆前輩跟你說了什麼？" },
         { speaker: "trainer", text: "約喝茶而已。" },
-        { speaker: "daiwa_scarlet", text: "......哼！隨便你！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "......哼！隨便你！" },
         { speaker: "narrator", text: "赤驥頭也不回地走開了，但你注意到她的耳朵紅紅的。" },
         { speaker: "narrator", text: "【已開啟麥昆支線】" }
     ],
-    nextScene: "ch3_secret"
+    nextScenes: [
+        { condition: { minAffection: { daiwa_scarlet: 45 } }, scene: "ch3_secret" },
+        { scene: "ch3_secret_none" }
+    ]
 };
 
 CHAPTER_3_SCENES.ch3_mcqueen_polite = {
@@ -462,9 +505,24 @@ CHAPTER_3_SCENES.ch3_mcqueen_polite = {
         { speaker: "narrator", text: "麥昆意味深長地笑了笑，轉身離去。" },
         { speaker: "daiwa_scarlet", text: "...訓練員，你沒說什麼奇怪的話吧？" },
         { speaker: "trainer", text: "沒有啊。" },
-        { speaker: "daiwa_scarlet", text: "哼...那就好。" }
+        { speaker: "daiwa_scarlet", expression: "pout", text: "哼...那就好。" }
     ],
-    nextScene: "ch3_secret"
+    nextScenes: [
+        { condition: { minAffection: { daiwa_scarlet: 45 } }, scene: "ch3_secret" },
+        { scene: "ch3_secret_none" }
+    ]
+};
+
+CHAPTER_3_SCENES.ch3_secret_none = {
+    location: "特雷森學園 - 走廊",
+    dialogues: [
+        { speaker: "narrator", text: "又過了幾天。放學後，你在走廊遇見了特別週。" },
+        { speaker: "special_week", text: "訓練員辛苦了！最近赤驥前輩訓練得好認真，每天都在研究賽道資料呢。" },
+        { speaker: "trainer", text: "是啊，她一直很拚。" },
+        { speaker: "special_week", text: "我也得加把勁才行！下次大賽請多多指教囉！" },
+        { speaker: "narrator", text: "特別週元氣滿滿地揮揮手，朝宿舍方向跑去。" }
+    ],
+    nextScene: "ch3_end"
 };
 
 // ============================================
@@ -489,14 +547,14 @@ CHAPTER_3_SCENES.ch3_secret = {
     choices: [
         {
             text: "「我也...一樣」",
-            hint: "+10 好感度",
-            affectionChange: { daiwa_scarlet: 10 },
+            hint: "+8 好感度",
+            affectionChange: { daiwa_scarlet: 8 },
             nextScene: "ch3_secret_mutual"
         },
         {
             text: "「真的嗎？...我該怎麼辦」",
-            hint: "+5 好感度",
-            affectionChange: { daiwa_scarlet: 5 },
+            hint: "+4 好感度",
+            affectionChange: { daiwa_scarlet: 4 },
             nextScene: "ch3_secret_shy"
         },
         {
@@ -516,15 +574,15 @@ CHAPTER_3_SCENES.ch3_secret_mutual = {
         { speaker: "trainer", text: "噓！小聲一點...你聲音太大了。" },
         { speaker: "special_week", text: "（壓低聲音）太好了太好了！我要幫你們加油！" },
         { speaker: "narrator", text: "就在這時——走廊的轉角傳來一陣腳步聲。" },
-        { speaker: "daiwa_scarlet", text: "特、特別週！你在那裡做什麼！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "特、特別週！你在那裡做什麼！" },
         { speaker: "special_week", text: "赤驥前輩！沒、沒什麼！我們在聊天氣的事！" },
-        { speaker: "daiwa_scarlet", text: "聊天氣？為什麼你的表情那麼可疑......" },
-        { speaker: "daiwa_scarlet", text: "到底在說什麼！給我從實招來！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "聊天氣？為什麼你的表情那麼可疑......" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "到底在說什麼！給我從實招來！" },
         { speaker: "special_week", text: "對不起赤驥前輩！我先走了——！" },
         { speaker: "narrator", text: "特別週一溜煙地跑走了。" },
-        { speaker: "daiwa_scarlet", text: "...訓練員，你也一臉心虛的樣子。你們剛才在說什麼？" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "...訓練員，你也一臉心虛的樣子。你們剛才在說什麼？" },
         { speaker: "trainer", text: "...秘密。" },
-        { speaker: "daiwa_scarlet", text: "什——！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "什——！" },
         { speaker: "narrator", text: "赤驥氣鼓鼓地跺了跺腳，但眼神裡寫滿了好奇。" }
     ],
     nextScene: "ch3_end"
@@ -538,7 +596,7 @@ CHAPTER_3_SCENES.ch3_secret_shy = {
         { speaker: "special_week", text: "但...但是！赤驥前輩明明這麼喜歡你......" },
         { speaker: "narrator", text: "你陷入了沉思。" },
         { speaker: "narrator", text: "就在這時——走廊的另一頭傳來腳步聲。" },
-        { speaker: "daiwa_scarlet", text: "特別週！你跟訓練員在偷偷摸摸幹什麼！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "特別週！你跟訓練員在偷偷摸摸幹什麼！" },
         { speaker: "special_week", text: "啊！赤驥前輩！沒、沒有什麼偷偷摸摸的！" },
         { speaker: "daiwa_scarlet", expression: "blush", text: "那為什麼訓練員的臉那麼紅啊！" },
         { speaker: "trainer", text: "...沒什麼。" },
@@ -572,12 +630,14 @@ CHAPTER_3_SCENES.ch3_end = {
     location: "特雷森學園 - 夕陽下的校園",
     dialogues: [
         { speaker: "narrator", text: "【第三章 - 完】" },
-        { speaker: "narrator", text: "雨中的共傘、生日的驚喜、深夜的操場......" },
+        { speaker: "narrator", condition: { flags: { birthday_quest: true }, minAffection: { daiwa_scarlet: 35 } }, text: "雨中的共傘、生日的驚喜、深夜的操場......" },
+        { speaker: "narrator", condition: { flags: { birthday_quest: false } }, text: "雨中的插曲、日常的訓練、漸漸累積的默契......" },
+        { speaker: "narrator", condition: { flags: { birthday_quest: true }, maxAffection: { daiwa_scarlet: 34 } }, text: "雨中的插曲、熱鬧的生日、日常的點滴......" },
         { speaker: "narrator", text: "你和赤驥之間的距離，不知不覺地越來越近了。" },
         { speaker: "narrator", text: "伏特加的認可、麥昆的出現、特別週的爆料......" },
         { speaker: "narrator", text: "周圍的人都看出了你們之間微妙的變化。" },
         { speaker: "narrator", text: "而接下來等待著你們的——是更大的考驗。" },
-        { speaker: "narrator", text: "——第四章《考驗》，敬請期待——" }
+        { speaker: "narrator", text: "——第四章《考驗》，即將展開——" }
     ],
     nextScene: "chapter4_start"
 };

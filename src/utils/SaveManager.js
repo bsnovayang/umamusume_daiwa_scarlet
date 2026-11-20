@@ -25,6 +25,7 @@ class SaveManager {
                         currentScene: oldData.currentScene,
                         currentDialogueIndex: oldData.currentDialogueIndex,
                         affection: oldData.affection,
+                        flags: {},
                         dialogueHistory: oldData.dialogueHistory || [],
                         timestamp: oldData.timestamp || new Date().toISOString(),
                         chapterName: '歷史舊存檔',
@@ -66,16 +67,19 @@ class SaveManager {
     save(slotId, gameState) {
         try {
             const scene = (typeof GAME_DATA !== 'undefined' && GAME_DATA.scenes) ? GAME_DATA.scenes[gameState.currentScene] : null;
-            const currentDialogue = scene?.dialogues?.[gameState.currentDialogueIndex];
+            const dialogues = scene?.dialogues || [];
+            const previewIndex = Math.min(gameState.currentDialogueIndex ?? 0, Math.max(0, dialogues.length - 1));
+            const currentDialogue = dialogues[previewIndex];
 
             const saveData = {
                 currentScene: gameState.currentScene,
                 currentDialogueIndex: gameState.currentDialogueIndex,
                 affection: { ...gameState.affection },
+                flags: { ...(gameState.flags || {}) },
                 dialogueHistory: gameState.dialogueHistory || [],
                 chapterName: this.getChapterName(gameState.currentScene),
                 location: scene?.location || '特雷森學園',
-                previewText: currentDialogue?.text?.substring(0, 30) || '無預覽文字',
+                previewText: gameState.previewText || currentDialogue?.text?.substring(0, 30) || '無預覽文字',
                 timestamp: new Date().toISOString(),
                 version: '2.0'
             };
@@ -110,6 +114,7 @@ class SaveManager {
                     currentScene: data.currentScene,
                     currentDialogueIndex: data.currentDialogueIndex,
                     affection: data.affection,
+                    flags: data.flags ? { ...data.flags } : {},
                     dialogueHistory: data.dialogueHistory || []
                 },
                 message: '進度讀取成功！'

@@ -26,27 +26,27 @@ CHAPTER_4_SCENES.ch4_before_race = {
         { speaker: "narrator", text: "比賽前一週，訓練進入最後衝刺階段。" },
         { speaker: "daiwa_scarlet", text: "訓練員！再加一組衝刺！" },
         { speaker: "trainer", text: "赤驥，今天的量已經夠了。再練下去身體會撐不住的。" },
-        { speaker: "daiwa_scarlet", text: "可是...我還不夠！這場比賽我一定要贏！" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "可是...我還不夠！這場比賽我一定要贏！" },
         { speaker: "narrator", text: "赤驥的眼神比以往任何時候都要認真。" },
         { speaker: "narrator", text: "你看得出來，她承受著巨大的壓力。" }
     ],
     choices: [
         {
             text: "「盡全力就好，我在這裡」",
-            hint: "+8 好感度",
-            affectionChange: { daiwa_scarlet: 8 },
+            hint: "+6 好感度",
+            affectionChange: { daiwa_scarlet: 6 },
             nextScene: "ch4_before_best"
         },
         {
             text: "「我相信妳一定辦得到」",
-            hint: "+5 好感度",
-            affectionChange: { daiwa_scarlet: 5 },
+            hint: "+4 好感度",
+            affectionChange: { daiwa_scarlet: 4 },
             nextScene: "ch4_before_good"
         },
         {
             text: "「輸了也沒關係」",
-            hint: "+2 好感度",
-            affectionChange: { daiwa_scarlet: 2 },
+            hint: "-3 好感度",
+            affectionChange: { daiwa_scarlet: -3 },
             nextScene: "ch4_before_ok"
         }
     ]
@@ -55,12 +55,12 @@ CHAPTER_4_SCENES.ch4_before_race = {
 CHAPTER_4_SCENES.ch4_before_best = {
     location: "特雷森學園 - 訓練場",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "你在這裡......" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "你在這裡......" },
         { speaker: "narrator", text: "赤驥的表情柔和了下來。" },
-        { speaker: "daiwa_scarlet", text: "...嗯。有你在的話...我好像沒那麼害怕了。" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "...嗯。有你在的話...我好像沒那麼害怕了。" },
         { speaker: "trainer", text: "不管結果如何，我都會站在妳身邊。" },
         { speaker: "daiwa_scarlet", text: "訓練員......" },
-        { speaker: "daiwa_scarlet", text: "......謝謝你。那，我就信你一次！今天就到這裡吧。" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "......謝謝你。那，我就信你一次！今天就到這裡吧。" },
         { speaker: "narrator", text: "赤驥第一次乖乖地聽了你的話，停下了訓練。" },
         { speaker: "narrator", text: "離開時，她回頭看了你一眼，臉上帶著安心的笑容。" }
     ],
@@ -72,9 +72,9 @@ CHAPTER_4_SCENES.ch4_before_good = {
     dialogues: [
         { speaker: "daiwa_scarlet", text: "你相信我...嗎？" },
         { speaker: "trainer", text: "當然。從我當上妳的訓練員那天起，就一直相信。" },
-        { speaker: "daiwa_scarlet", text: "哼...那我可不能讓你失望了！" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "哼...那我可不能讓你失望了！" },
         { speaker: "narrator", text: "赤驥握緊了拳頭，眼神恢復了自信。" },
-        { speaker: "daiwa_scarlet", text: "好！那就照你說的，今天先到這裡！" }
+        { speaker: "daiwa_scarlet", expression: "joy", text: "好！那就照你說的，今天先到這裡！" }
     ],
     nextScene: "ch4_race_day"
 };
@@ -82,10 +82,10 @@ CHAPTER_4_SCENES.ch4_before_good = {
 CHAPTER_4_SCENES.ch4_before_ok = {
     location: "特雷森學園 - 訓練場",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "輸了也沒關係？" },
-        { speaker: "daiwa_scarlet", text: "...你是我的訓練員吧？怎麼能說出這種話？" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "輸了也沒關係？" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "...你是我的訓練員吧？怎麼能說出這種話？" },
         { speaker: "trainer", text: "我的意思是，不要給自己太大壓力——" },
-        { speaker: "daiwa_scarlet", text: "我不需要安慰！我需要的是勝利！！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "我不需要安慰！我需要的是勝利！！" },
         { speaker: "narrator", text: "赤驥甩頭跑走了。" },
         { speaker: "narrator", text: "你說錯話了......該怎麼挽回呢。" }
     ],
@@ -103,7 +103,7 @@ CHAPTER_4_SCENES.ch4_race_day = {
         { speaker: "narrator", text: "看台上擠滿了觀眾，空氣中充滿了緊張與期待。" },
         { speaker: "narrator", text: "赤驥站在起跑閘門前，與伏特加對視。" },
         { speaker: "vodka", text: "赤驥，這次我不會讓妳了。" },
-        { speaker: "daiwa_scarlet", text: "正合我意。我也不會手下留情！" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "正合我意。我也不會手下留情！" },
         { speaker: "narrator", text: "槍聲響起——比賽開始了！" },
         { speaker: "narrator", text: "開局赤驥位居中段，節奏穩定。" },
         { speaker: "narrator", text: "最後直線——赤驥發動衝刺！" },
@@ -124,35 +124,35 @@ CHAPTER_4_SCENES.ch4_after_loss = {
         { speaker: "narrator", text: "很小、很壓抑的哭泣聲。" },
         { speaker: "narrator", text: "你推開門。" },
         { speaker: "narrator", text: "赤驥蜷縮在角落，雙手緊緊抱著膝蓋。" },
-        { speaker: "daiwa_scarlet", text: "為什麼......" },
-        { speaker: "daiwa_scarlet", text: "我已經這麼努力了......" },
-        { speaker: "daiwa_scarlet", text: "為什麼還是贏不了......！" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "為什麼......" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "我已經這麼努力了......" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "為什麼還是贏不了......！" },
         { speaker: "narrator", text: "她的肩膀在不停顫抖。" },
         { speaker: "narrator", text: "賽場上那個意氣風發的馬娘，此刻脆弱得像個孩子。" }
     ],
     choices: [
         {
             text: "走上前去，緊緊抱住她",
-            hint: "+15 好感度",
-            affectionChange: { daiwa_scarlet: 15 },
+            hint: "+8 好感度",
+            affectionChange: { daiwa_scarlet: 8 },
             nextScene: "ch4_loss_hug"
         },
         {
             text: "「妳的努力，我全都看在眼裡」",
-            hint: "+10 好感度",
-            affectionChange: { daiwa_scarlet: 10 },
+            hint: "+6 好感度",
+            affectionChange: { daiwa_scarlet: 6 },
             nextScene: "ch4_loss_words"
         },
         {
             text: "「下次一定會贏的」",
-            hint: "+5 好感度",
-            affectionChange: { daiwa_scarlet: 5 },
+            hint: "+2 好感度",
+            affectionChange: { daiwa_scarlet: 2 },
             nextScene: "ch4_loss_future"
         },
         {
             text: "什麼都不說，默默陪在她身邊",
-            hint: "+8 好感度",
-            affectionChange: { daiwa_scarlet: 8 },
+            hint: "+5 好感度",
+            affectionChange: { daiwa_scarlet: 5 },
             nextScene: "ch4_loss_silent"
         }
     ]
@@ -168,8 +168,8 @@ CHAPTER_4_SCENES.ch4_loss_hug = {
         { speaker: "trainer", text: "......妳已經很棒了。" },
         { speaker: "narrator", text: "赤驥的身體先是僵硬了一瞬。" },
         { speaker: "narrator", text: "然後——她的手緩緩地抓住了你的衣角。" },
-        { speaker: "daiwa_scarlet", text: "......笨蛋。" },
-        { speaker: "daiwa_scarlet", text: "我...我輸了耶...？你不生氣嗎......？" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "......笨蛋。" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "我...我輸了耶...？你不生氣嗎......？" },
         { speaker: "trainer", text: "怎麼會。我驕傲都來不及了。" },
         { speaker: "narrator", text: "赤驥埋在你胸口，哭得更厲害了。" },
         { speaker: "narrator", text: "但這一次，不是因為悲傷。" },
@@ -185,12 +185,12 @@ CHAPTER_4_SCENES.ch4_loss_words = {
         { speaker: "trainer", text: "赤驥。" },
         { speaker: "trainer", text: "每一天的晨跑、每一次的衝刺、每一個深夜的加練——" },
         { speaker: "trainer", text: "妳的努力，我全部都看在眼裡。" },
-        { speaker: "daiwa_scarlet", text: "......可是我還是輸了。" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "......可是我還是輸了。" },
         { speaker: "trainer", text: "一場比賽的勝負，否定不了妳這些日子的付出。" },
         { speaker: "narrator", text: "赤驥抬起頭，淚眼朦朧地看著你。" },
-        { speaker: "daiwa_scarlet", text: "...你真的這麼覺得嗎？" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "...你真的這麼覺得嗎？" },
         { speaker: "trainer", text: "嗯。百分之百。" },
-        { speaker: "daiwa_scarlet", text: "......嗚...謝謝你...訓練員......" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "......嗚...謝謝你...訓練員......" },
         { speaker: "narrator", text: "赤驥用袖子擦了擦眼淚，露出了一個很勉強但很真實的微笑。" }
     ],
     nextScene: "ch4_vodka_talk"
@@ -200,11 +200,11 @@ CHAPTER_4_SCENES.ch4_loss_future = {
     location: "東京賽馬場 - 更衣室",
     dialogues: [
         { speaker: "trainer", text: "赤驥，下次一定會贏的。" },
-        { speaker: "daiwa_scarlet", text: "下次......" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "下次......" },
         { speaker: "daiwa_scarlet", text: "嗯......你說得對。" },
         { speaker: "daiwa_scarlet", text: "哭也不會改變什麼......" },
         { speaker: "narrator", text: "赤驥站了起來，擦乾了眼淚。" },
-        { speaker: "daiwa_scarlet", text: "我不會再輸第二次了！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "我不會再輸第二次了！" },
         { speaker: "narrator", text: "她的眼神重新燃起了鬥志。" },
         { speaker: "narrator", text: "但你看得出來——她其實還沒有完全釋懷。" }
     ],
@@ -218,9 +218,9 @@ CHAPTER_4_SCENES.ch4_loss_silent = {
         { speaker: "narrator", text: "什麼都沒說，只是默默地陪著她。" },
         { speaker: "narrator", text: "一分鐘、兩分鐘...五分鐘過去了。" },
         { speaker: "narrator", text: "赤驥的哭聲漸漸停了下來。" },
-        { speaker: "daiwa_scarlet", text: "...你怎麼不說話？" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "...你怎麼不說話？" },
         { speaker: "trainer", text: "想哭的時候，就盡情哭吧。我在這裡。" },
-        { speaker: "daiwa_scarlet", text: "......笨蛋。" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "......笨蛋。" },
         { speaker: "narrator", text: "她把頭靠在了你的肩膀上。" },
         { speaker: "narrator", text: "你們就這樣安靜地坐著，直到夕陽染紅了窗邊。" }
     ],
@@ -253,20 +253,20 @@ CHAPTER_4_SCENES.ch4_vodka_talk = {
     choices: [
         {
             text: "「我會讓她幸福的」",
-            hint: "+10 好感度（赤驥）",
-            affectionChange: { daiwa_scarlet: 10 },
+            hint: "+8 好感度（赤驥）",
+            affectionChange: { daiwa_scarlet: 8 },
             nextScene: "ch4_vodka_best"
         },
         {
             text: "「妳也喜歡她呢」",
-            hint: "赤驥+5, 伏特加+5",
-            affectionChange: { daiwa_scarlet: 5, vodka: 5 },
+            hint: "赤驥+4, 伏特加+5",
+            affectionChange: { daiwa_scarlet: 4, vodka: 5 },
             nextScene: "ch4_vodka_bond"
         },
         {
             text: "「我們還只是訓練員和馬娘...」",
-            hint: "+3 好感度",
-            affectionChange: { daiwa_scarlet: 3 },
+            hint: "-2 好感度",
+            affectionChange: { daiwa_scarlet: -2 },
             nextScene: "ch4_vodka_deny"
         }
     ]
@@ -285,7 +285,10 @@ CHAPTER_4_SCENES.ch4_vodka_best = {
         { speaker: "narrator", text: "你和伏特加碰了碰拳。" },
         { speaker: "narrator", text: "這一刻，你從競爭對手的摯友那裡，得到了最重要的認可。" }
     ],
-    nextScene: "ch4_promise"
+    nextScenes: [
+        { condition: { minAffection: { vodka: 8 } }, scene: "ch4_side_vodka_bond" },
+        { scene: "ch4_promise" }
+    ]
 };
 
 CHAPTER_4_SCENES.ch4_vodka_bond = {
@@ -303,7 +306,10 @@ CHAPTER_4_SCENES.ch4_vodka_bond = {
         { speaker: "narrator", text: "你看著她的背影，不禁微笑。" },
         { speaker: "narrator", text: "她們的友情...真的很好呢。" }
     ],
-    nextScene: "ch4_promise"
+    nextScenes: [
+        { condition: { minAffection: { vodka: 8 } }, scene: "ch4_side_vodka_bond" },
+        { scene: "ch4_promise" }
+    ]
 };
 
 CHAPTER_4_SCENES.ch4_vodka_deny = {
@@ -318,6 +324,72 @@ CHAPTER_4_SCENES.ch4_vodka_deny = {
         { speaker: "narrator", text: "伏特加甩頭離開了。" },
         { speaker: "narrator", text: "你站在屋頂上，望著天空。" },
         { speaker: "narrator", text: "...自己到底在想什麼呢。" }
+    ],
+    nextScenes: [
+        { condition: { minAffection: { vodka: 8 } }, scene: "ch4_side_vodka_bond" },
+        { scene: "ch4_promise" }
+    ]
+};
+
+// 支線事件：伏特加的專屬助攻 (伏特加好感 >= 8 觸發)
+CHAPTER_4_SCENES.ch4_side_vodka_bond = {
+    location: "特雷森學園 - 屋頂 (黃昏)",
+    dialogues: [
+        { speaker: "narrator", text: "【支線事件：摯友的助攻】" },
+        { speaker: "narrator", text: "伏特加剛要推開天台鐵門，卻又突然停下腳步。" },
+        { speaker: "vodka", text: "...喂，訓練員。看在你平時對我們也挺照顧的份上，多告訴你一件事。" },
+        { speaker: "vodka", text: "赤驥那傢伙總是一副什麼都能獨自扛下來的樣子，但其實——她最害怕自己一個人被留在後面。" },
+        { speaker: "vodka", text: "要是她晚上又自己跑去操場加練到太晚，別光在辦公室看著，直接去叫住她吧。" },
+        { speaker: "narrator", text: "伏特加有些彆扭地抓了抓後頸，眼神卻非常真摯。" }
+    ],
+    choices: [
+        {
+            text: "「謝謝妳把這麼重要的事告訴我，伏特加」",
+            hint: "赤驥+5, 伏特加+2",
+            affectionChange: { daiwa_scarlet: 5, vodka: 2 },
+            nextScene: "ch4_side_vodka_thanks"
+        },
+        {
+            text: "「我一定會接住她的不安」",
+            hint: "赤驥+4, 伏特加+1",
+            affectionChange: { daiwa_scarlet: 4, vodka: 1 },
+            nextScene: "ch4_side_vodka_promise"
+        },
+        {
+            text: "「妳果然是最了解她的競爭對手」",
+            hint: "赤驥+2, 伏特加+2",
+            affectionChange: { daiwa_scarlet: 2, vodka: 2 },
+            nextScene: "ch4_side_vodka_rival"
+        }
+    ]
+};
+
+CHAPTER_4_SCENES.ch4_side_vodka_thanks = {
+    location: "特雷森學園 - 屋頂 (黃昏)",
+    dialogues: [
+        { speaker: "vodka", text: "少、少肉麻了！我才不是為了幫你呢！" },
+        { speaker: "vodka", text: "只有全力以赴、毫無迷惘的赤驥，才配當我一輩子的宿敵啊。" },
+        { speaker: "narrator", text: "伏特加豪爽地笑著推開門下樓，夕陽將她的背影拉得很長。" }
+    ],
+    nextScene: "ch4_promise"
+};
+
+CHAPTER_4_SCENES.ch4_side_vodka_promise = {
+    location: "特雷森學園 - 屋頂 (黃昏)",
+    dialogues: [
+        { speaker: "vodka", text: "哼...那我就等著看你的表現啦。" },
+        { speaker: "vodka", text: "可別讓我在下次賽道上贏得太輕鬆喔！" },
+        { speaker: "narrator", text: "有這樣可靠的夥伴站在背後，讓你對接下來與赤驥的約定更有信心了。" }
+    ],
+    nextScene: "ch4_promise"
+};
+
+CHAPTER_4_SCENES.ch4_side_vodka_rival = {
+    location: "特雷森學園 - 屋頂 (黃昏)",
+    dialogues: [
+        { speaker: "vodka", text: "那還用說！我們可是天天在跑道上較勁的關係嘛。" },
+        { speaker: "vodka", text: "所以她的狀態好不好，我一眼就看得出來。你也別輸給我囉，訓練員。" },
+        { speaker: "narrator", text: "伏特加對你比了個帥氣的手勢後離去。" }
     ],
     nextScene: "ch4_promise"
 };
@@ -338,31 +410,31 @@ CHAPTER_4_SCENES.ch4_promise = {
         { speaker: "trainer", text: "嗯。怎麼了？" },
         { speaker: "narrator", text: "赤驥沉默了一會兒，然後深呼吸了一次。" },
         { speaker: "daiwa_scarlet", text: "訓練員...那個時候，謝謝你。" },
-        { speaker: "daiwa_scarlet", text: "比賽輸了以後，我以為...我以為你會對我失望。" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "比賽輸了以後，我以為...我以為你會對我失望。" },
         { speaker: "daiwa_scarlet", text: "但你沒有。" },
         { speaker: "daiwa_scarlet", text: "你只是...一直在我身邊。" },
         { speaker: "narrator", text: "夜風吹動了她的長髮。星光映在她的眼睛裡。" },
         { speaker: "daiwa_scarlet", text: "我想變得更強。" },
         { speaker: "daiwa_scarlet", text: "不只是為了贏比賽。" },
-        { speaker: "daiwa_scarlet", text: "而是為了...能繼續和你在一起。" }
+        { speaker: "daiwa_scarlet", expression: "blush", text: "而是為了...能繼續和你在一起。" }
     ],
     choices: [
         {
             text: "「我永遠會在妳身邊」",
-            hint: "+12 好感度",
-            affectionChange: { daiwa_scarlet: 12 },
+            hint: "+8 好感度",
+            affectionChange: { daiwa_scarlet: 8 },
             nextScene: "ch4_promise_best"
         },
         {
             text: "「一起走向頂點吧」",
-            hint: "+10 好感度",
-            affectionChange: { daiwa_scarlet: 10 },
+            hint: "+6 好感度",
+            affectionChange: { daiwa_scarlet: 6 },
             nextScene: "ch4_promise_good"
         },
         {
             text: "「我也是這麼想的」",
-            hint: "+8 好感度",
-            affectionChange: { daiwa_scarlet: 8 },
+            hint: "+4 好感度",
+            affectionChange: { daiwa_scarlet: 4 },
             nextScene: "ch4_promise_ok"
         }
     ]
@@ -386,7 +458,12 @@ CHAPTER_4_SCENES.ch4_promise_best = {
         { speaker: "narrator", text: "誰也不知道未來會怎樣——" },
         { speaker: "narrator", text: "但此刻，這個約定比任何獎盃都珍貴。" }
     ],
-    nextScene: "ch4_mcqueen_tea"
+    nextScenes: [
+        { condition: { flags: { mcqueen_quest: true } }, scene: "ch4_mcqueen_tea" },
+        { condition: { flags: { dorm_visited: true } }, scene: "ch4_side_golshi_prank" },
+        { condition: { minAffection: { daiwa_scarlet: 60 } }, scene: "ch4_side_golshi_prank" },
+        { scene: "ch4_end" }
+    ]
 };
 
 CHAPTER_4_SCENES.ch4_promise_good = {
@@ -395,14 +472,19 @@ CHAPTER_4_SCENES.ch4_promise_good = {
         { speaker: "trainer", text: "走向頂點的路，我們一起走。" },
         { speaker: "trainer", text: "下次的比賽，一定會贏的。我向妳保證。" },
         { speaker: "daiwa_scarlet", text: "...不是你保證的問題啦。" },
-        { speaker: "daiwa_scarlet", text: "但...有你這句話，我就放心了！" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "但...有你這句話，我就放心了！" },
         { speaker: "narrator", text: "赤驥握緊了拳頭，眼神裡重新燃起了火焰。" },
-        { speaker: "daiwa_scarlet", text: "訓練員！明天開始加練！我要贏過伏特加！" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "訓練員！明天開始加練！我要贏過伏特加！" },
         { speaker: "trainer", text: "好。我陪妳。" },
-        { speaker: "daiwa_scarlet", text: "...嗯！" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "...嗯！" },
         { speaker: "narrator", text: "她笑了。是你見過最燦爛的笑容。" }
     ],
-    nextScene: "ch4_mcqueen_tea"
+    nextScenes: [
+        { condition: { flags: { mcqueen_quest: true } }, scene: "ch4_mcqueen_tea" },
+        { condition: { flags: { dorm_visited: true } }, scene: "ch4_side_golshi_prank" },
+        { condition: { minAffection: { daiwa_scarlet: 60 } }, scene: "ch4_side_golshi_prank" },
+        { scene: "ch4_end" }
+    ]
 };
 
 CHAPTER_4_SCENES.ch4_promise_ok = {
@@ -412,12 +494,17 @@ CHAPTER_4_SCENES.ch4_promise_ok = {
         { speaker: "trainer", text: "嗯。和妳一起跑的這段日子，是我最珍貴的時光。" },
         { speaker: "daiwa_scarlet", text: "訓練員......" },
         { speaker: "narrator", text: "赤驥低下頭，不讓你看到她的表情。" },
-        { speaker: "daiwa_scarlet", text: "...你太狡猾了。" },
-        { speaker: "daiwa_scarlet", text: "說這種話，我還怎麼生你的氣啊......" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "...你太狡猾了。" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "說這種話，我還怎麼生你的氣啊......" },
         { speaker: "narrator", text: "她的聲音很小，但你聽得一清二楚。" },
         { speaker: "narrator", text: "你們並肩站在星空下，手指幾乎碰在一起。" }
     ],
-    nextScene: "ch4_mcqueen_tea"
+    nextScenes: [
+        { condition: { flags: { mcqueen_quest: true } }, scene: "ch4_mcqueen_tea" },
+        { condition: { flags: { dorm_visited: true } }, scene: "ch4_side_golshi_prank" },
+        { condition: { minAffection: { daiwa_scarlet: 60 } }, scene: "ch4_side_golshi_prank" },
+        { scene: "ch4_end" }
+    ]
 };
 
 // ============================================
@@ -444,8 +531,8 @@ CHAPTER_4_SCENES.ch4_mcqueen_tea = {
     choices: [
         {
             text: "「我發誓會珍惜她」",
-            hint: "+8 好感度",
-            affectionChange: { daiwa_scarlet: 8 },
+            hint: "+6 好感度",
+            affectionChange: { daiwa_scarlet: 6 },
             nextScene: "ch4_tea_best"
         },
         {
@@ -469,17 +556,21 @@ CHAPTER_4_SCENES.ch4_tea_best = {
         { speaker: "mejiro_mcqueen", text: "呵呵...很好的回答。" },
         { speaker: "mejiro_mcqueen", text: "看來赤驥選對人了呢。" },
         { speaker: "narrator", text: "就在這時——茶室的門被粗暴地推開了。" },
-        { speaker: "daiwa_scarlet", text: "麥昆前輩！你跟我的訓練員在做什麼！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "麥昆前輩！你跟我的訓練員在做什麼！" },
         { speaker: "mejiro_mcqueen", text: "「你的」訓練員？呵呵，你什麼時候開始這麼叫了？" },
-        { speaker: "daiwa_scarlet", text: "才、才不是...！我是說...我們隊上的訓練員！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "才、才不是...！我是說...我們隊上的訓練員！" },
         { speaker: "mejiro_mcqueen", text: "我只是在跟他喝茶聊天而已。對吧？" },
         { speaker: "trainer", text: "嗯...是的。" },
-        { speaker: "daiwa_scarlet", text: "......哼！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "......哼！" },
         { speaker: "narrator", text: "赤驥跺著腳離開了，但她回頭偷看了你好幾次。" },
         { speaker: "mejiro_mcqueen", text: "追上去吧，訓練員先生。她在等你。" },
         { speaker: "narrator", text: "麥昆優雅地揮了揮手，臉上帶著意味深長的微笑。" }
     ],
-    nextScene: "ch4_end"
+    nextScenes: [
+        { condition: { flags: { dorm_visited: true } }, scene: "ch4_side_golshi_prank" },
+        { condition: { minAffection: { daiwa_scarlet: 60 } }, scene: "ch4_side_golshi_prank" },
+        { scene: "ch4_end" }
+    ]
 };
 
 CHAPTER_4_SCENES.ch4_tea_dodge = {
@@ -490,13 +581,17 @@ CHAPTER_4_SCENES.ch4_tea_dodge = {
         { speaker: "mejiro_mcqueen", text: "轉移話題了呢。不過...算了。" },
         { speaker: "narrator", text: "麥昆沒有追問，但你感覺到她有些失望。" },
         { speaker: "narrator", text: "就在尷尬的沉默中——門外傳來了腳步聲。" },
-        { speaker: "daiwa_scarlet", text: "麥昆前輩！你在裡面嗎？聽說你約了我的——...！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "麥昆前輩！你在裡面嗎？聽說你約了我的——...！" },
         { speaker: "daiwa_scarlet", text: "訓練員！？你真的來了！？" },
         { speaker: "mejiro_mcqueen", text: "來得正好。我們剛好聊完，你帶他回去吧。" },
-        { speaker: "daiwa_scarlet", text: "我、我才不是來接他的！我只是路過！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "我、我才不是來接他的！我只是路過！" },
         { speaker: "narrator", text: "赤驥拉著你的袖子，逃也似地離開了茶室。" }
     ],
-    nextScene: "ch4_end"
+    nextScenes: [
+        { condition: { flags: { dorm_visited: true } }, scene: "ch4_side_golshi_prank" },
+        { condition: { minAffection: { daiwa_scarlet: 60 } }, scene: "ch4_side_golshi_prank" },
+        { scene: "ch4_end" }
+    ]
 };
 
 CHAPTER_4_SCENES.ch4_tea_deny = {
@@ -509,11 +604,79 @@ CHAPTER_4_SCENES.ch4_tea_deny = {
         { speaker: "mejiro_mcqueen", text: "如果你沒有覺悟，就不要給她希望。" },
         { speaker: "mejiro_mcqueen", text: "半吊子的溫柔，是最殘忍的。" },
         { speaker: "narrator", text: "茶室的門打開了——赤驥站在門口。" },
-        { speaker: "daiwa_scarlet", text: "麥昆前...輩...？" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "麥昆前...輩...？" },
         { speaker: "narrator", text: "赤驥看到了你們之間凝重的氣氛，臉色微微一沉。" },
-        { speaker: "daiwa_scarlet", text: "...你們在聊什麼？" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "...你們在聊什麼？" },
         { speaker: "mejiro_mcqueen", text: "沒什麼。只是大人之間的對話。" },
         { speaker: "narrator", text: "你從茶室離開時，感覺到赤驥的目光一直追隨著你。" }
+    ],
+    nextScenes: [
+        { condition: { flags: { dorm_visited: true } }, scene: "ch4_side_golshi_prank" },
+        { condition: { minAffection: { daiwa_scarlet: 60 } }, scene: "ch4_side_golshi_prank" },
+        { scene: "ch4_end" }
+    ]
+};
+
+// 隱藏事件：黃金船的惡作劇 (訪問過宿舍或赤驥好感 >= 60 觸發)
+CHAPTER_4_SCENES.ch4_side_golshi_prank = {
+    location: "特雷森學園 - 訓練場",
+    dialogues: [
+        { speaker: "narrator", text: "【隱藏事件：黃金船的惡作劇】" },
+        { speaker: "narrator", text: "大賽前的某天訓練，訓練場正中央突然擺了一個閃亮亮的紙箱。" },
+        { speaker: "gold_ship", text: "登登登愣！《黃金船流・必勝戀愛占卜箱》隆重登場！" },
+        { speaker: "gold_ship", text: "只要訓練員跟赤驥一起抽一張籤，不僅大賽必勝，連幸福指數都會破表喔～！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "黃、黃金船前輩！！妳在訓練場胡說八道什麼啦！！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "誰、誰要跟訓練員抽戀愛占卜啦！快點收起來！" },
+        { speaker: "narrator", text: "原本因為大賽而緊繃的訓練氣氛，被黃金船這一鬧瞬間沖淡了不少。" }
+    ],
+    choices: [
+        {
+            text: "笑著順黃金船的意：「那就當作放鬆一起跑兩圈？」",
+            hint: "+3 好感度",
+            affectionChange: { daiwa_scarlet: 3 },
+            nextScene: "ch4_side_golshi_join"
+        },
+        {
+            text: "先幫赤驥解圍，拉著黃金船去旁邊請她喝飲料",
+            hint: "+2 好感度",
+            affectionChange: { daiwa_scarlet: 2 },
+            nextScene: "ch4_side_golshi_protect"
+        },
+        {
+            text: "認真提醒黃金船不要打擾訓練",
+            hint: "+1 好感度",
+            affectionChange: { daiwa_scarlet: 1 },
+            nextScene: "ch4_side_golshi_stop"
+        }
+    ]
+};
+
+CHAPTER_4_SCENES.ch4_side_golshi_join = {
+    location: "特雷森學園 - 訓練場",
+    dialogues: [
+        { speaker: "gold_ship", text: "哇哈哈哈！訓練員真上道！來來來，抽一張『大吉・永遠第一』！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "唔...！訓練員怎麼連你也跟著起鬨！" },
+        { speaker: "narrator", text: "赤驥嘴上抗議著，腳步卻難得輕鬆地陪你們一起繞著操場慢跑了兩圈。" }
+    ],
+    nextScene: "ch4_end"
+};
+
+CHAPTER_4_SCENES.ch4_side_golshi_protect = {
+    location: "特雷森學園 - 訓練場",
+    dialogues: [
+        { speaker: "trainer", text: "黃金船，那邊的自動販賣機好像出了新口味的汽水喔，我請妳喝吧。" },
+        { speaker: "gold_ship", text: "什麼！？真的嗎！？那占卜箱先寄放這裡，阿船衝呀——！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "呼...總算解決了...謝謝你幫忙解圍，訓練員。" }
+    ],
+    nextScene: "ch4_end"
+};
+
+CHAPTER_4_SCENES.ch4_side_golshi_stop = {
+    location: "特雷森學園 - 訓練場",
+    dialogues: [
+        { speaker: "trainer", text: "黃金船，我們還在做賽前調整，這箱東西先搬走吧。" },
+        { speaker: "gold_ship", text: "切～訓練員真是一本正經啊！好啦好啦，阿船這就退場～" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "真是的，每次都被前輩鬧得哭笑不得......不過精神好像也放鬆下來了。" }
     ],
     nextScene: "ch4_end"
 };

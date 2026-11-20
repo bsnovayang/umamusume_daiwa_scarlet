@@ -14,12 +14,12 @@ CHAPTER_1_SCENES.prologue_start = {
         { speaker: "daiwa_scarlet", text: "呼...呼...還不夠！再快一點！" },
         { speaker: "narrator", text: "那個馬娘正在獨自加練，即使已經氣喘吁吁也不停下來。" },
         { speaker: "vodka", text: "喂！赤驥！妳又在做多餘的練習了啦！" },
-        { speaker: "daiwa_scarlet", text: "伏特加...！妳才是，總是偷懶的話可是會被我甩在後面的！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "伏特加...！妳才是，總是偷懶的話可是會被我甩在後面的！" },
         { speaker: "vodka", text: "哈哈哈！誰甩誰還不知道呢！" },
         { speaker: "narrator", text: "兩人的視線交錯，充滿了競爭的火花。" },
         { speaker: "daiwa_scarlet", text: "咦？你是...新來的訓練員？" },
-        { speaker: "daiwa_scarlet", text: "哼...看起來不怎麼可靠的樣子。" },
-        { speaker: "daiwa_scarlet", text: "我是大和赤驥。既然被你看到了，就讓你見識一下我的實力吧！" }
+        { speaker: "daiwa_scarlet", expression: "pout", text: "哼...看起來不怎麼可靠的樣子。" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "我是大和赤驥。既然被你看到了，就讓你見識一下我的實力吧！" }
     ],
     nextScene: "first_choice"
 };
@@ -54,11 +54,11 @@ CHAPTER_1_SCENES.first_choice = {
 CHAPTER_1_SCENES.choice_praise = {
     location: "特雷森學園 - 訓練場",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "哼...算你有眼光！" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "哼...算你有眼光！" },
         { speaker: "daiwa_scarlet", expression: "blush", text: "（小聲）不過...被稱讚還是會有點不好意思啦..." },
         { speaker: "vodka", text: "哈哈！赤驥臉紅了！" },
         { speaker: "daiwa_scarlet", expression: "blush", text: "才、才沒有！伏特加妳閉嘴啦！" },
-        { speaker: "daiwa_scarlet", text: "訓練員！我以後會讓你看到更多精彩的表現的！" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "訓練員！我以後會讓你看到更多精彩的表現的！" },
         { speaker: "narrator", text: "大和赤驥鬥志滿滿地繼續練習去了。" }
     ],
     nextScene: "scene_cafeteria"
@@ -67,10 +67,10 @@ CHAPTER_1_SCENES.choice_praise = {
 CHAPTER_1_SCENES.choice_neutral = {
     location: "特雷森學園 - 訓練場",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "嗯...這種敷衍的回答..." },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "嗯...這種敷衍的回答..." },
         { speaker: "vodka", text: "哈哈，訓練員還挺會說話的嘛！" },
         { speaker: "daiwa_scarlet", text: "算了...既然是第一天，我就先不計較了。" },
-        { speaker: "daiwa_scarlet", text: "不過，以後可要好好地看我們的表現喔！" }
+        { speaker: "daiwa_scarlet", expression: "joy", text: "不過，以後可要好好地看我們的表現喔！" }
     ],
     nextScene: "scene_cafeteria"
 };
@@ -78,10 +78,10 @@ CHAPTER_1_SCENES.choice_neutral = {
 CHAPTER_1_SCENES.choice_vodka = {
     location: "特雷森學園 - 訓練場",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "什...什麼！？" },
-        { speaker: "daiwa_scarlet", text: "哼！你就後悔去吧！我一定會讓你刮目相看的！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "什...什麼！？" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "哼！你就後悔去吧！我一定會讓你刮目相看的！" },
         { speaker: "vodka", text: "嘿嘿，訓練員有眼光！不過赤驥也很厲害啦。" },
-        { speaker: "daiwa_scarlet", text: "不用妳多嘴！" }
+        { speaker: "daiwa_scarlet", expression: "pout", text: "不用妳多嘴！" }
     ],
     nextScene: "scene_cafeteria"
 };
@@ -93,21 +93,21 @@ CHAPTER_1_SCENES.scene_cafeteria = {
         { speaker: "narrator", text: "午休時間，你來到食堂用餐。" },
         { speaker: "narrator", text: "看到赤驥獨自坐在角落的桌子，面前放著滿滿的餐盤。" },
         { speaker: "special_week", text: "赤驥前輩吃得好認真呢！" },
-        { speaker: "daiwa_scarlet", text: "當然了！飲食管理也是訓練的一部分！" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "當然了！飲食管理也是訓練的一部分！" },
         { speaker: "daiwa_scarlet", text: "特別週，妳也應該好好注意自己的飲食...咦？" },
         { speaker: "daiwa_scarlet", text: "啊，是訓練員。你該不會還沒吃飯吧？" }
     ],
     choices: [
         {
             text: "是啊，要一起吃嗎？",
-            hint: "+5 好感度",
-            affectionChange: { daiwa_scarlet: 5 },
+            hint: "+4 好感度",
+            affectionChange: { daiwa_scarlet: 4 },
             nextScene: "cafeteria_join"
         },
         {
             text: "打擾了，我去別的地方吃",
-            hint: "+0 好感度",
-            affectionChange: { daiwa_scarlet: 0 },
+            hint: "-1 好感度",
+            affectionChange: { daiwa_scarlet: -1 },
             nextScene: "cafeteria_leave"
         }
     ]
@@ -144,9 +144,9 @@ CHAPTER_1_SCENES.cafeteria_join = {
 CHAPTER_1_SCENES.cafeteria_leave = {
     location: "特雷森學園 - 走廊",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "啊...嗯，再見。" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "啊...嗯，再見。" },
         { speaker: "special_week", text: "赤驥前輩看起來有點失落呢..." },
-        { speaker: "daiwa_scarlet", text: "才、才沒有！我只是專心在吃飯而已！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "才、才沒有！我只是專心在吃飯而已！" },
         { speaker: "narrator", text: "雖然錯過了機會，但或許之後還有機會拉近距離。" }
     ],
     nextScene: "scene_library"
@@ -158,9 +158,9 @@ CHAPTER_1_SCENES.dream_response = {
         { speaker: "daiwa_scarlet", text: "...幫助馬娘實現夢想嗎。" },
         { speaker: "daiwa_scarlet", text: "我的夢想是成為第一的馬娘。" },
         { speaker: "daiwa_scarlet", text: "不只是擊敗伏特加，還要成為讓大家認可的、真正的第一名。" },
-        { speaker: "daiwa_scarlet", text: "訓練員...你願意幫我實現這個夢想嗎？" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "訓練員...你願意幫我實現這個夢想嗎？" },
         { speaker: "special_week", text: "哇...這氣氛...我是不是該迴避一下？" },
-        { speaker: "daiwa_scarlet", text: "特別週！妳在亂說什麼啦！" }
+        { speaker: "daiwa_scarlet", expression: "blush", text: "特別週！妳在亂說什麼啦！" }
     ],
     nextScene: "scene_library"
 };
@@ -168,9 +168,9 @@ CHAPTER_1_SCENES.dream_response = {
 CHAPTER_1_SCENES.watch_response = {
     location: "特雷森學園 - 食堂",
     dialogues: [
-        { speaker: "daiwa_scarlet", text: "只是...看看而已嗎。" },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "只是...看看而已嗎。" },
         { speaker: "daiwa_scarlet", text: "不過...被看著奔跑，確實會讓人更有動力。" },
-        { speaker: "daiwa_scarlet", text: "訓練員，明天的訓練，你要好好看著我喔！" }
+        { speaker: "daiwa_scarlet", expression: "joy", text: "訓練員，明天的訓練，你要好好看著我喔！" }
     ],
     nextScene: "scene_library"
 };
@@ -187,8 +187,8 @@ CHAPTER_1_SCENES.scene_library = {
     choices: [
         {
             text: "悄悄幫她蓋上外套",
-            hint: "+8 好感度",
-            affectionChange: { daiwa_scarlet: 8 },
+            hint: "+6 好感度",
+            affectionChange: { daiwa_scarlet: 6 },
             nextScene: "library_gentle"
         },
         {
@@ -199,8 +199,8 @@ CHAPTER_1_SCENES.scene_library = {
         },
         {
             text: "不打擾她，安靜離開",
-            hint: "+1 好感度",
-            affectionChange: { daiwa_scarlet: 1 },
+            hint: "+0 好感度",
+            affectionChange: { daiwa_scarlet: 0 },
             nextScene: "library_leave"
         }
     ]
@@ -226,10 +226,10 @@ CHAPTER_1_SCENES.library_wake = {
     dialogues: [
         { speaker: "trainer", text: "赤驥，這裡睡會感冒的，回宿舍休息吧。" },
         { speaker: "daiwa_scarlet", text: "嗚...訓練員？我睡著了嗎..." },
-        { speaker: "daiwa_scarlet", text: "糟了！書還沒看完！" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "糟了！書還沒看完！" },
         { speaker: "trainer", text: "健康也是訓練的一部分，今天就到此為止吧。" },
         { speaker: "daiwa_scarlet", text: "...說的也是。謝謝你叫我起來。" },
-        { speaker: "daiwa_scarlet", text: "訓練員意外地很溫柔呢。" }
+        { speaker: "daiwa_scarlet", expression: "joy", text: "訓練員意外地很溫柔呢。" }
     ],
     nextScene: "scene_after_school"
 };
@@ -239,7 +239,7 @@ CHAPTER_1_SCENES.library_leave = {
     dialogues: [
         { speaker: "narrator", text: "你輕手輕腳地收拾資料準備離開。" },
         { speaker: "narrator", text: "但在門口時，聽到赤驥的呢喃。" },
-        { speaker: "daiwa_scarlet", text: "...訓練員...不要走..." },
+        { speaker: "daiwa_scarlet", expression: "sad", text: "...訓練員...不要走..." },
         { speaker: "narrator", text: "你停下腳步，回頭看著她。" },
         { speaker: "narrator", text: "或許...她也在尋找著什麼。" }
     ],
@@ -252,14 +252,14 @@ CHAPTER_1_SCENES.scene_after_school = {
     dialogues: [
         { speaker: "narrator", text: "放學後，你準備離開學園。" },
         { speaker: "narrator", text: "看到赤驥站在校門口，似乎在等人。" },
-        { speaker: "daiwa_scarlet", text: "啊！訓練員！" },
+        { speaker: "daiwa_scarlet", expression: "joy", text: "啊！訓練員！" },
         { speaker: "daiwa_scarlet", text: "那個...今天謝謝你。" },
-        { speaker: "daiwa_scarlet", text: "我、我只是想說這個而已！別誤會了！" },
+        { speaker: "daiwa_scarlet", expression: "blush", text: "我、我只是想說這個而已！別誤會了！" },
         { speaker: "vodka", text: "喂~赤驥！妳在等誰啊？" },
-        { speaker: "daiwa_scarlet", text: "伏、伏特加！？妳怎麼在這！？" },
+        { speaker: "daiwa_scarlet", expression: "pout", text: "伏、伏特加！？妳怎麼在這！？" },
         { speaker: "vodka", text: "嘿嘿，被我抓到了吧~赤驥在等訓練員呢！" },
         { speaker: "vodka", text: "訓練員，赤驥這傢伙很彆扭，但其實很努力的，請多關照她囉！" },
-        { speaker: "daiwa_scarlet", text: "伏特加妳夠了！訓練員，明天見！" }
+        { speaker: "daiwa_scarlet", expression: "blush", text: "伏特加妳夠了！訓練員，明天見！" }
     ],
     nextScene: "chapter1_end"
 };

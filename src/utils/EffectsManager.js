@@ -63,13 +63,13 @@ class EffectsManager {
                 this.particles.push({
                     x: Math.random() * this.width,
                     y: Math.random() * this.height - this.height,
-                    size: Math.random() * 8 + 6,
+                    size: Math.random() * 8 + 7,
                     speedY: Math.random() * 1.5 + 1.2,
                     speedX: Math.random() * 1.5 - 0.5,
                     rotation: Math.random() * Math.PI * 2,
                     rotSpeed: (Math.random() - 0.5) * 0.04,
-                    opacity: Math.random() * 0.4 + 0.5,
-                    color: Math.random() > 0.3 ? '#ffb7c5' : '#ffc0cb'
+                    opacity: Math.random() * 0.35 + 0.6,
+                    color: Math.random() > 0.35 ? '#ff9ebb' : '#ffc2d4'
                 });
             } else if (type === 'rain') {
                 this.particles.push({
@@ -160,11 +160,13 @@ class EffectsManager {
     }
 
     drawSparkle() {
-        this.ctx.fillStyle = '#f1c40f';
+        this.ctx.fillStyle = '#ffe57f';
+        this.ctx.shadowColor = 'rgba(255, 229, 127, 0.75)';
+        this.ctx.shadowBlur = 8;
 
         for (const p of this.particles) {
             p.alpha += p.speedAlpha;
-            if (p.alpha > 1 || p.alpha < 0.1) {
+            if (p.alpha > 1 || p.alpha < 0.15) {
                 p.speedAlpha = -p.speedAlpha;
             }
 
@@ -173,10 +175,46 @@ class EffectsManager {
             this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
             this.ctx.fill();
         }
+        this.ctx.shadowBlur = 0;
+    }
+
+    // 解析地點與場景 ID 對應的背景視覺類別
+    resolveBackdropClass(location = '', sceneId = '') {
+        const id = (sceneId || '').toLowerCase();
+        if (id === 'title') {
+            return 'bg-title';
+        }
+
+        const loc = location || '';
+        if (/櫻花|校門|夜間小路|夕陽下的校園|雨中/.test(loc) || id.includes('cherry') || id.includes('ending_s') || id.includes('ending_a')) {
+            return 'bg-sakura';
+        }
+        if (/教室|走廊|圖書館|食堂|宿舍|辦公室|訓練室|更衣室|通道|茶室/.test(loc)) {
+            return 'bg-classroom';
+        }
+        return 'bg-track';
+    }
+
+    // 同步切換背景景觀與氛圍濾鏡
+    setBackdrop(bgClass, atmosphereClass = '') {
+        const backdrop = document.getElementById('scene-backdrop');
+        if (!backdrop || !backdrop.classList) return;
+
+        backdrop.classList.remove(
+            'bg-title', 'bg-track', 'bg-classroom', 'bg-sakura',
+            'atmosphere-sunset', 'atmosphere-night', 'atmosphere-rain', 'atmosphere-sakura'
+        );
+
+        if (bgClass) {
+            backdrop.classList.add(bgClass);
+        }
+        if (atmosphereClass) {
+            backdrop.classList.add(atmosphereClass);
+        }
     }
 
     // 根據場景自動判斷與套用特效和光影
-    updateSceneEffect(scene) {
+    updateSceneEffect(scene, sceneId = '') {
         const app = document.getElementById('app');
         if (!app) return;
 
@@ -185,35 +223,43 @@ class EffectsManager {
 
         if (!scene) {
             this.setEffect('none');
+            this.setBackdrop('bg-track', '');
             return;
         }
 
         const loc = (scene.location || '').toLowerCase();
-        const id = (scene.id || '').toLowerCase();
+        const id = (sceneId || scene.id || '').toLowerCase();
+        let detectedAtmosphere = '';
 
         // 判斷櫻花特效
         if (loc.includes('櫻花') || id.includes('cherry') || id.includes('ending_s') || id.includes('ending_a')) {
             this.setEffect('sakura');
-            app.classList.add('atmosphere-sakura');
+            detectedAtmosphere = 'atmosphere-sakura';
+            app.classList.add(detectedAtmosphere);
         }
         // 判斷雨天特效
         else if (loc.includes('雨') || id.includes('rain')) {
             this.setEffect('rain');
-            app.classList.add('atmosphere-rain');
+            detectedAtmosphere = 'atmosphere-rain';
+            app.classList.add(detectedAtmosphere);
         }
         // 判斷黃昏
         else if (loc.includes('黃昏') || loc.includes('夕陽')) {
             this.setEffect('none');
-            app.classList.add('atmosphere-sunset');
+            detectedAtmosphere = 'atmosphere-sunset';
+            app.classList.add(detectedAtmosphere);
         }
         // 判斷夜晚 / 深夜
-        else if (loc.includes('夜') || loc.includes('深夜') || loc.includes('月光')) {
+        else if (loc.includes('夜') || loc.includes('深夜') || loc.includes('月光') || id.includes('night')) {
             this.setEffect('sparkle');
-            app.classList.add('atmosphere-night');
+            detectedAtmosphere = 'atmosphere-night';
+            app.classList.add(detectedAtmosphere);
         }
         else {
             this.setEffect('none');
         }
+
+        this.setBackdrop(this.resolveBackdropClass(scene.location, sceneId), detectedAtmosphere);
     }
 }
 

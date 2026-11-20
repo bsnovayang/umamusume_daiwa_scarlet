@@ -11,6 +11,7 @@ class GameEngine {
             vodka: 0,
             special_week: 0
         };
+        this.flags = {};
 
         // 打字機效果
         this.isTyping = false;
@@ -40,6 +41,18 @@ class GameEngine {
         this.effectsManager = new EffectsManager();
         this.blinkManager = new BlinkManager();
         this.mouthManager = new MouthManager();
+        this.livePortraitManager = new LivePortraitManager();
+        this.livePortraitManager.setBlinkEnabled(this.blinkManager.isEnabled);
+        this.livePortraitManager.setMouthEnabled(this.mouthManager.isEnabled);
+
+        if (typeof CHARACTERS !== 'undefined') {
+            const standUrls = [];
+            Object.values(CHARACTERS).forEach(char => {
+                if (char.stand) standUrls.push(char.stand);
+                if (char.standExpressions) standUrls.push(...Object.values(char.standExpressions));
+            });
+            this.livePortraitManager.preloadImages(standUrls);
+        }
 
         this.loadUserSettings();
         this.init();
@@ -79,34 +92,156 @@ class GameEngine {
         this.effectsManager.setEffect('sakura');
     }
 
+    // 條件評估、分支路由與存檔狀態輔助函式
+    evaluateCondition(condition) {
+        if (!condition) return true;
+
+        if (condition.flags) {
+            for (const [key, expected] of Object.entries(condition.flags)) {
+                if (Boolean(this.flags[key]) !== Boolean(expected)) {
+                    return false;
+                }
+            }
+        }
+
+        if (condition.minAffection) {
+            for (const [char, minVal] of Object.entries(condition.minAffection)) {
+                if ((this.affection[char] ?? 0) < minVal) {
+                    return false;
+                }
+            }
+        }
+
+        if (condition.maxAffection) {
+            for (const [char, maxVal] of Object.entries(condition.maxAffection)) {
+                if ((this.affection[char] ?? 0) > maxVal) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    resolveNextScene(target) {
+        if (Array.isArray(target?.nextScenes)) {
+            const matched = target.nextScenes.find(branch => this.evaluateCondition(branch.condition));
+            if (matched?.scene) {
+                return matched.scene;
+            }
+        }
+        return target?.nextScene || null;
+    }
+
+    getActiveDialogues(scene) {
+        return (scene?.dialogues || []).filter(d => this.evaluateCondition(d.condition));
+    }
+
+    getSaveState() {
+        const scene = GAME_DATA.scenes[this.currentScene];
+        const dialogues = this.getActiveDialogues(scene);
+        const previewIndex = Math.min(this.currentDialogueIndex ?? 0, Math.max(0, dialogues.length - 1));
+        const previewText = dialogues[previewIndex]?.text?.substring(0, 30) || '';
+
+        return {
+            currentScene: this.currentScene,
+            currentDialogueIndex: this.currentDialogueIndex,
+            affection: { ...this.affection },
+            flags: { ...this.flags },
+            dialogueHistory: this.historyManager.getAll(),
+            previewText
+        };
+    }
+
+    // 畫面與UI狀態檢查輔助函式
+    isGameScreenActive() {
+        return Boolean(document.getElementById('game-screen')?.classList.contains('active'));
+    }
+
+    hasActiveOverlay() {
+        return document.querySelector('.screen.overlay.active') !== null;
+    }
+
+    isChoicesVisible() {
+        const container = document.getElementById('choices-container');
+        return (container?.children.length || 0) > 0;
+    }
+
+    stopTyping() {
+        if (this.typingInterval) {
+            clearInterval(this.typingInterval);
+            this.typingInterval = null;
+        }
+        document.getElementById('dialogue-text')?.classList.remove('typing');
+        document.getElementById('dialogue-avatar-wrapper')?.classList.remove('talking');
+        this.mouthManager.stopTalking();
+        this.livePortraitManager?.setTalking(false);
+        this.isTyping = false;
+    }
+
+    resumeAutoPlayIfNeeded() {
+        if (
+            this.isAutoMode &&
+            this.isGameScreenActive() &&
+            !this.isTyping &&
+            !this.isChoicesVisible() &&
+            !this.hasActiveOverlay() &&
+            !this.isUIHidden
+        ) {
+            this.startAutoPlay();
+        }
+    }
+
     // 綁定鍵盤事件
     bindKeyboardEvents() {
+        window.addEventListener('blur', () => {
+            this.isCtrlPressed = false;
+        });
+
         document.addEventListener('keydown', (e) => {
             // 解鎖 Web Audio Context
             this.audioManager.initContext();
 
-            if (e.key === 'Control' || e.key === 'Ctrl') {
-                this.isCtrlPressed = true;
-                this.handleCtrlPress();
-            }
-
-            if (e.key === 'h' || e.key === 'H') {
-                this.toggleHistory();
-            }
-
-            if (e.key === 'a' || e.key === 'A') {
-                this.toggleAutoMode();
-            }
-
-            if (e.key === 'v' || e.key === 'V') {
-                this.toggleHideUI();
-            }
-
             if (e.key === 'Escape') {
                 if (this.isUIHidden) {
                     this.toggleHideUI(false);
-                } else {
+                } else if (this.hasActiveOverlay()) {
                     this.closeAllOverlays();
+                }
+                return;
+            }
+
+            const tagName = e.target?.tagName;
+            if (tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA') {
+                return;
+            }
+
+            if (e.key === 'Control' || e.key === 'Ctrl') {
+                if (this.isGameScreenActive() && !this.hasActiveOverlay() && !this.isUIHidden) {
+                    this.isCtrlPressed = true;
+                    this.handleCtrlPress();
+                }
+                return;
+            }
+
+            if (e.key === 'h' || e.key === 'H') {
+                const isHistoryActive = document.getElementById('history-screen')?.classList.contains('active');
+                if (this.isGameScreenActive() && !this.isUIHidden && (!this.hasActiveOverlay() || isHistoryActive)) {
+                    this.toggleHistory();
+                }
+                return;
+            }
+
+            if (e.key === 'a' || e.key === 'A') {
+                if (this.isGameScreenActive() && !this.hasActiveOverlay() && !this.isUIHidden) {
+                    this.toggleAutoMode();
+                }
+                return;
+            }
+
+            if (e.key === 'v' || e.key === 'V') {
+                if (this.isGameScreenActive() && !this.hasActiveOverlay()) {
+                    this.toggleHideUI();
                 }
             }
         });
@@ -132,9 +267,14 @@ class GameEngine {
         if (!this.typingInterval) return;
 
         clearInterval(this.typingInterval);
+        this.typingInterval = null;
         const scene = GAME_DATA.scenes[this.currentScene];
-        if (!scene || !scene.dialogues) return;
-        const dialogue = scene.dialogues[this.currentDialogueIndex];
+        const dialogues = this.getActiveDialogues(scene);
+        const dialogue = dialogues[this.currentDialogueIndex];
+        if (!dialogue) {
+            this.stopTyping();
+            return;
+        }
         const dialogueEl = document.getElementById('dialogue-text');
         const currentText = dialogueEl.textContent;
         const fullText = dialogue.text;
@@ -146,57 +286,55 @@ class GameEngine {
                 dialogueEl.textContent += fullText[index];
                 index++;
             } else {
-                clearInterval(this.typingInterval);
-                dialogueEl.classList.remove('typing');
-                const avatarWrapper = document.getElementById('dialogue-avatar-wrapper');
-                if (avatarWrapper) avatarWrapper.classList.remove('talking');
-                this.mouthManager.stopTalking();
-                this.isTyping = false;
+                this.stopTyping();
             }
         }, this.fastTypingSpeed);
     }
 
     // 快速跳過
     fastForward() {
+        if (this.isChoicesVisible()) return;
+
         const scene = GAME_DATA.scenes[this.currentScene];
         if (!scene) return;
 
         this.clearAutoPlayTimer();
+        const dialogues = this.getActiveDialogues(scene);
 
-        if (scene.dialogues && this.currentDialogueIndex < scene.dialogues.length - 1) {
+        if (dialogues.length > 0 && this.currentDialogueIndex < dialogues.length - 1) {
             if (this.isTyping) {
                 this.skipCurrentTyping();
             }
 
             this.currentDialogueIndex++;
             this.showDialogue();
-        } else if (scene.dialogues && this.currentDialogueIndex >= scene.dialogues.length - 1) {
+        } else if (dialogues.length > 0 && this.currentDialogueIndex >= dialogues.length - 1) {
             if (this.isTyping) {
                 this.skipCurrentTyping();
             }
 
             if (scene.choices) {
-                this.currentDialogueIndex++;
+                this.currentDialogueIndex = dialogues.length;
                 this.showDialogue();
-            } else if (scene.nextScene) {
-                this.loadScene(scene.nextScene);
+            } else {
+                const next = this.resolveNextScene(scene);
+                if (next) this.loadScene(next);
             }
+        } else if (!scene.choices) {
+            const next = this.resolveNextScene(scene);
+            if (next) this.loadScene(next);
         }
     }
 
     // 跳過當前打字
     skipCurrentTyping() {
         const scene = GAME_DATA.scenes[this.currentScene];
-        if (!scene || !scene.dialogues) return;
-        const dialogue = scene.dialogues[this.currentDialogueIndex];
+        const dialogues = this.getActiveDialogues(scene);
+        const dialogue = dialogues[this.currentDialogueIndex];
+        if (!dialogue) return;
 
-        clearInterval(this.typingInterval);
         document.getElementById('dialogue-text').textContent = dialogue.text;
-        document.getElementById('dialogue-text').classList.remove('typing');
-        const avatarWrapper = document.getElementById('dialogue-avatar-wrapper');
-        if (avatarWrapper) avatarWrapper.classList.remove('talking');
-        this.mouthManager.stopTalking();
-        this.isTyping = false;
+        this.stopTyping();
     }
 
     // 切換自動播放
@@ -232,13 +370,20 @@ class GameEngine {
 
     // 隱藏/顯示 UI
     toggleHideUI(forceState = null) {
-        this.isUIHidden = forceState !== null ? forceState : !this.isUIHidden;
+        const nextState = forceState !== null ? forceState : !this.isUIHidden;
+        if (nextState && (!this.isGameScreenActive() || this.hasActiveOverlay())) {
+            return;
+        }
+        this.isUIHidden = nextState;
         const app = document.getElementById('app');
         if (app) {
             app.classList.toggle('ui-hidden', this.isUIHidden);
         }
         if (this.isUIHidden) {
+            this.clearAutoPlayTimer();
             this.showToast('UI 已隱藏，點擊畫面或按 ESC / V 鍵恢復');
+        } else {
+            this.resumeAutoPlayIfNeeded();
         }
     }
 
@@ -254,6 +399,7 @@ class GameEngine {
     }
 
     showHistory() {
+        this.clearAutoPlayTimer();
         const historyScreen = document.getElementById('history-screen');
         const historyContent = document.getElementById('history-content');
 
@@ -263,7 +409,8 @@ class GameEngine {
     }
 
     closeHistory() {
-        document.getElementById('history-screen').classList.remove('active');
+        document.getElementById('history-screen')?.classList.remove('active');
+        this.resumeAutoPlayIfNeeded();
     }
 
     // 關閉所有覆蓋層
@@ -321,13 +468,25 @@ class GameEngine {
             this.handleDialogueClick();
         });
 
+        // 點擊半身立繪互動 (摸頭/切換反應)
+        document.getElementById('live-portrait-wrapper')?.addEventListener('click', (e) => {
+            if (this.isUIHidden) {
+                return;
+            }
+            e.stopPropagation();
+            this.audioManager.playClick();
+            this.livePortraitManager.triggerPetReaction();
+        });
+
         // 隱藏 UI 按鈕
-        document.getElementById('hide-ui-btn')?.addEventListener('click', () => {
+        document.getElementById('hide-ui-btn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.audioManager.playClick();
             this.toggleHideUI();
         });
 
-        // 點擊背景恢復 UI (當 UI 隱藏時)
-        document.getElementById('game-screen')?.addEventListener('click', (e) => {
+        // 點擊畫面任一處恢復 UI (當 UI 隱藏時)
+        document.getElementById('app')?.addEventListener('click', (e) => {
             if (this.isUIHidden) {
                 this.toggleHideUI(false);
                 e.stopPropagation();
@@ -443,6 +602,7 @@ class GameEngine {
             blinkCheckbox.checked = this.blinkManager.isEnabled;
             blinkCheckbox.addEventListener('change', (e) => {
                 this.blinkManager.setEnabled(e.target.checked);
+                this.livePortraitManager.setBlinkEnabled(e.target.checked);
             });
         }
 
@@ -451,6 +611,15 @@ class GameEngine {
             mouthCheckbox.checked = this.mouthManager.isEnabled;
             mouthCheckbox.addEventListener('change', (e) => {
                 this.mouthManager.setEnabled(e.target.checked);
+                this.livePortraitManager.setMouthEnabled(e.target.checked);
+            });
+        }
+
+        const live2dCheckbox = document.getElementById('setting-live2d');
+        if (live2dCheckbox) {
+            live2dCheckbox.checked = this.livePortraitManager.isEnabled;
+            live2dCheckbox.addEventListener('change', (e) => {
+                this.livePortraitManager.setEnabled(e.target.checked);
             });
         }
     }
@@ -464,9 +633,12 @@ class GameEngine {
             vodka: 0,
             special_week: 0
         };
+        this.flags = {};
         this.historyManager.clear();
         this.isAutoMode = false;
         this.isUIHidden = false;
+        document.getElementById('app')?.classList.remove('ui-hidden');
+        this.updateAffectionUI();
 
         const autoBtn = document.getElementById('auto-btn');
         if (autoBtn) autoBtn.classList.remove('active');
@@ -475,12 +647,7 @@ class GameEngine {
         this.loadScene(this.currentScene);
         
         // 初始自動存檔
-        this.saveManager.autoSave({
-            currentScene: this.currentScene,
-            currentDialogueIndex: this.currentDialogueIndex,
-            affection: this.affection,
-            dialogueHistory: this.historyManager.getAll()
-        });
+        this.saveManager.autoSave(this.getSaveState());
     }
 
     // 顯示主要畫面
@@ -492,12 +659,27 @@ class GameEngine {
     }
 
     // 載入場景
-    loadScene(sceneId) {
+    loadScene(sceneId, options = {}) {
+        const { startDialogueIndex = 0, isLoad = false } = options;
         this.clearAutoPlayTimer();
+        this.stopTyping();
 
         if (sceneId === 'title') {
+            this.isUIHidden = false;
+            const app = document.getElementById('app');
+            if (app) {
+                app.classList.remove('ui-hidden', 'atmosphere-sunset', 'atmosphere-night', 'atmosphere-rain', 'atmosphere-sakura');
+            }
+            this.isAutoMode = false;
+            document.getElementById('auto-btn')?.classList.remove('active');
+            document.getElementById('character-stage')?.classList.remove('stand-mode');
+            document.querySelector('.game-bottom-area')?.classList?.remove('has-choices');
+            this.blinkManager.stopBlink();
+            this.mouthManager.stopTalking();
+            this.livePortraitManager.hide();
             this.showScreen('title-screen');
             this.effectsManager.setEffect('sakura');
+            this.effectsManager.setBackdrop('bg-title', 'atmosphere-sakura');
             this.audioManager.playBGM('daily');
             return;
         }
@@ -516,29 +698,41 @@ class GameEngine {
         this.currentScene = sceneId;
         this.currentDialogueIndex = 0;
 
+        if (!isLoad && scene.setFlags) {
+            Object.assign(this.flags, scene.setFlags);
+        }
+
         // 更新場景名稱與動態氛圍特效
         if (scene.location) {
             document.getElementById('location-text').textContent = scene.location;
         }
-        this.effectsManager.updateSceneEffect(scene);
+        this.effectsManager.updateSceneEffect(scene, sceneId);
 
         // 依據場景類型切換 BGM
         this.updateSceneBGM(sceneId, scene);
 
-        // 章節轉換時自動存檔
-        if (sceneId.includes('_start') || sceneId === 'ch5_the_race') {
-            this.saveManager.autoSave({
-                currentScene: this.currentScene,
-                currentDialogueIndex: this.currentDialogueIndex,
-                affection: this.affection,
-                dialogueHistory: this.historyManager.getAll()
-            });
+        // 章節轉換時自動存檔（讀檔時不覆蓋自動存檔）
+        if (!isLoad && (sceneId.includes('_start') || sceneId === 'ch5_the_race')) {
+            this.saveManager.autoSave(this.getSaveState());
         }
 
-        if (scene.dialogues && scene.dialogues.length > 0) {
-            this.showDialogue();
+        const dialogues = this.getActiveDialogues(scene);
+
+        if (dialogues.length > 0) {
+            if (isLoad && startDialogueIndex >= dialogues.length && scene.choices) {
+                this.currentDialogueIndex = dialogues.length - 1;
+                this.showDialogue({ recordHistory: false, instant: true });
+                this.currentDialogueIndex = dialogues.length;
+                this.showChoices(scene.choices);
+            } else {
+                this.currentDialogueIndex = Math.max(0, Math.min(startDialogueIndex, dialogues.length - 1));
+                this.showDialogue({ recordHistory: !isLoad });
+            }
         } else if (scene.choices) {
             this.showChoices(scene.choices);
+        } else {
+            const next = this.resolveNextScene(scene);
+            if (next) this.loadScene(next);
         }
     }
 
@@ -554,20 +748,24 @@ class GameEngine {
     }
 
     // 顯示對話與角色頭像
-    showDialogue() {
+    showDialogue(options = {}) {
+        const { recordHistory = true, instant = false } = options;
         const scene = GAME_DATA.scenes[this.currentScene];
-        const dialogue = scene.dialogues[this.currentDialogueIndex];
+        const dialogues = this.getActiveDialogues(scene);
+        const dialogue = dialogues[this.currentDialogueIndex];
 
         if (!dialogue) {
             if (scene.choices) {
                 this.showChoices(scene.choices);
-            } else if (scene.nextScene) {
-                this.loadScene(scene.nextScene);
+            } else {
+                const next = this.resolveNextScene(scene);
+                if (next) this.loadScene(next);
             }
             return;
         }
 
         document.getElementById('choices-container').innerHTML = '';
+        document.querySelector('.game-bottom-area')?.classList?.remove('has-choices');
         document.getElementById('next-hint').style.display = 'block';
 
         // 顯示說話者與更新角色頭像/立繪
@@ -586,88 +784,114 @@ class GameEngine {
             speakerEl.textContent = speakerName;
             speakerEl.style.color = character ? character.color : '#ecf0f1';
             speakerEl.style.borderLeftColor = character ? character.color : 'var(--primary-color)';
+            speakerEl.style.setProperty?.('--speaker-color', character ? character.color : '#2eb85c');
         } else if (dialogue.speaker === 'trainer') {
             character = GAME_DATA.characters.trainer;
             speakerName = '訓練員（你）';
             speakerEl.textContent = speakerName;
             speakerEl.style.color = character.color;
             speakerEl.style.borderLeftColor = character.color;
+            speakerEl.style.setProperty?.('--speaker-color', character.color || '#2980b9');
         } else {
             speakerEl.textContent = '';
+            speakerEl.style.removeProperty?.('--speaker-color');
         }
 
-        // 頭像顯示邏輯 (支援表情差分與角色舞台控制)
+        // 頭像/半身立繪顯示邏輯 (支援半身類 Live2D 立繪與圓形頭像自動切換)
         if (character && dialogue.speaker !== 'narrator') {
             if (characterStage) {
                 characterStage.style.visibility = 'visible';
                 characterStage.style.opacity = '1';
             }
-            avatarWrapper.style.display = 'flex';
-            avatarWrapper.style.borderColor = character.color;
-            avatarWrapper.style.boxShadow = `0 10px 30px rgba(0, 0, 0, 0.6), 0 0 24px ${character.color ? character.color + '66' : 'var(--primary-glow)'}`;
 
-            // 判斷是否有指定的表情差分
-            let avatarSrc = character.avatar;
             const expression = dialogue.expression || 'normal';
-            if (character.expressions && character.expressions[expression]) {
-                avatarSrc = character.expressions[expression];
-            }
 
-            if (avatarSrc) {
-                avatarImg.src = avatarSrc;
-                avatarImg.style.display = 'block';
-                avatarEmoji.style.display = 'none';
+            if (character.stand) {
+                if (characterStage) characterStage.classList.add('stand-mode');
+                if (avatarWrapper) avatarWrapper.style.display = 'none';
+                this.blinkManager.stopBlink();
+                this.mouthManager.stopTalking();
+
+                const standSrc = (character.standExpressions && character.standExpressions[expression]) || character.stand;
+                this.livePortraitManager.showCharacter(dialogue.speaker, expression, standSrc, character.liveRig, character.stand);
             } else {
-                avatarImg.style.display = 'none';
-                avatarEmoji.textContent = character.emoji || '👤';
-                avatarEmoji.style.display = 'block';
-                avatarEmoji.style.backgroundColor = character.color;
-            }
+                if (characterStage) characterStage.classList.remove('stand-mode');
+                this.livePortraitManager.hide();
 
-            // 啟動眨眼動畫與嘴部設定
-            this.blinkManager.onCharacterChange(dialogue.speaker, expression);
-            this.mouthManager.onCharacterChange(dialogue.speaker, expression);
+                avatarWrapper.style.display = 'flex';
+                avatarWrapper.style.borderColor = character.color;
+                avatarWrapper.style.boxShadow = `0 10px 30px rgba(0, 0, 0, 0.6), 0 0 24px ${character.color ? character.color + '66' : 'var(--primary-glow)'}`;
+
+                // 判斷是否有指定的表情差分
+                let avatarSrc = character.avatar;
+                if (character.expressions && character.expressions[expression]) {
+                    avatarSrc = character.expressions[expression];
+                }
+
+                if (avatarSrc) {
+                    avatarImg.src = avatarSrc;
+                    avatarImg.style.display = 'block';
+                    avatarEmoji.style.display = 'none';
+                } else {
+                    avatarImg.style.display = 'none';
+                    avatarEmoji.textContent = character.emoji || '👤';
+                    avatarEmoji.style.display = 'block';
+                    avatarEmoji.style.backgroundColor = character.color;
+                }
+
+                // 啟動眨眼動畫與嘴部設定
+                this.blinkManager.onCharacterChange(dialogue.speaker, expression);
+                this.mouthManager.onCharacterChange(dialogue.speaker, expression);
+            }
         } else {
             if (characterStage) {
+                characterStage.classList.remove('stand-mode');
                 characterStage.style.visibility = 'hidden';
                 characterStage.style.opacity = '0';
             }
             avatarWrapper.style.display = 'none';
             this.blinkManager.stopBlink();
             this.mouthManager.stopTalking();
+            this.livePortraitManager.hide();
         }
 
         // 添加到歷史記錄
-        this.historyManager.add(speakerName, dialogue.text, scene.location);
+        if (recordHistory) {
+            this.historyManager.add(speakerName, dialogue.text, scene.location);
+        }
 
-        // 打字機逐字輸出
-        this.typeText(dialogue.text);
+        if (instant) {
+            const dialogueEl = document.getElementById('dialogue-text');
+            if (dialogueEl) dialogueEl.textContent = dialogue.text;
+            this.stopTyping();
+        } else {
+            // 打字機逐字輸出
+            this.typeText(dialogue.text);
+        }
     }
 
     // 打字效果
     typeText(text) {
+        this.stopTyping();
         const dialogueEl = document.getElementById('dialogue-text');
         const avatarWrapper = document.getElementById('dialogue-avatar-wrapper');
         dialogueEl.textContent = '';
         dialogueEl.classList.add('typing');
         if (avatarWrapper) avatarWrapper.classList.add('talking');
-        this.mouthManager.startTalking();
+        if (this.livePortraitManager.isVisible) {
+            this.livePortraitManager.setTalking(true);
+        } else {
+            this.mouthManager.startTalking();
+        }
         this.isTyping = true;
 
         let index = 0;
         const speed = this.isCtrlPressed ? this.fastTypingSpeed : this.typingSpeed;
 
-        if (this.typingInterval) {
-            clearInterval(this.typingInterval);
-        }
-
         // 即時顯示（速度為0時）
         if (speed === 0) {
             dialogueEl.textContent = text;
-            dialogueEl.classList.remove('typing');
-            if (avatarWrapper) avatarWrapper.classList.remove('talking');
-            this.mouthManager.stopTalking();
-            this.isTyping = false;
+            this.stopTyping();
             if (this.isAutoMode) this.startAutoPlay();
             return;
         }
@@ -675,17 +899,16 @@ class GameEngine {
         this.typingInterval = setInterval(() => {
             if (index < text.length) {
                 dialogueEl.textContent += text[index];
+                if (this.livePortraitManager && this.livePortraitManager.isVisible && typeof this.livePortraitManager.onTypeChar === 'function') {
+                    this.livePortraitManager.onTypeChar(text[index]);
+                }
                 // 每隔幾字發出打字音效
                 if (index % 2 === 0) {
                     this.audioManager.playBlip();
                 }
                 index++;
             } else {
-                clearInterval(this.typingInterval);
-                dialogueEl.classList.remove('typing');
-                if (avatarWrapper) avatarWrapper.classList.remove('talking');
-                this.mouthManager.stopTalking();
-                this.isTyping = false;
+                this.stopTyping();
 
                 if (this.isAutoMode) {
                     this.startAutoPlay();
@@ -712,7 +935,9 @@ class GameEngine {
     // 顯示選項
     showChoices(choices) {
         this.clearAutoPlayTimer();
+        this.stopTyping();
         document.getElementById('next-hint').style.display = 'none';
+        document.querySelector('.game-bottom-area')?.classList?.add('has-choices');
 
         const container = document.getElementById('choices-container');
         container.innerHTML = '';
@@ -758,8 +983,13 @@ class GameEngine {
             }
         }
 
-        if (choice.nextScene) {
-            this.loadScene(choice.nextScene);
+        if (choice.setFlags) {
+            Object.assign(this.flags, choice.setFlags);
+        }
+
+        const next = this.resolveNextScene(choice);
+        if (next) {
+            this.loadScene(next);
         }
     }
 
@@ -778,11 +1008,13 @@ class GameEngine {
 
     // 選單操作
     openMenu() {
+        this.clearAutoPlayTimer();
         document.getElementById('menu-screen')?.classList.add('active');
     }
 
     closeMenu() {
         document.getElementById('menu-screen')?.classList.remove('active');
+        this.resumeAutoPlayIfNeeded();
     }
 
     backToTitle() {
@@ -794,6 +1026,7 @@ class GameEngine {
     // 存檔 / 讀檔彈窗管理 (多欄位)
     // ============================================
     openSaveModal(mode = 'save') {
+        this.clearAutoPlayTimer();
         this.saveModalMode = mode;
         const modal = document.getElementById('save-modal-screen');
         const titleEl = document.getElementById('save-modal-title');
@@ -805,6 +1038,7 @@ class GameEngine {
 
     closeSaveModal() {
         document.getElementById('save-modal-screen')?.classList.remove('active');
+        this.resumeAutoPlayIfNeeded();
     }
 
     renderSaveSlots() {
@@ -875,27 +1109,33 @@ class GameEngine {
         this.audioManager.playClick();
 
         if (action === 'save') {
-            const result = this.saveManager.save(slotId, {
-                currentScene: this.currentScene,
-                currentDialogueIndex: this.currentDialogueIndex,
-                affection: this.affection,
-                dialogueHistory: this.historyManager.getAll()
-            });
+            const result = this.saveManager.save(slotId, this.getSaveState());
             this.showToast(result.message);
             this.renderSaveSlots();
         } else if (action === 'load') {
             const result = this.saveManager.load(slotId);
             if (result.success) {
                 this.currentScene = result.data.currentScene;
-                this.currentDialogueIndex = result.data.currentDialogueIndex;
-                this.affection = result.data.affection;
+                this.currentDialogueIndex = result.data.currentDialogueIndex ?? 0;
+                this.affection = {
+                    daiwa_scarlet: 0,
+                    vodka: 0,
+                    special_week: 0,
+                    ...(result.data.affection || {})
+                };
+                this.flags = { ...(result.data.flags || {}) };
                 this.historyManager.restore(result.data.dialogueHistory);
+                this.isUIHidden = false;
+                document.getElementById('app')?.classList.remove('ui-hidden');
 
                 this.updateAffectionUI();
                 this.closeSaveModal();
                 this.closeMenu();
                 this.showScreen('game-screen');
-                this.loadScene(this.currentScene);
+                this.loadScene(this.currentScene, {
+                    startDialogueIndex: this.currentDialogueIndex,
+                    isLoad: true
+                });
                 this.showToast(result.message);
             } else {
                 this.showToast(result.message);
@@ -913,6 +1153,7 @@ class GameEngine {
     // 結局圖鑑彈窗 (Ending Gallery)
     // ============================================
     openGalleryModal() {
+        this.clearAutoPlayTimer();
         const modal = document.getElementById('gallery-screen');
         const content = document.getElementById('gallery-content');
 
@@ -930,6 +1171,7 @@ class GameEngine {
 
     closeGalleryModal() {
         document.getElementById('gallery-screen')?.classList.remove('active');
+        this.resumeAutoPlayIfNeeded();
     }
 
     replayEnding(endingId) {
@@ -943,70 +1185,81 @@ class GameEngine {
     // 設定彈窗 (Settings)
     // ============================================
     openSettingsModal() {
+        this.clearAutoPlayTimer();
         document.getElementById('settings-screen')?.classList.add('active');
     }
 
     closeSettingsModal() {
         document.getElementById('settings-screen')?.classList.remove('active');
+        this.resumeAutoPlayIfNeeded();
     }
 
     // ============================================
     // 角色關係面板 (Relations)
     // ============================================
     openRelationsModal() {
+        this.clearAutoPlayTimer();
         const modal = document.getElementById('relations-screen');
         const content = document.getElementById('relations-content');
 
-        content.innerHTML = `
-            <div class="relation-card">
-                <div class="relation-avatar" style="border-color: #e74c3c;">
-                    <img src="img/daiwa_scarlet.png" alt="大和赤驥">
-                </div>
-                <div class="relation-info">
-                    <div class="relation-name">大和赤驥 (主線攻略角色)</div>
-                    <div class="relation-meter">
-                        <div class="relation-meter-fill" style="width: ${Math.min((this.affection.daiwa_scarlet / 150) * 100, 100)}%; background-color: #e74c3c;"></div>
+        const relationConfigs = [
+            {
+                id: 'daiwa_scarlet',
+                roleLabel: '主線攻略角色',
+                max: 150,
+                note: '解鎖結局關鍵'
+            },
+            {
+                id: 'vodka',
+                roleLabel: '競爭對手/助攻',
+                max: 20,
+                note: '達 8 分以上可觸發專屬助攻支線'
+            },
+            {
+                id: 'special_week',
+                roleLabel: '情報提供/室友',
+                max: 10,
+                note: '達 5 分以上可觸發宿舍日常支線'
+            }
+        ];
+
+        content.innerHTML = relationConfigs.map(({ id, roleLabel, max, note }) => {
+            const char = (typeof CHARACTERS !== 'undefined' && CHARACTERS[id]) || GAME_DATA.characters[id] || {};
+            const val = this.affection[id] ?? 0;
+            const pct = Math.max(0, Math.min((val / max) * 100, 100));
+            const color = char.color || '#e74c3c';
+            const avatar = char.avatar || '';
+            const name = char.name || id;
+
+            return `
+                <div class="relation-card">
+                    <div class="relation-avatar" style="border-color: ${color};">
+                        <img src="${avatar}" alt="${name}">
                     </div>
-                    <div class="relation-detail">當前好感度：<strong>${this.affection.daiwa_scarlet}</strong> / 150 (解鎖結局關鍵)</div>
-                </div>
-            </div>
-            <div class="relation-card">
-                <div class="relation-avatar" style="border-color: #9b59b6;">
-                    <img src="img/vodka.jpg" alt="伏特加">
-                </div>
-                <div class="relation-info">
-                    <div class="relation-name">伏特加 (競爭對手/助攻)</div>
-                    <div class="relation-meter">
-                        <div class="relation-meter-fill" style="width: ${Math.min((this.affection.vodka / 50) * 100, 100)}%; background-color: #9b59b6;"></div>
+                    <div class="relation-info">
+                        <div class="relation-name">${name} (${roleLabel})</div>
+                        <div class="relation-meter">
+                            <div class="relation-meter-fill" style="width: ${pct}%; background-color: ${color};"></div>
+                        </div>
+                        <div class="relation-detail">當前好感度：<strong>${val}</strong> / ${max} (${note})</div>
                     </div>
-                    <div class="relation-detail">當前好感度：<strong>${this.affection.vodka}</strong> (提升赤驥互動深度)</div>
                 </div>
-            </div>
-            <div class="relation-card">
-                <div class="relation-avatar" style="border-color: #f39c12;">
-                    <img src="img/special_week.jpg" alt="特別週">
-                </div>
-                <div class="relation-info">
-                    <div class="relation-name">特別週 (情報提供/室友)</div>
-                    <div class="relation-meter">
-                        <div class="relation-meter-fill" style="width: ${Math.min((this.affection.special_week / 50) * 100, 100)}%; background-color: #f39c12;"></div>
-                    </div>
-                    <div class="relation-detail">當前好感度：<strong>${this.affection.special_week}</strong> (開啟支線驚喜)</div>
-                </div>
-            </div>
-        `;
+            `;
+        }).join('');
 
         modal.classList.add('active');
     }
 
     closeRelationsModal() {
         document.getElementById('relations-screen')?.classList.remove('active');
+        this.resumeAutoPlayIfNeeded();
     }
 
     // ============================================
     // 人物介紹彈窗 (Characters)
     // ============================================
     showCharacters() {
+        this.clearAutoPlayTimer();
         const container = document.getElementById('chars-content');
         container.innerHTML = '';
 
@@ -1046,6 +1299,7 @@ class GameEngine {
 
     closeCharacters() {
         document.getElementById('chars-screen')?.classList.remove('active');
+        this.resumeAutoPlayIfNeeded();
     }
 
     // 顯示結局 - 根據好感度載入對應的結局場景並記錄至圖鑑
@@ -1084,9 +1338,9 @@ class GameEngine {
             if (scene.location) {
                 document.getElementById('location-text').textContent = scene.location;
             }
-            this.effectsManager.updateSceneEffect(scene);
+            this.effectsManager.updateSceneEffect(scene, endingScene);
 
-            if (scene.dialogues && scene.dialogues.length > 0) {
+            if (this.getActiveDialogues(scene).length > 0) {
                 this.showDialogue();
             }
         }

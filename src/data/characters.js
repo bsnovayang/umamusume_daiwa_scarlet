@@ -9,6 +9,7 @@ const CHARACTERS = {
         title: "永遠的第一名",
         color: "#e74c3c",
         avatar: "img/daiwa_scarlet/normal.png",
+        stand: "img/daiwa_scarlet/stand_normal.png",
         emoji: "🏇",
         expressions: {
             normal: "img/daiwa_scarlet/normal.png",
@@ -16,6 +17,50 @@ const CHARACTERS = {
             pout: "img/daiwa_scarlet/blush.png", // 暫時映射
             sad: "img/daiwa_scarlet/normal.png",
             joy: "img/daiwa_scarlet/normal.png"
+        },
+        standExpressions: {
+            normal: "img/daiwa_scarlet/stand_normal.png",
+            blush: "img/daiwa_scarlet/stand_normal.png",
+            joy: "img/daiwa_scarlet/stand_normal.png",
+            sad: "img/daiwa_scarlet/stand_normal.png",
+            pout: "img/daiwa_scarlet/stand_normal.png"
+        },
+        liveRig: {
+            baseSrc: "img/daiwa_scarlet/stand_normal.png",
+            headCenter: { u: 0.500, v: 0.320 },
+            neckPivot: { u: 0.500, v: 0.445 },
+            chestCenter: { u: 0.500, v: 0.580 },
+            leftEar: { u: 0.368, v: 0.115, pivotU: 0.395, pivotV: 0.155, radius: 0.085 },
+            rightEar: { u: 0.630, v: 0.115, pivotU: 0.605, pivotV: 0.155, radius: 0.085 },
+            leftHair: { side: "left", pivotU: 0.300, pivotV: 0.220, innerEdgeU: 0.340, tipV: 0.880 },
+            rightHair: { side: "right", pivotU: 0.700, pivotV: 0.220, innerEdgeU: 0.660, tipV: 0.880 },
+            cheeks: {
+                left: { u: 0.425, v: 0.368 },
+                right: { u: 0.575, v: 0.368 }
+            },
+            eyes: {
+                left: { u: 0.429, v: 0.333, rx: 0.044, ry: 0.021 },
+                right: { u: 0.569, v: 0.333, rx: 0.044, ry: 0.021 },
+                skinColor: "#fee3cb",
+                lidShadow: "#efc3b7",
+                lashColor: "#1f0e0d",
+                lashThickness: 5.2
+            },
+            mouth: {
+                u: 0.500,
+                v: 0.395,
+                rx: 0.0175,
+                ry: 0.0115,
+                coverRx: 0.0345,
+                coverRy: 0.0115,
+                skinColor: "#fee2ca",
+                lipColor: "#5e2b24",
+                lowerLipColor: "rgba(155, 76, 74, 0.42)",
+                cavityDark: "#7a2633",
+                cavityMid: "#c75264",
+                cavityLight: "#ea808e",
+                tongueColor: "#ef8896"
+            }
         },
         description: "自尊心強且非常認真努力的馬娘，視伏特加為最大宿敵兼摯友。"
     },

@@ -9,32 +9,270 @@
 </head>
 
 <body>
+    <!-- 特雷森光耀學園風：動態場景背景層 (含氛圍調色罩) -->
+    <div id="scene-backdrop" class="scene-backdrop bg-title atmosphere-sakura" aria-hidden="true">
+        <!-- 標題主視覺：特雷森學園晴空草地賽道＋櫻花門扉 (未來可無縫疊加 img/bg/title_bg.jpg) -->
+        <svg class="backdrop-art art-title" viewBox="0 0 1200 1000" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="skyTitle" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#38a6ff"/>
+                    <stop offset="48%" stop-color="#7cd4ff"/>
+                    <stop offset="85%" stop-color="#e3f7ff"/>
+                    <stop offset="100%" stop-color="#fff8e8"/>
+                </linearGradient>
+                <radialGradient id="sunTitle" cx="76%" cy="18%" r="48%">
+                    <stop offset="0%" stop-color="#fffce0" stop-opacity="0.95"/>
+                    <stop offset="35%" stop-color="#ffe794" stop-opacity="0.48"/>
+                    <stop offset="100%" stop-color="#ffe794" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="turfTitle" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#5ce075"/>
+                    <stop offset="35%" stop-color="#2eb85c"/>
+                    <stop offset="100%" stop-color="#197b3a"/>
+                </linearGradient>
+                <linearGradient id="turfStripeTitle" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+                </linearGradient>
+            </defs>
+            <rect width="1200" height="1000" fill="url(#skyTitle)"/>
+            <!-- 積雲 -->
+            <g fill="#ffffff" opacity="0.86">
+                <ellipse cx="210" cy="240" rx="160" ry="52"/>
+                <ellipse cx="290" cy="215" rx="115" ry="62"/>
+                <ellipse cx="145" cy="252" rx="95" ry="42"/>
+                <ellipse cx="940" cy="270" rx="180" ry="56"/>
+                <ellipse cx="860" cy="242" rx="110" ry="58"/>
+                <ellipse cx="1040" cy="282" rx="100" ry="42"/>
+            </g>
+            <!-- 晨曦光暈 -->
+            <rect width="1200" height="1000" fill="url(#sunTitle)"/>
+            <!-- 遠景學園鐘樓與看台剪影 -->
+            <g fill="#c9e2f5" opacity="0.88">
+                <rect x="60" y="455" width="320" height="130" rx="6"/>
+                <polygon points="390,585 450,415 510,585"/>
+                <rect x="435" y="370" width="30" height="90" rx="4"/>
+                <circle cx="450" cy="405" r="10" fill="#fff3c4"/>
+                <path d="M540 585 L540 480 Q820 445 1160 475 L1160 585 Z"/>
+            </g>
+            <!-- 翡翠草地賽道與勝利條紋 -->
+            <path d="M0 570 Q580 515 1200 560 L1200 1000 L0 1000 Z" fill="url(#turfTitle)"/>
+            <path d="M0 640 Q580 570 1200 630 L1200 725 Q580 660 0 740 Z" fill="url(#turfStripeTitle)"/>
+            <path d="M0 800 Q580 735 1200 795 L1200 905 Q580 845 0 925 Z" fill="url(#turfStripeTitle)"/>
+            <!-- 賽道白欄杆 -->
+            <g stroke="#ffffff" stroke-linecap="round" fill="none">
+                <path d="M-20 595 Q580 532 1220 582" stroke-width="9"/>
+                <path d="M-20 622 Q580 558 1220 610" stroke-width="6" opacity="0.92"/>
+            </g>
+            <g fill="#ffffff" opacity="0.95">
+                <rect x="90" y="582" width="10" height="68" rx="3"/>
+                <rect x="260" y="564" width="10" height="68" rx="3"/>
+                <rect x="430" y="553" width="10" height="68" rx="3"/>
+                <rect x="600" y="548" width="10" height="68" rx="3"/>
+                <rect x="770" y="553" width="10" height="68" rx="3"/>
+                <rect x="940" y="562" width="10" height="68" rx="3"/>
+                <rect x="1100" y="574" width="10" height="68" rx="3"/>
+            </g>
+            <!-- 頂角盛開櫻花枝枒 -->
+            <g opacity="0.92">
+                <circle cx="70" cy="70" r="115" fill="#ffd2df"/>
+                <circle cx="170" cy="40" r="85" fill="#ffb8ce"/>
+                <circle cx="35" cy="165" r="78" fill="#ffc4d6"/>
+                <circle cx="1130" cy="75" r="110" fill="#ffd2df"/>
+                <circle cx="1025" cy="45" r="82" fill="#ffb8ce"/>
+                <circle cx="1155" cy="170" r="74" fill="#ffc4d6"/>
+            </g>
+        </svg>
+
+        <!-- 場景1：學園訓練場 / 賽馬場 -->
+        <svg class="backdrop-art art-track" viewBox="0 0 1200 1000" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="skyTrack" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#2b95eb"/>
+                    <stop offset="55%" stop-color="#7fd6ff"/>
+                    <stop offset="100%" stop-color="#e5f7ff"/>
+                </linearGradient>
+                <linearGradient id="dirtTrack" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#e9c89d"/>
+                    <stop offset="100%" stop-color="#cfa373"/>
+                </linearGradient>
+                <linearGradient id="turfInner" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#52d66b"/>
+                    <stop offset="100%" stop-color="#25994b"/>
+                </linearGradient>
+            </defs>
+            <rect width="1200" height="1000" fill="url(#skyTrack)"/>
+            <g fill="#ffffff" opacity="0.88">
+                <ellipse cx="320" cy="210" rx="170" ry="50"/>
+                <ellipse cx="400" cy="185" rx="105" ry="58"/>
+                <ellipse cx="900" cy="235" rx="150" ry="44"/>
+            </g>
+            <!-- 看台建築群 -->
+            <g fill="#dbeeff">
+                <rect x="40" y="425" width="480" height="110" rx="8"/>
+                <rect x="70" y="450" width="420" height="22" fill="#8dc4f0" opacity="0.5"/>
+                <rect x="640" y="405" width="520" height="130" rx="8"/>
+                <polygon points="565,535 600,375 635,535" fill="#bfdcf5"/>
+            </g>
+            <!-- 翠綠跑道與沙地內道 -->
+            <path d="M0 525 L1200 525 L1200 1000 L0 1000 Z" fill="url(#turfInner)"/>
+            <path d="M0 710 Q600 660 1200 710 L1200 840 Q600 790 0 840 Z" fill="url(#dirtTrack)" opacity="0.88"/>
+            <g stroke="#ffffff" fill="none">
+                <path d="M0 555 Q600 520 1200 555" stroke-width="8"/>
+                <path d="M0 580 Q600 545 1200 580" stroke-width="5" opacity="0.9"/>
+                <path d="M0 708 Q600 658 1200 708" stroke-width="5" opacity="0.85"/>
+            </g>
+            <g fill="#ffffff">
+                <rect x="120" y="542" width="9" height="58" rx="3"/>
+                <rect x="360" y="532" width="9" height="58" rx="3"/>
+                <rect x="600" y="528" width="9" height="58" rx="3"/>
+                <rect x="840" y="532" width="9" height="58" rx="3"/>
+                <rect x="1080" y="542" width="9" height="58" rx="3"/>
+            </g>
+        </svg>
+
+        <!-- 場景2：特雷森學園明亮教室 / 室內 -->
+        <svg class="backdrop-art art-classroom" viewBox="0 0 1200 1000" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="wallClass" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#fffaf0"/>
+                    <stop offset="100%" stop-color="#f3e6d3"/>
+                </linearGradient>
+                <linearGradient id="sunBeamClass" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#fff7d6" stop-opacity="0.65"/>
+                    <stop offset="100%" stop-color="#fff7d6" stop-opacity="0"/>
+                </linearGradient>
+            </defs>
+            <rect width="1200" height="1000" fill="url(#wallClass)"/>
+            <!-- 藍天窗景 -->
+            <g>
+                <rect x="70" y="130" width="230" height="390" rx="6" fill="#92dcff" stroke="#d8b994" stroke-width="14"/>
+                <rect x="330" y="130" width="230" height="390" rx="6" fill="#a8e4ff" stroke="#d8b994" stroke-width="14"/>
+                <line x1="185" y1="130" x2="185" y2="520" stroke="#e8cfb0" stroke-width="10"/>
+                <line x1="445" y1="130" x2="445" y2="520" stroke="#e8cfb0" stroke-width="10"/>
+                <line x1="70" y1="320" x2="560" y2="320" stroke="#e8cfb0" stroke-width="10"/>
+            </g>
+            <!-- 黑板與木框 -->
+            <rect x="650" y="160" width="490" height="270" rx="8" fill="#1e6f46" stroke="#c5945b" stroke-width="14"/>
+            <rect x="642" y="426" width="506" height="18" rx="4" fill="#b37f45"/>
+            <!-- 掛鐘 -->
+            <circle cx="900" cy="95" r="38" fill="#ffffff" stroke="#d9a036" stroke-width="6"/>
+            <path d="M900 95 L900 72 M900 95 L916 102" stroke="#3a2d28" stroke-width="4" stroke-linecap="round"/>
+            <!-- 木質地板與日光斜射光束 -->
+            <rect x="0" y="640" width="1200" height="360" fill="#dfc098"/>
+            <path d="M70 130 L560 130 L960 980 L180 980 Z" fill="url(#sunBeamClass)"/>
+            <!-- 課桌剪影 -->
+            <g fill="#c99e6b" opacity="0.72">
+                <rect x="140" y="690" width="240" height="28" rx="6"/>
+                <rect x="460" y="710" width="250" height="28" rx="6"/>
+                <rect x="790" y="700" width="250" height="28" rx="6"/>
+            </g>
+        </svg>
+
+        <!-- 場景3：櫻花步道與校門 -->
+        <svg class="backdrop-art art-sakura" viewBox="0 0 1200 1000" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <linearGradient id="skySakura" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#4fb3ff"/>
+                    <stop offset="55%" stop-color="#b7e7ff"/>
+                    <stop offset="100%" stop-color="#fff0f5"/>
+                </linearGradient>
+                <linearGradient id="pathSakura" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#f6e7df"/>
+                    <stop offset="100%" stop-color="#e8d0c7"/>
+                </linearGradient>
+            </defs>
+            <rect width="1200" height="1000" fill="url(#skySakura)"/>
+            <rect x="0" y="600" width="1200" height="400" fill="#77cf7f"/>
+            <polygon points="460,600 740,600 1080,1000 120,1000" fill="url(#pathSakura)"/>
+            <!-- 左右櫻花樹冠 -->
+            <g fill="#7c564c">
+                <rect x="125" y="340" width="54" height="310" rx="16"/>
+                <rect x="1010" y="330" width="56" height="320" rx="16"/>
+            </g>
+            <g opacity="0.95">
+                <circle cx="180" cy="210" r="195" fill="#ffb8ce"/>
+                <circle cx="340" cy="145" r="145" fill="#ffd4e2"/>
+                <circle cx="90" cy="310" r="130" fill="#ff9ebb"/>
+                <circle cx="1010" cy="200" r="205" fill="#ffb8ce"/>
+                <circle cx="840" cy="145" r="150" fill="#ffd4e2"/>
+                <circle cx="1100" cy="310" r="135" fill="#ff9ebb"/>
+            </g>
+            <!-- 地面花瓣 -->
+            <g fill="#ffb7cc" opacity="0.78">
+                <ellipse cx="420" cy="760" rx="14" ry="7"/>
+                <ellipse cx="640" cy="820" rx="18" ry="8"/>
+                <ellipse cx="520" cy="880" rx="16" ry="7"/>
+                <ellipse cx="750" cy="780" rx="12" ry="6"/>
+            </g>
+        </svg>
+    </div>
+
     <!-- 動態粒子畫布 (櫻花雨、雨滴、光影) -->
     <canvas id="effects-canvas" class="effects-canvas"></canvas>
 
     <div id="app">
         <!-- 標題畫面 -->
         <div id="title-screen" class="screen active">
-            <div class="title-logo-container">
-                <div class="title-badge">🏇 UMA MUSUME PRETTY DERBY</div>
-                <h1>賽馬娘戀愛模擬器</h1>
-                <h2>~ 大和赤驥篇 ~</h2>
-                <p class="subtitle">視覺小說 AVG 豪華升級版 v2.0</p>
-                <p class="version-info">全 5 章完整主線 | 5 種結局分歧 | 角色立繪與音效系統</p>
+            <!-- 大和赤驥主視覺立繪展示層 -->
+            <div class="title-hero-stage" aria-hidden="true">
+                <img src="img/daiwa_scarlet/stand_normal.png" alt="" class="title-hero-sprite">
             </div>
 
-            <div class="title-actions">
-                <button id="start-btn" class="btn-primary">▶ 開始新遊戲</button>
-                <button id="title-load-btn" class="btn-secondary">📂 讀取進度</button>
-                <button id="title-gallery-btn" class="btn-secondary">🏆 結局圖鑑</button>
-                <button id="chars-btn" class="btn-tertiary">👥 人物介紹</button>
-            </div>
+            <div class="title-card-overlay">
+                <div class="title-logo-container">
+                    <!-- 特雷森冠軍蹄鐵徽章 -->
+                    <div class="title-emblem-slot" aria-hidden="true">
+                        <img src="img/ui/title_emblem.png" class="title-emblem-img" alt="">
+                    </div>
+                    <div class="title-badge">TRACEN ACADEMY • PRETTY DERBY</div>
+                    <h1>賽馬娘戀愛模擬器</h1>
+                    <h2>~ 大和赤驥篇 ~</h2>
+                    <p class="subtitle">特雷森光耀學園視覺小說 v2.0</p>
+                    <p class="version-info">全 5 章完整主線 · 5 種分歧結局 · 動態立繪系統</p>
+                </div>
 
-            <div class="title-footer">
-                <p>預計遊玩時間：60-90 分鐘 | 5 種分歧結局等你收集</p>
-                <p class="hotkeys-hint">
-                    ⌨️ 快捷鍵：Ctrl 加速 | H 歷史記錄 | A 自動播放 | V 隱藏UI | ESC 關閉選單
-                </p>
+                <div class="title-actions">
+                    <button id="start-btn" class="btn-primary">
+                        <svg class="btn-svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <span>開始新遊戲</span>
+                    </button>
+                    <button id="title-load-btn" class="btn-secondary">
+                        <svg class="btn-svg" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <span>讀取進度</span>
+                    </button>
+                    <button id="title-gallery-btn" class="btn-secondary">
+                        <svg class="btn-svg" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                            <path d="M4 22h16"/>
+                            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+                        </svg>
+                        <span>結局圖鑑</span>
+                    </button>
+                    <button id="chars-btn" class="btn-tertiary">
+                        <svg class="btn-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        <span>登場人物介紹</span>
+                    </button>
+                </div>
+
+                <div class="title-footer">
+                    <p>預計遊玩時間：60-90 分鐘 · 5 種專屬結局等你解鎖</p>
+                    <p class="hotkeys-hint">
+                        快捷鍵：Ctrl 加速 · H 歷史 · A 自動 · V 隱藏UI · ESC 關閉選單
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -43,27 +281,61 @@
             <!-- 頂部狀態欄 -->
             <div id="status-bar">
                 <div class="affection-container">
-                    <span class="label">💖 好感度</span>
+                    <span class="label">
+                        <svg class="label-icon" viewBox="0 0 24 24" width="17" height="17" fill="#e64545" aria-hidden="true">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        <span>好感度</span>
+                    </span>
                     <div class="affection-bar">
                         <div id="affection-fill" class="affection-fill"></div>
                     </div>
                     <span id="affection-value">0</span>
                 </div>
                 <div class="toolbar">
-                    <button id="auto-btn" class="icon-btn" title="自動播放 (A)">▶</button>
-                    <button id="history-btn" class="icon-btn" title="歷史記錄 (H)">📜</button>
-                    <button id="hide-ui-btn" class="icon-btn" title="隱藏 UI (V)">👁️</button>
-                    <button id="menu-btn" class="icon-btn" title="選單">☰</button>
+                    <button id="auto-btn" class="icon-btn" title="自動播放 (A)" aria-label="自動播放">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </button>
+                    <button id="history-btn" class="icon-btn" title="歷史記錄 (H)" aria-label="歷史記錄">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M3 12a9 9 0 1 0 3-6.7L3 8"/>
+                            <path d="M3 3v5h5"/>
+                            <path d="M12 7v5l4 2"/>
+                        </svg>
+                    </button>
+                    <button id="hide-ui-btn" class="icon-btn" title="隱藏 UI (V)" aria-label="隱藏介面">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                    <button id="menu-btn" class="icon-btn" title="選單 (ESC)" aria-label="遊戲選單">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+                            <line x1="4" y1="7" x2="20" y2="7"/>
+                            <line x1="4" y1="12" x2="20" y2="12"/>
+                            <line x1="4" y1="17" x2="20" y2="17"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
 
             <!-- 場景與地點 -->
             <div id="scene-display">
+                <svg class="loc-diamond" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+                    <polygon points="8,1 15,8 8,15 1,8" fill="#2eb85c" stroke="#d9a036" stroke-width="1.5"/>
+                </svg>
                 <p id="location-text">特雷森學園 - 教室</p>
             </div>
 
             <!-- 角色立繪/頭像展示舞台 -->
             <div id="character-stage" class="character-stage">
+                <div id="live-portrait-wrapper" class="live-portrait-wrapper">
+                    <canvas id="live-portrait-canvas" class="live-portrait-canvas"></canvas>
+                    <canvas id="live-portrait-overlay" class="live-portrait-overlay"></canvas>
+                    <div id="live-portrait-fx" class="live-portrait-fx"></div>
+                </div>
                 <div id="dialogue-avatar-wrapper" class="dialogue-avatar-wrapper">
                     <img id="dialogue-avatar-img" class="dialogue-avatar-img" src="" alt="角色頭像">
                     <canvas id="avatar-blink-canvas" class="avatar-blink-canvas"></canvas>
@@ -76,21 +348,32 @@
             <div class="game-bottom-area">
                 <!-- 對話區主體 -->
                 <div id="dialogue-box">
+                    <!-- 燙金四角裝飾 (未來可直接替換為 img/ui/dialogue_corner.png) -->
+                    <span class="box-corner tl" aria-hidden="true"></span>
+                    <span class="box-corner tr" aria-hidden="true"></span>
+                    <span class="box-corner bl" aria-hidden="true"></span>
+                    <span class="box-corner br" aria-hidden="true"></span>
+
                     <div class="dialogue-content-wrapper">
                         <div id="speaker-name"></div>
                         <div id="dialogue-text"></div>
+                    </div>
+
+                    <!-- 框內右下角翻頁提示 -->
+                    <div id="next-hint">
+                        <span class="next-hint-label">點擊繼續</span>
+                        <svg class="next-hint-arrow" viewBox="0 0 20 20" width="15" height="15" fill="currentColor" aria-hidden="true">
+                            <path d="M5 7l5 6 5-6H5z"/>
+                        </svg>
                     </div>
                 </div>
 
                 <!-- 選項區 -->
                 <div id="choices-container"></div>
 
-                <!-- 下一頁提示 -->
-                <div id="next-hint">點擊對話區繼續 ▼</div>
-
                 <!-- 底部快捷提示 -->
                 <div class="shortcuts-hint">
-                    Ctrl 加速 | H 歷史 | A 自動 | V 隱藏 UI
+                    Ctrl 加速 · H 歷史 · A 自動 · V 隱藏 UI
                 </div>
             </div>
         </div>
@@ -99,25 +382,50 @@
         <div id="menu-screen" class="screen overlay">
             <div class="menu-content">
                 <div class="menu-header">
-                    <h3>☰ 遊戲選單</h3>
-                    <button id="close-menu-btn" class="icon-btn">✕</button>
+                    <h3>
+                        <svg class="modal-hdr-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+                            <line x1="4" y1="7" x2="20" y2="7"/>
+                            <line x1="4" y1="12" x2="20" y2="12"/>
+                            <line x1="4" y1="17" x2="20" y2="17"/>
+                        </svg>
+                        <span>遊戲選單</span>
+                    </h3>
+                    <button id="close-menu-btn" class="icon-btn" aria-label="關閉選單">✕</button>
                 </div>
                 <div class="menu-buttons-list">
-                    <button id="menu-save-btn" class="menu-btn">💾 儲存進度</button>
-                    <button id="menu-load-btn" class="menu-btn">📂 讀取進度</button>
-                    <button id="menu-gallery-btn" class="menu-btn">🏆 結局圖鑑</button>
-                    <button id="menu-relations-btn" class="menu-btn">💖 角色好感一覽</button>
-                    <button id="menu-settings-btn" class="menu-btn">⚙️ 系統設定</button>
-                    <button id="back-to-title-btn" class="menu-btn secondary">🏠 回到標題</button>
+                    <button id="menu-save-btn" class="menu-btn">
+                        <svg class="menu-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        <span>儲存進度</span>
+                    </button>
+                    <button id="menu-load-btn" class="menu-btn">
+                        <svg class="menu-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        <span>讀取進度</span>
+                    </button>
+                    <button id="menu-gallery-btn" class="menu-btn">
+                        <svg class="menu-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                        <span>結局圖鑑</span>
+                    </button>
+                    <button id="menu-relations-btn" class="menu-btn">
+                        <svg class="menu-svg" viewBox="0 0 24 24" width="18" height="18" fill="#e64545" stroke="#e64545" stroke-width="1.6" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>角色好感一覽</span>
+                    </button>
+                    <button id="menu-settings-btn" class="menu-btn">
+                        <svg class="menu-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        <span>系統設定</span>
+                    </button>
+                    <button id="back-to-title-btn" class="menu-btn secondary">
+                        <svg class="menu-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>回到標題</span>
+                    </button>
                 </div>
                 <div class="menu-shortcuts">
-                    <p>⌨️ 操作快捷鍵：</p>
+                    <p>操作快捷鍵</p>
                     <ul>
-                        <li><kbd>Ctrl</kbd> - 按住加速快進對話</li>
-                        <li><kbd>H</kbd> - 開啟對話歷史記錄</li>
-                        <li><kbd>A</kbd> - 切換自動播放模式</li>
-                        <li><kbd>V</kbd> - 隱藏/顯示對話視窗</li>
-                        <li><kbd>ESC</kbd> - 關閉開啟的面板</li>
+                        <li><kbd>Ctrl</kbd> 按住加速快進對話</li>
+                        <li><kbd>H</kbd> 開啟對話歷史記錄</li>
+                        <li><kbd>A</kbd> 切換自動播放模式</li>
+                        <li><kbd>V</kbd> 隱藏/顯示對話視窗</li>
+                        <li><kbd>ESC</kbd> 關閉開啟的面板</li>
                     </ul>
                 </div>
             </div>
@@ -128,7 +436,7 @@
             <div class="save-modal-panel">
                 <div class="save-modal-header">
                     <h3 id="save-modal-title">💾 儲存進度</h3>
-                    <button id="close-save-modal-btn" class="icon-btn">✕</button>
+                    <button id="close-save-modal-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div id="save-slots-container" class="save-slots-container">
                     <!-- 動態生成 4 個手動槽位 + 1 個自動存檔槽位 -->
@@ -141,7 +449,7 @@
             <div class="gallery-panel">
                 <div class="gallery-header">
                     <h3>🏆 結局圖鑑與成就收集</h3>
-                    <button id="close-gallery-btn" class="icon-btn">✕</button>
+                    <button id="close-gallery-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div id="gallery-content" class="gallery-content">
                     <!-- 動態生成 S/A/B/C/D 結局進度卡片 -->
@@ -154,7 +462,7 @@
             <div class="relations-panel">
                 <div class="relations-header">
                     <h3>💖 角色好感度與關係狀態</h3>
-                    <button id="close-relations-btn" class="icon-btn">✕</button>
+                    <button id="close-relations-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div id="relations-content" class="relations-content">
                     <!-- 動態生成角色好感狀態 -->
@@ -167,7 +475,7 @@
             <div class="settings-panel">
                 <div class="settings-header">
                     <h3>⚙️ 系統設定</h3>
-                    <button id="close-settings-btn" class="icon-btn">✕</button>
+                    <button id="close-settings-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div class="settings-content">
                     <div class="setting-item">
@@ -213,6 +521,11 @@
                         <label for="setting-mouth">👄 角色說話嘴部動態 (測試)</label>
                         <input type="checkbox" id="setting-mouth" class="setting-checkbox" checked>
                     </div>
+
+                    <div class="setting-item checkbox-item">
+                        <label for="setting-live2d">✨ 類 Live2D 立繪動態效果</label>
+                        <input type="checkbox" id="setting-live2d" class="setting-checkbox" checked>
+                    </div>
                 </div>
             </div>
         </div>
@@ -222,7 +535,7 @@
             <div class="history-panel">
                 <div class="history-header">
                     <h3>📜 對話歷史記錄 (Backlog)</h3>
-                    <button id="close-history-btn" class="icon-btn">✕</button>
+                    <button id="close-history-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div id="history-content" class="history-content">
                     <!-- 歷史記錄動態生成 -->
@@ -238,7 +551,7 @@
             <div class="chars-panel">
                 <div class="chars-header">
                     <h3>👥 主要登場人物介紹</h3>
-                    <button id="close-chars-btn" class="icon-btn">✕</button>
+                    <button id="close-chars-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div id="chars-content" class="chars-content">
                     <!-- 角色卡片動態生成 -->
@@ -267,6 +580,7 @@
     <script src="src/utils/EffectsManager.js"></script>
     <script src="src/utils/BlinkManager.js"></script>
     <script src="src/utils/MouthManager.js"></script>
+    <script src="src/utils/LivePortraitManager.js"></script>
 
     <!-- 核心引擎與主入口 -->
     <script src="src/core/GameEngine.js"></script>
