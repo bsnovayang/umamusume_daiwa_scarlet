@@ -547,19 +547,19 @@ class LivePortraitManager {
             this.earVelL += 0.28;
             this.earVelR -= 0.28;
             this.headTiltVel += 0.06;
-            this.spawnFxParticles(['✨', '⭐'], 2);
+            this.spawnFxParticles(['sparkle', 'star'], 2);
         } else if (type === 'blush') {
             this.bounceVel += 0.02;
             this.headTiltVel -= 0.08;
             this.earVelL -= 0.22;
             this.earVelR += 0.22;
-            this.spawnFxParticles(['💕'], 1);
+            this.spawnFxParticles(['heart'], 1);
         } else if (type === 'pout') {
             this.bounceVel -= 0.03;
             this.earVelL += 0.32;
             this.earVelR += 0.22;
             this.headTiltVel += 0.09;
-            this.spawnFxParticles(['💢'], 1);
+            this.spawnFxParticles(['anger'], 1);
         } else if (type === 'sad') {
             this.bounceVel += 0.025;
             this.earVelL -= 0.2;
@@ -570,12 +570,25 @@ class LivePortraitManager {
             this.earVelL += 0.42;
             this.earVelR -= 0.42;
             this.headTiltVel += (Math.random() > 0.5 ? 1 : -1) * 0.12;
-            this.spawnFxParticles(['💖', '✨', '💕'], 3);
+            this.spawnFxParticles(['heart', 'sparkle', 'star'], 3);
         }
     }
 
     triggerPetReaction() {
         this.triggerReaction('pet');
+    }
+
+    getFxSvg(kind) {
+        if (kind === 'heart') {
+            return `<svg class="live-fx-svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff5e7e" stroke="#ffffff" stroke-width="1.5"/></svg>`;
+        }
+        if (kind === 'anger') {
+            return `<svg class="live-fx-svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#e63946" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M4 9c3 0 5-2 5-5"/><path d="M20 9c-3 0-5-2-5-5"/><path d="M4 15c3 0 5 2 5 5"/><path d="M20 15c-3 0-5 2-5 5"/></svg>`;
+        }
+        if (kind === 'star') {
+            return `<svg class="live-fx-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><polygon points="12,2 14.9,8.6 22,9.3 16.6,14 18.2,21 12,17.3 5.8,21 7.4,14 2,9.3 9.1,8.6" fill="#ffd452" stroke="#b57d19" stroke-width="1.3"/></svg>`;
+        }
+        return `<svg class="live-fx-svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 2l2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2L12 2z" fill="#ffe787" stroke="#d9941e" stroke-width="1.2"/></svg>`;
     }
 
     spawnFxParticles(symbols, count = 2) {
@@ -584,7 +597,7 @@ class LivePortraitManager {
         for (let i = 0; i < count; i++) {
             const node = document.createElement('span');
             node.className = 'live-fx-particle';
-            node.textContent = symbols[i % symbols.length];
+            node.innerHTML = this.getFxSvg(symbols[i % symbols.length]);
             const leftPct = 34 + Math.random() * 32;
             const topPct = 14 + Math.random() * 20;
             node.style.left = `${leftPct}%`;

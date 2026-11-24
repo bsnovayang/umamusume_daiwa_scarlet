@@ -107,7 +107,7 @@ class GalleryManager {
         let html = `
             <div class="gallery-progress-bar-container">
                 <div class="gallery-progress-header">
-                    <span>🏆 結局收集進度</span>
+                    <span class="meta-label"><svg class="meta-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#d9a036" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>結局收集進度</span>
                     <span class="gallery-progress-text">${progress.count} / ${progress.total} (${progress.percentage}%)</span>
                 </div>
                 <div class="gallery-progress-track">
@@ -137,18 +137,18 @@ class GalleryManager {
                         </p>
                         ${isUnlocked ? `
                             <div class="gallery-card-meta">
-                                <span>📅 ${dateStr}</span>
-                                <span>💖 好感度 ${unlockData.maxAffection}</span>
+                                <span class="meta-label"><svg class="meta-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${dateStr}</span>
+                                <span class="meta-label"><svg class="meta-svg" viewBox="0 0 24 24" width="13" height="13" fill="#e64545" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>好感度 ${unlockData.maxAffection}</span>
                             </div>
                         ` : ''}
                     </div>
                     <div class="gallery-card-actions">
                         ${isUnlocked ? `
                             <button class="gallery-replay-btn" data-ending="${id}">
-                                ▶ 重溫結局
+                                <svg class="meta-svg" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>重溫結局
                             </button>
                         ` : `
-                            <span class="gallery-lock-hint">🔒 尚未達成</span>
+                            <span class="gallery-lock-hint"><svg class="meta-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>尚未達成</span>
                         `}
                     </div>
                 </div>

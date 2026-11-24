@@ -68,10 +68,6 @@ body {
     transition: opacity 0.55s ease;
 }
 
-.scene-backdrop.bg-sakura .art-sakura {
-    opacity: 1;
-}
-
 .scene-backdrop.bg-title {
     background-image: url('img/bg/track_day.jpg');
 }
@@ -84,9 +80,9 @@ body {
     background-image: url('img/bg/classroom_day.jpg');
 }
 
-/* Future generated raster BG drop-in slot:
-.scene-backdrop.bg-sakura { background-image: url('img/bg/sakura_day.jpg'); }
-*/
+.scene-backdrop.bg-sakura {
+    background-image: url('img/bg/sakura_day.jpg');
+}
 
 .scene-backdrop::after {
     content: '';
@@ -208,8 +204,8 @@ body {
     margin-top: 6px;
     filter: drop-shadow(0 14px 28px rgba(27, 74, 48, 0.28));
     animation: titleHeroFloat 4.8s ease-in-out infinite;
-    -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 98%);
-    mask-image: linear-gradient(180deg, #000 62%, transparent 98%);
+    -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent 98%);
+    mask-image: linear-gradient(180deg, #000 72%, transparent 98%);
 }
 
 @keyframes titleHeroFloat {
@@ -1481,10 +1477,67 @@ body {
     gap: 6px;
 }
 
-.setting-item label {
+.setting-item label,
+.setting-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     font-size: 0.92rem;
     color: var(--text-color);
     font-weight: 700;
+}
+
+.setting-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.setting-svg {
+    color: var(--tracen-green-dark);
+    flex-shrink: 0;
+}
+
+.volume-pct-badge {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--tracen-green-dark);
+    background: #eefaf1;
+    border: 1px solid rgba(46, 184, 92, 0.35);
+    padding: 1px 8px;
+    border-radius: 999px;
+}
+
+.meta-label,
+.stat-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.meta-svg {
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+.save-slot-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.gallery-replay-btn,
+.gallery-lock-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.live-fx-svg {
+    display: block;
+    filter: drop-shadow(0 2px 5px rgba(24, 34, 42, 0.28));
 }
 
 .setting-select {

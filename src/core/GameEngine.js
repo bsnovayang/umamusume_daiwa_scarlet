@@ -575,17 +575,26 @@ class GameEngine {
             });
         }
 
+        const bgmValEl = document.getElementById('bgm-volume-val');
+        const sfxValEl = document.getElementById('sfx-volume-val');
+
         if (bgmVolumeSlider) {
             bgmVolumeSlider.value = this.audioManager.bgmVolume;
+            if (bgmValEl) bgmValEl.textContent = `${Math.round(this.audioManager.bgmVolume * 100)}%`;
             bgmVolumeSlider.addEventListener('input', (e) => {
-                this.audioManager.setBgmVolume(parseFloat(e.target.value));
+                const v = parseFloat(e.target.value);
+                this.audioManager.setBgmVolume(v);
+                if (bgmValEl) bgmValEl.textContent = `${Math.round(v * 100)}%`;
             });
         }
 
         if (sfxVolumeSlider) {
             sfxVolumeSlider.value = this.audioManager.sfxVolume;
+            if (sfxValEl) sfxValEl.textContent = `${Math.round(this.audioManager.sfxVolume * 100)}%`;
             sfxVolumeSlider.addEventListener('input', (e) => {
-                this.audioManager.setSfxVolume(parseFloat(e.target.value));
+                const v = parseFloat(e.target.value);
+                this.audioManager.setSfxVolume(v);
+                if (sfxValEl) sfxValEl.textContent = `${Math.round(v * 100)}%`;
                 this.audioManager.playClick();
             });
         }
@@ -834,8 +843,8 @@ class GameEngine {
                     avatarEmoji.style.display = 'none';
                 } else {
                     avatarImg.style.display = 'none';
-                    avatarEmoji.textContent = character.emoji || '👤';
-                    avatarEmoji.style.display = 'block';
+                    avatarEmoji.innerHTML = `<svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>`;
+                    avatarEmoji.style.display = 'flex';
                     avatarEmoji.style.backgroundColor = character.color;
                 }
 
@@ -1030,7 +1039,13 @@ class GameEngine {
         this.saveModalMode = mode;
         const modal = document.getElementById('save-modal-screen');
         const titleEl = document.getElementById('save-modal-title');
-        titleEl.textContent = mode === 'save' ? '💾 儲存進度 (選擇欄位)' : '📂 讀取進度 (選擇欄位)';
+        if (titleEl) {
+            const iconSvg = mode === 'save'
+                ? `<svg class="modal-hdr-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>`
+                : `<svg class="modal-hdr-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`;
+            const label = mode === 'save' ? '儲存進度 (選擇欄位)' : '讀取進度 (選擇欄位)';
+            titleEl.innerHTML = `${iconSvg}<span>${label}</span>`;
+        }
 
         this.renderSaveSlots();
         modal.classList.add('active');
@@ -1060,7 +1075,11 @@ class GameEngine {
                     <div class="save-slot-body">
                         <div class="save-slot-chapter">${slot.data.chapterName} - ${slot.data.location}</div>
                         <div class="save-slot-preview">「${slot.data.previewText}」</div>
-                        <div class="save-slot-stats">💖 赤驥: ${slot.data.affection.daiwa_scarlet} | 🍸 伏特加: ${slot.data.affection.vodka} | ⭐ 特別週: ${slot.data.affection.special_week}</div>
+                        <div class="save-slot-stats">
+                            <span class="stat-chip"><svg class="meta-svg" viewBox="0 0 24 24" width="13" height="13" fill="#e64545" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>赤驥: ${slot.data.affection.daiwa_scarlet}</span>
+                            <span class="stat-chip"><svg class="meta-svg" viewBox="0 0 24 24" width="13" height="13" fill="#9b59b6" aria-hidden="true"><polygon points="12,2 15,9 22,9.5 16.5,14 18.2,21 12,17.2 5.8,21 7.5,14 2,9.5 9,9"/></svg>伏特加: ${slot.data.affection.vodka}</span>
+                            <span class="stat-chip"><svg class="meta-svg" viewBox="0 0 24 24" width="13" height="13" fill="#d9a036" aria-hidden="true"><polygon points="12,2 15,9 22,9.5 16.5,14 18.2,21 12,17.2 5.8,21 7.5,14 2,9.5 9,9"/></svg>特別週: ${slot.data.affection.special_week}</span>
+                        </div>
                     </div>
                     <div class="save-slot-actions">
                         ${this.saveModalMode === 'save' && !slot.isAuto ? `
@@ -1275,7 +1294,7 @@ class GameEngine {
             if (char.avatar) {
                 avatarHtml = `<img src="${char.avatar}" class="char-avatar-img" alt="${char.name}">`;
             } else {
-                avatarHtml = `<div class="char-avatar" style="background-color: ${char.color}">${char.emoji || '👤'}</div>`;
+                avatarHtml = `<div class="char-avatar" style="background-color: ${char.color}"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></div>`;
             }
 
             card.innerHTML = `
@@ -1322,7 +1341,7 @@ class GameEngine {
         // 解鎖圖鑑結局
         const unlockResult = this.galleryManager.unlock(endingScene, finalAffection);
         if (unlockResult.isNew) {
-            this.showToast(`🎉 達成新結局：【${unlockResult.endingInfo.title}】！已加入圖鑑！`);
+            this.showToast(`達成新結局：【${unlockResult.endingInfo.title}】！已加入圖鑑！`);
         }
 
         // 播放結局勝利音效與浪漫音樂

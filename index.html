@@ -340,7 +340,12 @@
                     <img id="dialogue-avatar-img" class="dialogue-avatar-img" src="" alt="角色頭像">
                     <canvas id="avatar-blink-canvas" class="avatar-blink-canvas"></canvas>
                     <canvas id="avatar-mouth-canvas" class="avatar-mouth-canvas"></canvas>
-                    <div id="dialogue-avatar-emoji" class="dialogue-avatar-emoji">🏇</div>
+                    <div id="dialogue-avatar-emoji" class="dialogue-avatar-emoji">
+                        <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M5 20a7 7 0 0 1 14 0"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
 
@@ -435,7 +440,10 @@
         <div id="save-modal-screen" class="screen overlay">
             <div class="save-modal-panel">
                 <div class="save-modal-header">
-                    <h3 id="save-modal-title">💾 儲存進度</h3>
+                    <h3 id="save-modal-title">
+                        <svg class="modal-hdr-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        <span>儲存進度</span>
+                    </h3>
                     <button id="close-save-modal-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div id="save-slots-container" class="save-slots-container">
@@ -448,7 +456,10 @@
         <div id="gallery-screen" class="screen overlay">
             <div class="gallery-panel">
                 <div class="gallery-header">
-                    <h3>🏆 結局圖鑑與成就收集</h3>
+                    <h3>
+                        <svg class="modal-hdr-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                        <span>結局圖鑑與成就收集</span>
+                    </h3>
                     <button id="close-gallery-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div id="gallery-content" class="gallery-content">
@@ -461,7 +472,10 @@
         <div id="relations-screen" class="screen overlay">
             <div class="relations-panel">
                 <div class="relations-header">
-                    <h3>💖 角色好感度與關係狀態</h3>
+                    <h3>
+                        <svg class="modal-hdr-svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>角色好感度與關係狀態</span>
+                    </h3>
                     <button id="close-relations-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div id="relations-content" class="relations-content">
@@ -474,12 +488,18 @@
         <div id="settings-screen" class="screen overlay">
             <div class="settings-panel">
                 <div class="settings-header">
-                    <h3>⚙️ 系統設定</h3>
+                    <h3>
+                        <svg class="modal-hdr-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        <span>系統設定</span>
+                    </h3>
                     <button id="close-settings-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div class="settings-content">
                     <div class="setting-item">
-                        <label for="setting-text-speed">💬 文字顯示速度</label>
+                        <label for="setting-text-speed" class="setting-label">
+                            <svg class="setting-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <span>文字顯示速度</span>
+                        </label>
                         <select id="setting-text-speed" class="setting-select">
                             <option value="60">慢速 (60ms)</option>
                             <option value="40" selected>標準 (40ms)</option>
@@ -489,7 +509,10 @@
                     </div>
 
                     <div class="setting-item">
-                        <label for="setting-auto-delay">⏱️ 自動播放間隔</label>
+                        <label for="setting-auto-delay" class="setting-label">
+                            <svg class="setting-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5"/><path d="M9 2h6"/></svg>
+                            <span>自動播放間隔</span>
+                        </label>
                         <select id="setting-auto-delay" class="setting-select">
                             <option value="1200">1.2 秒 (快)</option>
                             <option value="2000" selected>2.0 秒 (標準)</option>
@@ -498,32 +521,56 @@
                     </div>
 
                     <div class="setting-item">
-                        <label for="setting-bgm-volume">🎵 背景音樂音量 (BGM)</label>
+                        <div class="setting-label-row">
+                            <label for="setting-bgm-volume" class="setting-label">
+                                <svg class="setting-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                                <span>背景音樂音量 (BGM)</span>
+                            </label>
+                            <span id="bgm-volume-val" class="volume-pct-badge">15%</span>
+                        </div>
                         <input type="range" id="setting-bgm-volume" min="0" max="1" step="0.05" value="0.15" class="setting-range">
                     </div>
 
                     <div class="setting-item">
-                        <label for="setting-sfx-volume">🔊 互動音效音量 (SFX)</label>
+                        <div class="setting-label-row">
+                            <label for="setting-sfx-volume" class="setting-label">
+                                <svg class="setting-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                                <span>互動音效音量 (SFX)</span>
+                            </label>
+                            <span id="sfx-volume-val" class="volume-pct-badge">85%</span>
+                        </div>
                         <input type="range" id="setting-sfx-volume" min="0" max="1" step="0.05" value="0.85" class="setting-range">
                     </div>
 
                     <div class="setting-item checkbox-item">
-                        <label for="setting-mute">🔇 全域靜音</label>
+                        <label for="setting-mute" class="setting-label">
+                            <svg class="setting-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                            <span>全域靜音</span>
+                        </label>
                         <input type="checkbox" id="setting-mute" class="setting-checkbox">
                     </div>
 
                     <div class="setting-item checkbox-item">
-                        <label for="setting-blink">✨ 角色動態眨眼效果</label>
+                        <label for="setting-blink" class="setting-label">
+                            <svg class="setting-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <span>角色動態眨眼效果</span>
+                        </label>
                         <input type="checkbox" id="setting-blink" class="setting-checkbox" checked>
                     </div>
 
                     <div class="setting-item checkbox-item">
-                        <label for="setting-mouth">👄 角色說話嘴部動態 (測試)</label>
+                        <label for="setting-mouth" class="setting-label">
+                            <svg class="setting-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12c2.5-3 5.5-3 8-1 2.5-2 5.5-2 8 1-2.5 4.5-5.5 6-8 6s-5.5-1.5-8-6z"/></svg>
+                            <span>角色說話嘴部動態</span>
+                        </label>
                         <input type="checkbox" id="setting-mouth" class="setting-checkbox" checked>
                     </div>
 
                     <div class="setting-item checkbox-item">
-                        <label for="setting-live2d">✨ 類 Live2D 立繪動態效果</label>
+                        <label for="setting-live2d" class="setting-label">
+                            <svg class="setting-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.3L19 10.2l-5.1 1.9L12 17.5l-1.9-5.4L5 10.2l5.1-1.9L12 3z"/><path d="M19 3l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
+                            <span>類 Live2D 立繪動態效果</span>
+                        </label>
                         <input type="checkbox" id="setting-live2d" class="setting-checkbox" checked>
                     </div>
                 </div>
@@ -534,7 +581,10 @@
         <div id="history-screen" class="screen overlay">
             <div class="history-panel">
                 <div class="history-header">
-                    <h3>📜 對話歷史記錄 (Backlog)</h3>
+                    <h3>
+                        <svg class="modal-hdr-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+                        <span>對話歷史記錄 (Backlog)</span>
+                    </h3>
                     <button id="close-history-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div id="history-content" class="history-content">
@@ -550,7 +600,10 @@
         <div id="chars-screen" class="screen overlay">
             <div class="chars-panel">
                 <div class="chars-header">
-                    <h3>👥 主要登場人物介紹</h3>
+                    <h3>
+                        <svg class="modal-hdr-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span>主要登場人物介紹</span>
+                    </h3>
                     <button id="close-chars-btn" class="icon-btn" aria-label="關閉">✕</button>
                 </div>
                 <div id="chars-content" class="chars-content">
