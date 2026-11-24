@@ -33,6 +33,20 @@ class GameEngine {
         // 儲存/讀取模式狀態 ('save' 或 'load')
         this.saveModalMode = 'save';
 
+        // 過場與結算 UI 狀態
+        this.eyecatchTimer = null;
+        this.eyecatchHideTimer = null;
+        this.isEyecatchActive = false;
+        this.affectionPulseTimer = null;
+        this.lastEndingMeta = null;
+        this.chapterIntros = {
+            prologue_start: { code: 'CHAPTER 01', title: '第一章：邂逅', subtitle: '初次踏入特雷森學園的那一天' },
+            ch2_morning_run: { code: 'CHAPTER 02', title: '第二章：接近', subtitle: '晨光下的並肩奔跑' },
+            chapter3_start: { code: 'CHAPTER 03', title: '第三章：心意', subtitle: '悄然萌芽的悸動與信賴' },
+            chapter4_start: { code: 'CHAPTER 04', title: '第四章：考驗', subtitle: '迎向重大賽事的試煉' },
+            chapter5_start: { code: 'CHAPTER 05', title: '第五章：終章', subtitle: '櫻花綻放時的最終決戰' }
+        };
+
         // 初始化管理器
         this.saveManager = new SaveManager();
         this.historyManager = new HistoryManager();
@@ -52,6 +66,19 @@ class GameEngine {
                 if (char.standExpressions) standUrls.push(...Object.values(char.standExpressions));
             });
             this.livePortraitManager.preloadImages(standUrls);
+        }
+
+        if (typeof Image !== 'undefined') {
+            [
+                'img/bg/track_day.jpg',
+                'img/bg/classroom_day.jpg',
+                'img/bg/sakura_day.jpg',
+                'img/bg/rooftop_day.jpg',
+                'img/bg/lounge_day.jpg'
+            ].forEach((url) => {
+                const img = new Image();
+                img.src = url;
+            });
         }
 
         this.loadUserSettings();
@@ -186,6 +213,7 @@ class GameEngine {
             !this.isTyping &&
             !this.isChoicesVisible() &&
             !this.hasActiveOverlay() &&
+            !this.isEyecatchActive &&
             !this.isUIHidden
         ) {
             this.startAutoPlay();
@@ -207,7 +235,15 @@ class GameEngine {
                     this.toggleHideUI(false);
                 } else if (this.hasActiveOverlay()) {
                     this.closeAllOverlays();
+                } else if (this.isEyecatchActive) {
+                    this.hideChapterEyecatch();
                 }
+                return;
+            }
+
+            if (this.isEyecatchActive && (e.key === ' ' || e.key === 'Enter')) {
+                e.preventDefault?.();
+                this.hideChapterEyecatch();
                 return;
             }
 
@@ -356,9 +392,13 @@ class GameEngine {
     // 開始自動播放
     startAutoPlay() {
         this.clearAutoPlayTimer();
+        if (this.hasActiveOverlay() || this.isUIHidden || this.isEyecatchActive) {
+            return;
+        }
         this.autoPlayTimer = setTimeout(() => {
             this.handleDialogueClick();
         }, this.autoPlayDelay);
+        this.autoPlayTimer?.unref?.();
     }
 
     clearAutoPlayTimer() {
@@ -415,6 +455,7 @@ class GameEngine {
 
     // 關閉所有覆蓋層
     closeAllOverlays() {
+        this.hideChapterEyecatch();
         this.closeHistory();
         this.closeMenu();
         this.closeCharacters();
@@ -422,6 +463,7 @@ class GameEngine {
         this.closeGalleryModal();
         this.closeSettingsModal();
         this.closeRelationsModal();
+        this.closeEndingResultModal();
     }
 
     showToast(message) {
@@ -537,15 +579,81 @@ class GameEngine {
 
         // 歷史與人物關閉按鈕
         document.getElementById('history-btn')?.addEventListener('click', () => this.toggleHistory());
-        document.getElementById('close-history-btn')?.addEventListener('click', () => this.closeHistory());
+        document.getElementById('close-history-btn')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.closeHistory();
+        });
         document.getElementById('auto-btn')?.addEventListener('click', () => this.toggleAutoMode());
-        document.getElementById('close-chars-btn')?.addEventListener('click', () => this.closeCharacters());
+        document.getElementById('close-chars-btn')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.closeCharacters();
+        });
 
         // 彈窗通用關閉按鈕
-        document.getElementById('close-save-modal-btn')?.addEventListener('click', () => this.closeSaveModal());
-        document.getElementById('close-gallery-btn')?.addEventListener('click', () => this.closeGalleryModal());
-        document.getElementById('close-settings-btn')?.addEventListener('click', () => this.closeSettingsModal());
-        document.getElementById('close-relations-btn')?.addEventListener('click', () => this.closeRelationsModal());
+        document.getElementById('close-save-modal-btn')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.closeSaveModal();
+        });
+        document.getElementById('close-gallery-btn')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.closeGalleryModal();
+        });
+        document.getElementById('close-settings-btn')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.closeSettingsModal();
+        });
+        document.getElementById('close-relations-btn')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.closeRelationsModal();
+        });
+
+        // 點擊遮罩空白處關閉對應彈窗
+        const overlayCloseMap = [
+            ['menu-screen', () => this.closeMenu()],
+            ['save-modal-screen', () => this.closeSaveModal()],
+            ['gallery-screen', () => this.closeGalleryModal()],
+            ['relations-screen', () => this.closeRelationsModal()],
+            ['settings-screen', () => this.closeSettingsModal()],
+            ['history-screen', () => this.closeHistory()],
+            ['chars-screen', () => this.closeCharacters()],
+            ['ending-result-screen', () => this.closeEndingResultModal()]
+        ];
+        overlayCloseMap.forEach(([id, closeFn]) => {
+            const el = document.getElementById(id);
+            el?.addEventListener('click', (e) => {
+                if (e.target === el) {
+                    this.audioManager.playClick();
+                    closeFn();
+                }
+            });
+        });
+
+        // 章節過場點擊略過
+        document.getElementById('chapter-eyecatch')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.hideChapterEyecatch();
+        });
+
+        // 結局結算畫面按鈕
+        document.getElementById('close-ending-result-btn')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.closeEndingResultModal();
+        });
+        document.getElementById('ending-open-gallery-btn')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.closeEndingResultModal();
+            this.openGalleryModal();
+        });
+        document.getElementById('ending-restart-btn')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.closeEndingResultModal();
+            this.startGame();
+        });
+        document.getElementById('ending-title-btn')?.addEventListener('click', () => {
+            this.audioManager.playClick();
+            this.closeEndingResultModal();
+            this.loadScene('title');
+        });
 
         // 設定控制項綁定
         this.bindSettingsControls();
@@ -635,6 +743,9 @@ class GameEngine {
 
     // 開始新遊戲
     startGame() {
+        this.hideChapterEyecatch();
+        this.closeEndingResultModal();
+        this.lastEndingMeta = null;
         this.currentScene = 'prologue_start';
         this.currentDialogueIndex = 0;
         this.affection = {
@@ -647,6 +758,8 @@ class GameEngine {
         this.isAutoMode = false;
         this.isUIHidden = false;
         document.getElementById('app')?.classList.remove('ui-hidden');
+        const floatLayer = document.getElementById('affection-float-layer');
+        if (floatLayer) floatLayer.innerHTML = '';
         this.updateAffectionUI();
 
         const autoBtn = document.getElementById('auto-btn');
@@ -672,9 +785,14 @@ class GameEngine {
         const { startDialogueIndex = 0, isLoad = false } = options;
         this.clearAutoPlayTimer();
         this.stopTyping();
+        this.hideChapterEyecatch();
 
         if (sceneId === 'title') {
             this.isUIHidden = false;
+            this.closeEndingResultModal();
+            this.lastEndingMeta = null;
+            const floatLayer = document.getElementById('affection-float-layer');
+            if (floatLayer) floatLayer.innerHTML = '';
             const app = document.getElementById('app');
             if (app) {
                 app.classList.remove('ui-hidden', 'atmosphere-sunset', 'atmosphere-night', 'atmosphere-rain', 'atmosphere-sakura');
@@ -695,6 +813,11 @@ class GameEngine {
 
         if (sceneId === 'end') {
             this.showEnding();
+            return;
+        }
+
+        if (sceneId === 'ending_result') {
+            this.openEndingResultModal(this.currentScene);
             return;
         }
 
@@ -720,9 +843,12 @@ class GameEngine {
         // 依據場景類型切換 BGM
         this.updateSceneBGM(sceneId, scene);
 
-        // 章節轉換時自動存檔（讀檔時不覆蓋自動存檔）
-        if (!isLoad && (sceneId.includes('_start') || sceneId === 'ch5_the_race')) {
+        // 章節轉換時自動存檔與章節過場標題卡（讀檔時不覆蓋）
+        if (!isLoad && (sceneId.includes('_start') || sceneId === 'ch2_morning_run' || sceneId === 'ch5_the_race')) {
             this.saveManager.autoSave(this.getSaveState());
+        }
+        if (!isLoad && this.chapterIntros[sceneId]) {
+            this.showChapterEyecatch(sceneId);
         }
 
         const dialogues = this.getActiveDialogues(scene);
@@ -766,6 +892,9 @@ class GameEngine {
         if (!dialogue) {
             if (scene.choices) {
                 this.showChoices(scene.choices);
+                if (this.currentScene && this.currentScene.startsWith('ending_')) {
+                    this.openEndingResultModal(this.currentScene);
+                }
             } else {
                 const next = this.resolveNextScene(scene);
                 if (next) this.loadScene(next);
@@ -975,6 +1104,7 @@ class GameEngine {
         this.clearAutoPlayTimer();
 
         let hadPositiveAffection = false;
+        const deltas = [];
         if (choice.affectionChange) {
             for (let char in choice.affectionChange) {
                 if (this.affection.hasOwnProperty(char)) {
@@ -982,9 +1112,13 @@ class GameEngine {
                     this.affection[char] += delta;
                     if (this.affection[char] < 0) this.affection[char] = 0;
                     if (delta > 0) hadPositiveAffection = true;
+                    if (delta !== 0) deltas.push({ charId: char, delta });
                 }
             }
             this.updateAffectionUI();
+            if (deltas.length > 0) {
+                this.showAffectionDeltas(deltas);
+            }
 
             // 好感度上升鈴聲
             if (hadPositiveAffection) {
@@ -999,6 +1133,117 @@ class GameEngine {
         const next = this.resolveNextScene(choice);
         if (next) {
             this.loadScene(next);
+        }
+    }
+
+    // 顯示好感度變動浮動提示氣泡 (Phase 1A)
+    showAffectionDeltas(deltas = []) {
+        const layer = document.getElementById('affection-float-layer');
+        if (!layer || !Array.isArray(deltas) || deltas.length === 0) return;
+
+        const shortLabels = {
+            daiwa_scarlet: '赤驥',
+            vodka: '伏特加',
+            special_week: '特別週'
+        };
+
+        let scarletDelta = 0;
+        let visibleIdx = 0;
+
+        deltas.forEach(({ charId, delta }) => {
+            if (!delta) return;
+            if (charId === 'daiwa_scarlet') scarletDelta = delta;
+
+            const isUp = delta > 0;
+            const charData = (typeof CHARACTERS !== 'undefined' && CHARACTERS[charId]) || null;
+            const label = shortLabels[charId] || charData?.name || charId;
+            const signText = `${isUp ? '+' : ''}${delta}`;
+
+            const iconSvg = charId === 'daiwa_scarlet'
+                ? '<svg class="affection-float-icon" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'
+                : '<svg class="affection-float-icon" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><polygon points="12,2 15,9 22,9.5 16.5,14 18.2,21 12,17.2 5.8,21 7.5,14 2,9.5 9,9"/></svg>';
+
+            const bubble = document.createElement('div');
+            bubble.className = `affection-float-bubble ${isUp ? 'is-up' : 'is-down'} char-${charId}`;
+            bubble.innerHTML = `${iconSvg}<span>${label} ${signText}</span>`;
+            if (bubble.style) {
+                bubble.style.animationDelay = `${visibleIdx * 110}ms`;
+            }
+            layer.appendChild(bubble);
+
+            const removeTimer = setTimeout(() => {
+                bubble.remove();
+            }, 1550 + visibleIdx * 110);
+            removeTimer?.unref?.();
+            visibleIdx++;
+        });
+
+        if (scarletDelta !== 0) {
+            const valEl = document.getElementById('affection-value');
+            const barEl = document.querySelector('.affection-bar');
+            const pulseClass = scarletDelta > 0 ? 'pulse-up' : 'pulse-down';
+            [valEl, barEl].forEach((el) => {
+                if (!el?.classList) return;
+                el.classList.remove('pulse-up', 'pulse-down');
+                el.classList.add(pulseClass);
+            });
+            if (this.affectionPulseTimer) clearTimeout(this.affectionPulseTimer);
+            this.affectionPulseTimer = setTimeout(() => {
+                [valEl, barEl].forEach((el) => el?.classList?.remove('pulse-up', 'pulse-down'));
+                this.affectionPulseTimer = null;
+            }, 650);
+            this.affectionPulseTimer?.unref?.();
+        }
+    }
+
+    // 章節過場標題卡 (Phase 1B)
+    showChapterEyecatch(sceneId) {
+        const intro = this.chapterIntros?.[sceneId];
+        const overlay = document.getElementById('chapter-eyecatch');
+        if (!intro || !overlay) return;
+
+        if (this.eyecatchTimer) clearTimeout(this.eyecatchTimer);
+        if (this.eyecatchHideTimer) clearTimeout(this.eyecatchHideTimer);
+        this.eyecatchTimer = null;
+        this.eyecatchHideTimer = null;
+
+        const labelEl = document.getElementById('eyecatch-label');
+        const titleEl = document.getElementById('eyecatch-title');
+        const subtitleEl = document.getElementById('eyecatch-subtitle');
+        if (labelEl) labelEl.textContent = intro.code;
+        if (titleEl) titleEl.textContent = intro.title;
+        if (subtitleEl) subtitleEl.textContent = intro.subtitle;
+
+        this.clearAutoPlayTimer();
+        this.isEyecatchActive = true;
+        overlay.classList.remove('fade-out');
+        overlay.classList.add('active');
+
+        this.eyecatchTimer = setTimeout(() => {
+            overlay.classList.add('fade-out');
+            this.eyecatchHideTimer = setTimeout(() => {
+                this.hideChapterEyecatch();
+            }, 360);
+            this.eyecatchHideTimer?.unref?.();
+        }, 1950);
+        this.eyecatchTimer?.unref?.();
+    }
+
+    hideChapterEyecatch() {
+        if (this.eyecatchTimer) {
+            clearTimeout(this.eyecatchTimer);
+            this.eyecatchTimer = null;
+        }
+        if (this.eyecatchHideTimer) {
+            clearTimeout(this.eyecatchHideTimer);
+            this.eyecatchHideTimer = null;
+        }
+        const wasActive = this.isEyecatchActive;
+        this.isEyecatchActive = false;
+        const overlay = document.getElementById('chapter-eyecatch');
+        overlay?.classList.remove('active', 'fade-out');
+        if (wasActive) {
+            this.resumeAutoPlayIfNeeded();
         }
     }
 
@@ -1195,6 +1440,12 @@ class GameEngine {
 
     replayEnding(endingId) {
         this.audioManager.playClick();
+        const savedRecord = this.galleryManager?.unlocked?.[endingId];
+        this.lastEndingMeta = {
+            endingId,
+            isNew: false,
+            finalAffection: savedRecord?.maxAffection ?? this.affection.daiwa_scarlet
+        };
         this.closeAllOverlays();
         this.showScreen('game-screen');
         this.loadScene(endingId);
@@ -1340,29 +1591,104 @@ class GameEngine {
 
         // 解鎖圖鑑結局
         const unlockResult = this.galleryManager.unlock(endingScene, finalAffection);
+        this.lastEndingMeta = {
+            endingId: endingScene,
+            isNew: !!unlockResult.isNew,
+            finalAffection
+        };
         if (unlockResult.isNew) {
             this.showToast(`達成新結局：【${unlockResult.endingInfo.title}】！已加入圖鑑！`);
         }
 
-        // 播放結局勝利音效與浪漫音樂
+        // 播放結局勝利音效並統一載入結局場景
         this.audioManager.playFanfare();
-        this.audioManager.playBGM('romance');
+        this.loadScene(endingScene);
+    }
 
-        // 載入結局場景
-        const scene = GAME_DATA.scenes[endingScene];
-        if (scene) {
-            this.currentScene = endingScene;
-            this.currentDialogueIndex = 0;
+    // ============================================
+    // 結局專屬結算勳章畫面 (Phase 1C)
+    // ============================================
+    openEndingResultModal(endingId = this.currentScene) {
+        this.clearAutoPlayTimer();
+        const modal = document.getElementById('ending-result-screen');
+        if (!modal || !this.galleryManager?.endingsInfo) return;
 
-            if (scene.location) {
-                document.getElementById('location-text').textContent = scene.location;
-            }
-            this.effectsManager.updateSceneEffect(scene, endingScene);
-
-            if (this.getActiveDialogues(scene).length > 0) {
-                this.showDialogue();
-            }
+        const info = this.galleryManager.endingsInfo[endingId] || this.galleryManager.endingsInfo.ending_D;
+        const panel = document.getElementById('ending-result-panel');
+        if (panel?.classList) {
+            panel.classList.remove('rank-s', 'rank-a', 'rank-b', 'rank-c', 'rank-d');
+            panel.classList.add(`rank-${info.rank.toLowerCase()}`);
         }
+
+        const rankEl = document.getElementById('ending-medal-rank');
+        const pillEl = document.getElementById('ending-badge-pill');
+        const titleEl = document.getElementById('ending-result-title');
+        const descEl = document.getElementById('ending-result-desc');
+        const newBadgeEl = document.getElementById('ending-new-badge');
+
+        if (rankEl) rankEl.textContent = info.rank;
+        if (pillEl) pillEl.textContent = `RANK ${info.rank} · ${info.subtitle}`;
+        if (titleEl) titleEl.textContent = info.title;
+        if (descEl) descEl.textContent = info.desc;
+
+        const isNewUnlock = !!(this.lastEndingMeta && this.lastEndingMeta.endingId === info.id && this.lastEndingMeta.isNew);
+        newBadgeEl?.classList?.toggle('visible', isNewUnlock);
+
+        const statsGrid = document.getElementById('ending-stats-grid');
+        if (statsGrid) {
+            const scarletScore = (this.affection.daiwa_scarlet > 0 || !this.lastEndingMeta || this.lastEndingMeta.endingId !== info.id)
+                ? (this.affection.daiwa_scarlet ?? 0)
+                : (this.lastEndingMeta.finalAffection ?? 0);
+
+            const charItems = [
+                { id: 'daiwa_scarlet', score: scarletScore, max: 150, isHeart: true },
+                { id: 'vodka', score: this.affection.vodka ?? 0, max: 20, isHeart: false },
+                { id: 'special_week', score: this.affection.special_week ?? 0, max: 10, isHeart: false }
+            ];
+
+            const charCardsHtml = charItems.map(({ id, score, max, isHeart }) => {
+                const char = (typeof CHARACTERS !== 'undefined' && CHARACTERS[id]) || GAME_DATA?.characters?.[id] || {};
+                const color = char.color || '#e64545';
+                const name = char.name || id;
+                const avatar = char.avatar || '';
+                const iconSvg = isHeart
+                    ? `<svg viewBox="0 0 24 24" width="13" height="13" fill="${color}" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`
+                    : `<svg viewBox="0 0 24 24" width="13" height="13" fill="${color}" aria-hidden="true"><polygon points="12,2 15,9 22,9.5 16.5,14 18.2,21 12,17.2 5.8,21 7.5,14 2,9.5 9,9"/></svg>`;
+
+                return `
+                    <div class="ending-stat-card">
+                        <div class="ending-stat-avatar" style="border-color: ${color};">
+                            ${avatar ? `<img src="${avatar}" alt="${name}">` : iconSvg}
+                        </div>
+                        <div class="ending-stat-meta">
+                            <div class="ending-stat-name">${name}</div>
+                            <div class="ending-stat-score">${iconSvg}<span>${score} / ${max}</span></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const progress = this.galleryManager.getProgress();
+            const trophySvg = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>';
+            const galleryCardHtml = `
+                <div class="ending-stat-card">
+                    <div class="ending-stat-avatar ending-stat-gallery-icon">${trophySvg}</div>
+                    <div class="ending-stat-meta">
+                        <div class="ending-stat-name">圖鑑收集進度</div>
+                        <div class="ending-stat-score"><span>${progress.count} / ${progress.total} (${progress.percentage}%)</span></div>
+                    </div>
+                </div>
+            `;
+
+            statsGrid.innerHTML = charCardsHtml + galleryCardHtml;
+        }
+
+        modal.classList.add('active');
+    }
+
+    closeEndingResultModal() {
+        document.getElementById('ending-result-screen')?.classList.remove('active');
+        this.resumeAutoPlayIfNeeded();
     }
 }
 

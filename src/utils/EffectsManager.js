@@ -9,6 +9,8 @@ class EffectsManager {
         this.particles = [];
         this.currentEffect = 'none';
         this.animFrameId = null;
+        this.currentBgClass = 'bg-title';
+        this.activeLayerIdx = 0;
         this.width = window.innerWidth;
         this.height = window.innerHeight;
 
@@ -189,7 +191,13 @@ class EffectsManager {
         if (/櫻花|校門|夜間小路|夕陽下的校園|雨中/.test(loc) || id.includes('cherry') || id.includes('ending_s') || id.includes('ending_a')) {
             return 'bg-sakura';
         }
-        if (/教室|走廊|圖書館|食堂|宿舍|辦公室|訓練室|更衣室|通道|茶室/.test(loc)) {
+        if (/屋頂/.test(loc)) {
+            return 'bg-rooftop';
+        }
+        if (/食堂|交誼廳|宿舍|茶室/.test(loc)) {
+            return 'bg-lounge';
+        }
+        if (/教室|走廊|圖書館|辦公室|訓練室|更衣室|通道/.test(loc)) {
             return 'bg-classroom';
         }
         return 'bg-track';
@@ -200,8 +208,9 @@ class EffectsManager {
         const backdrop = document.getElementById('scene-backdrop');
         if (!backdrop || !backdrop.classList) return;
 
+        const allBgClasses = ['bg-title', 'bg-track', 'bg-classroom', 'bg-sakura', 'bg-rooftop', 'bg-lounge'];
         backdrop.classList.remove(
-            'bg-title', 'bg-track', 'bg-classroom', 'bg-sakura',
+            ...allBgClasses,
             'atmosphere-sunset', 'atmosphere-night', 'atmosphere-rain', 'atmosphere-sakura'
         );
 
@@ -210,6 +219,22 @@ class EffectsManager {
         }
         if (atmosphereClass) {
             backdrop.classList.add(atmosphereClass);
+        }
+
+        const layers = [
+            document.getElementById('backdrop-layer-a'),
+            document.getElementById('backdrop-layer-b')
+        ];
+        if (layers[0] && layers[1] && bgClass && bgClass !== this.currentBgClass) {
+            const nextIdx = 1 - this.activeLayerIdx;
+            const nextLayer = layers[nextIdx];
+            const prevLayer = layers[this.activeLayerIdx];
+            nextLayer.classList?.remove(...allBgClasses);
+            nextLayer.classList?.add(bgClass);
+            nextLayer.classList?.add('active');
+            prevLayer?.classList?.remove('active');
+            this.activeLayerIdx = nextIdx;
+            this.currentBgClass = bgClass;
         }
     }
 

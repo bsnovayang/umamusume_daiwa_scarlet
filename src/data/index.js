@@ -42,6 +42,7 @@ GAME_DATA.scenes.ending_S = {
         { speaker: "narrator", text: "——THE END——" }
     ],
     choices: [
+        { text: "查看結局結算勳章", hint: "檢視本輪評價與角色好感總結", affectionChange: {}, nextScene: "ending_result" },
         { text: "回到標題", hint: "", affectionChange: {}, nextScene: "title" }
     ]
 };
@@ -66,6 +67,7 @@ GAME_DATA.scenes.ending_A = {
         { speaker: "narrator", text: "——THE END——" }
     ],
     choices: [
+        { text: "查看結局結算勳章", hint: "檢視本輪評價與角色好感總結", affectionChange: {}, nextScene: "ending_result" },
         { text: "回到標題", hint: "", affectionChange: {}, nextScene: "title" }
     ]
 };
@@ -87,6 +89,7 @@ GAME_DATA.scenes.ending_B = {
         { speaker: "narrator", text: "——THE END——" }
     ],
     choices: [
+        { text: "查看結局結算勳章", hint: "檢視本輪評價與角色好感總結", affectionChange: {}, nextScene: "ending_result" },
         { text: "回到標題", hint: "", affectionChange: {}, nextScene: "title" }
     ]
 };
@@ -106,6 +109,7 @@ GAME_DATA.scenes.ending_C = {
         { speaker: "narrator", text: "——THE END——" }
     ],
     choices: [
+        { text: "查看結局結算勳章", hint: "檢視本輪評價與角色好感總結", affectionChange: {}, nextScene: "ending_result" },
         { text: "回到標題", hint: "", affectionChange: {}, nextScene: "title" }
     ]
 };
@@ -126,6 +130,7 @@ GAME_DATA.scenes.ending_D = {
         { speaker: "narrator", text: "——THE END——" }
     ],
     choices: [
+        { text: "查看結局結算勳章", hint: "檢視本輪評價與角色好感總結", affectionChange: {}, nextScene: "ending_result" },
         { text: "回到標題", hint: "", affectionChange: {}, nextScene: "title" }
     ]
 };

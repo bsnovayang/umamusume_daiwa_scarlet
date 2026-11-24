@@ -9,8 +9,10 @@
 </head>
 
 <body>
-    <!-- 特雷森光耀學園風：動態場景背景層 (含氛圍調色罩) -->
+    <!-- 特雷森光耀學園風：動態場景背景層 (含氛圍調色罩與跨場平滑轉場層) -->
     <div id="scene-backdrop" class="scene-backdrop bg-title atmosphere-sakura" aria-hidden="true">
+        <div id="backdrop-layer-a" class="backdrop-layer bg-title active"></div>
+        <div id="backdrop-layer-b" class="backdrop-layer"></div>
         <!-- 標題主視覺：特雷森學園晴空草地賽道＋櫻花門扉 (未來可無縫疊加 img/bg/title_bg.jpg) -->
         <svg class="backdrop-art art-title" viewBox="0 0 1200 1000" preserveAspectRatio="xMidYMid slice">
             <defs>
@@ -321,6 +323,9 @@
                 </div>
             </div>
 
+            <!-- 好感度變動浮動提示層 -->
+            <div id="affection-float-layer" class="affection-float-layer" aria-live="polite" aria-hidden="true"></div>
+
             <!-- 場景與地點 -->
             <div id="scene-display">
                 <svg class="loc-diamond" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
@@ -383,6 +388,26 @@
             </div>
         </div>
 
+        <!-- 章節過場標題卡 (Chapter Eyecatch) -->
+        <div id="chapter-eyecatch" class="chapter-eyecatch" aria-hidden="true">
+            <div class="eyecatch-card">
+                <div class="eyecatch-stripe" aria-hidden="true"></div>
+                <div class="eyecatch-label-row">
+                    <svg class="eyecatch-star-svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2l2.6 5.9 6.4.6-4.8 4.2 1.4 6.3L12 15.7 6.4 19l1.4-6.3L3 8.5l6.4-.6L12 2z"/>
+                    </svg>
+                    <span id="eyecatch-label">CHAPTER 01</span>
+                    <svg class="eyecatch-star-svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2l2.6 5.9 6.4.6-4.8 4.2 1.4 6.3L12 15.7 6.4 19l1.4-6.3L3 8.5l6.4-.6L12 2z"/>
+                    </svg>
+                </div>
+                <h2 id="eyecatch-title">第一章：邂逅</h2>
+                <div class="eyecatch-divider" aria-hidden="true"></div>
+                <p id="eyecatch-subtitle">初次踏入特雷森學園的那一天</p>
+                <span class="eyecatch-skip-hint">點擊任意處略過</span>
+            </div>
+        </div>
+
         <!-- 遊戲選單畫面 -->
         <div id="menu-screen" class="screen overlay">
             <div class="menu-content">
@@ -437,7 +462,7 @@
         </div>
 
         <!-- 多欄位存檔 / 讀檔彈窗 -->
-        <div id="save-modal-screen" class="screen overlay">
+        <div id="save-modal-screen" class="screen overlay sub-overlay">
             <div class="save-modal-panel">
                 <div class="save-modal-header">
                     <h3 id="save-modal-title">
@@ -453,7 +478,7 @@
         </div>
 
         <!-- 結局圖鑑彈窗 -->
-        <div id="gallery-screen" class="screen overlay">
+        <div id="gallery-screen" class="screen overlay sub-overlay">
             <div class="gallery-panel">
                 <div class="gallery-header">
                     <h3>
@@ -469,7 +494,7 @@
         </div>
 
         <!-- 角色關係面板 -->
-        <div id="relations-screen" class="screen overlay">
+        <div id="relations-screen" class="screen overlay sub-overlay">
             <div class="relations-panel">
                 <div class="relations-header">
                     <h3>
@@ -485,7 +510,7 @@
         </div>
 
         <!-- 系統設定彈窗 -->
-        <div id="settings-screen" class="screen overlay">
+        <div id="settings-screen" class="screen overlay sub-overlay">
             <div class="settings-panel">
                 <div class="settings-header">
                     <h3>
@@ -578,7 +603,7 @@
         </div>
 
         <!-- 歷史記錄畫面 -->
-        <div id="history-screen" class="screen overlay">
+        <div id="history-screen" class="screen overlay sub-overlay">
             <div class="history-panel">
                 <div class="history-header">
                     <h3>
@@ -597,7 +622,7 @@
         </div>
 
         <!-- 人物介紹畫面 -->
-        <div id="chars-screen" class="screen overlay">
+        <div id="chars-screen" class="screen overlay sub-overlay">
             <div class="chars-panel">
                 <div class="chars-header">
                     <h3>
@@ -611,6 +636,55 @@
                 </div>
                 <div class="chars-footer">
                     <p>點擊關閉按鈕返回</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 結局專屬結算勳章畫面 -->
+        <div id="ending-result-screen" class="screen overlay sub-overlay">
+            <div id="ending-result-panel" class="ending-result-panel rank-s">
+                <div class="ending-result-banner">
+                    <button id="close-ending-result-btn" class="icon-btn ending-close-btn" aria-label="關閉">✕</button>
+                    <div class="ending-medal-showcase">
+                        <svg class="ending-laurel-svg" viewBox="0 0 120 120" width="112" height="112" fill="none" aria-hidden="true">
+                            <path d="M36 92C21 79 16 56 24 36" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+                            <path d="M84 92C99 79 104 56 96 36" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+                            <path d="M23 73c-6-5-7-12-2-16 6 2 8 9 2 16zM20 55c-4-7-2-14 4-15 4 4 4 11-4 15zM28 40c-2-8 2-14 8-12 2 6 0 11-8 12z" fill="currentColor" opacity="0.88"/>
+                            <path d="M97 73c6-5 7-12 2-16-6 2-8 9-2 16zM100 55c4-7 2-14-4-15-4 4-4 11 4 15zM92 40c2-8-2-14-8-12-2 6 0 11 8 12z" fill="currentColor" opacity="0.88"/>
+                            <path d="M45 99l15-8 15 8-3 10H48l-3-10z" fill="currentColor" opacity="0.92"/>
+                        </svg>
+                        <div class="ending-medal-ring">
+                            <span id="ending-medal-rank">S</span>
+                        </div>
+                    </div>
+                    <div class="ending-badges-row">
+                        <span id="ending-badge-pill" class="ending-badge-pill">RANK S · 真愛結局</span>
+                        <span id="ending-new-badge" class="ending-new-badge">
+                            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2l2.6 5.9 6.4.6-4.8 4.2 1.4 6.3L12 15.7 6.4 19l1.4-6.3L3 8.5l6.4-.6L12 2z"/></svg>
+                            首次解鎖
+                        </span>
+                    </div>
+                    <h2 id="ending-result-title">永遠的搭檔</h2>
+                    <p id="ending-result-desc">在盛開的櫻花雨中，你們互訴衷腸，約定成為一輩子的靈魂伴侶與搭檔。</p>
+                </div>
+                <div class="ending-result-body">
+                    <div id="ending-stats-grid" class="ending-stats-grid">
+                        <!-- 動態生成角色好感度與圖鑑進度總結 -->
+                    </div>
+                    <div class="ending-result-actions">
+                        <button id="ending-open-gallery-btn" class="btn-primary">
+                            <svg class="btn-svg" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                            <span>前往結局圖鑑</span>
+                        </button>
+                        <button id="ending-restart-btn" class="btn-secondary">
+                            <svg class="btn-svg" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+                            <span>重新開始旅程</span>
+                        </button>
+                        <button id="ending-title-btn" class="btn-tertiary">
+                            <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            <span>回到標題畫面</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
